@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="spark.smartonlinecourse.dao.ChooseCourseMapper" >
+    <resultMap id="ChooseCourseResultMap" type="spark.smartonlinecourse.entity.ChooseCourse" >
+        <id column="course_id" property="courseId" jdbcType="INTEGER" />
+        <result column="course_name" property="courseName" jdbcType="VARCHAR" />
+        <result column="user_name" property="userName" jdbcType="VARCHAR" />
+        <result column="avatar" property="avatar" jdbcType="VARCHAR" />
+    </resultMap>
+    <sql id="Choose_Course_Column_List" >
+    choose_course.course_id as course_id, course_name, user_name, course.avatar
+    </sql>
+    <select id="selectByUserId" resultMap="ChooseCourseResultMap" parameterType="spark.smartonlinecourse.entity.Key">
+        select 
+        <include refid="Choose_Course_Column_List"/>
+        from choose_course,course,`user`
+        where choose_course.course_id=course.course_id
+        and choose_course.user_id=`user`.user_id
+        and choose_course.user_id=#{userId} limit #{start},4
+    </select>
+    
+    <select id="getCountByUserId" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+        select count(*) as countNum
+        from choose_course,course
+        where choose_course.course_id=course.course_id
+        and choose_course.user_id=#{userId,jdbcType=INTEGER}
+    </select>
+</mapper>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="spark.smartonlinecourse.dao.UserMapper" >
+  <resultMap id="UserResultMap" type="spark.smartonlinecourse.entity.User" >
+    <id column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="tel" property="tel" jdbcType="CHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="credit" property="credit" jdbcType="TINYINT" />
+    <result column="avatar" property="avatar" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="User_Column_List" >
+    user_id, user_name, password, tel, email, credit, avatar
+  </sql>
+  <select id="selectByEmail" resultMap="UserResultMap" parameterType="java.lang.String">
+    select
+    <include refid="User_Column_List" />
+    from user
+    where email = #{email,jdbcType=VARCHAR}
+  </select>
+</mapper>

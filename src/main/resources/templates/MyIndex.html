@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-cn" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title></title>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+	<link rel="stylesheet" th:href="@{/css/bootstrap-theme.css}">
+	<link rel="stylesheet" th:href="@{/css/index.css}">
+	<link rel="icon" type="image/x-icon" th:href="@{/favicon.ico}">
+	<script type="text/javascript" th:src="@{/js/jquery-3.3.1.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+	<meta name="viewprot"
+		content="width=devive-width,initial-scale=1,user-scalable=no">
+</head>
+<body>
+	<div class="header">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-6 col-xs-6 col-sm-6">
+					<div class="text-left">
+						<img th:src="@{/image/logo.png}" height="50">
+						<h4 style="display: inline;margin-left: 10px;">智能云班课</h4>
+					</div>
+				</div>
+				<div class="col-md-6 col-xs-6 col-sm-6">
+					<div class="text-right">
+						<ul class="list-unstyle list-inline" style="margin-top: 4px;" th:object="${session.user}">
+							<li><a th:href="@{/task_list}"><span class="glyphicon glyphicon-flag"></span><h4 style="display: inline;margin-left: 5px;">任务中心</h4></a></li>
+							<li><a th:href="@{/course_package}"><span class="glyphicon glyphicon-folder-close"></span><h4 style="display: inline;margin-left: 5px;">课程包</h4></a></li>
+							<li><a th:href="@{/exam_list}"><span class="glyphicon glyphicon-hdd"></span><h4 style="display: inline;margin-left: 5px;">库管理</h4></a></li>
+							<li><a th:href="@{/exam_list}"><span class="glyphicon glyphicon-list-alt"></span><h4 style="display: inline;margin-left: 5px;">我的题库</h4></a></li>
+							<li><img th:src="@{${session.user.getAvatar()}}" style="width:34px;height:34px" class="img-responsive img-thumbnail"></li>
+							<li><h4 th:text="*{userName}"></h4></li>
+							<li><h4>退出</h4></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="myIndexMain">
+		<div class="container">
+			<div class="row" style="margin-top: 30px">
+				<div class="col-md-3 col-xs-3 col-sm-3" style="margin-top: -25px">
+					<div class="dropdown">
+						<h1 style="color: #00BBDD" data-toggle="dropdown"><span class="glyphicon glyphicon-plus"></span></h1>
+						<ul class="dropdown-menu">
+							<li><a href="#">创建班课</a></li>
+							<li><a href="#">加入班课</a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="col-sm-6 col-md-6 col-xs-6">
+					<div class="input-group">
+						<input type="search" name="search" id="search" class="form-control" placeholder="Search">
+						<div class="input-group-addon"><span class="glyphicon glyphicon-search"></span></div>
+					</div>
+				</div>
+				<div class="col-md-3 col-xs-3 col-sm-3">
+					<a href=""><h4 class="text-right" style="color: #00BBDD">帮助</h4></a>
+				</div>
+			</div>
+			<h4 class="page-header">进行中的班课<small th:text="${session.chooseCourseCount}+'个进行中的班课'"></small></h4>
+			<div class="row" style="margin-top: 40px;">
+			<div class="col-md-3" th:each="course:${session.user.getChooseCourseList()}">
+				<img th:src="@{${course.getAvatar()}}" class="img-responsive img-thumbnail">
+				<h3 class="page-header" th:text="${course.getCourseName()}"></h3>
+				<p th:text="${course.getUserName()}"></p>
+			</div>
+		</div>
+		</div>
+	</div>
+	<div id="footer">
+		<h5 class="text-center">©2018 上海建桥学院</h5>
+		<h5 class="text-center">地址：上海市浦东新区康桥路1500号    联系电话：13127945312    电子邮件：2637666515@qq.com </h5>
+	</div>
+</body>
+</html>
