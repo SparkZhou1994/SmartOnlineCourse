@@ -7,6 +7,8 @@ public class Course {
 
     private String userName;
 
+    private String catalog;
+
     private String avatar;
 
     public Integer getCourseId() {

@@ -13,31 +13,31 @@
 		content="width=devive-width,initial-scale=1,user-scalable=no">
 </head>
 <body>
-	<div class="header">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-6 col-xs-6 col-sm-6">
-					<div class="text-left">
-						<img th:src="@{/image/logo.png}" height="50">
-						<h4 style="display: inline;margin-left: 10px;">智能云班课</h4>
-					</div>
+<div class="header">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6 col-xs-6 col-sm-6">
+				<div class="text-left">
+					<img th:src="@{/image/logo.png}" height="50">
+					<h4 style="display: inline;margin-left: 10px;">智能云班课</h4>
 				</div>
-				<div class="col-md-6 col-xs-6 col-sm-6">
-					<div class="text-right">
-						<ul class="list-unstyle list-inline" style="margin-top: 4px;">
-							<li><a href="#"><span class="glyphicon glyphicon-flag"></span><h4 style="display: inline;margin-left: 5px;">任务中心</h4></a></li>
-							<li><a href="#"><span class="glyphicon glyphicon-folder-close"></span><h4 style="display: inline;margin-left: 5px;">课程包</h4></a></li>
-							<li><a href="#"><span class="glyphicon glyphicon-hdd"></span><h4 style="display: inline;margin-left: 5px;">库管理</h4></a></li>
-							<li><a href="#"><span class="glyphicon glyphicon-list-alt"></span><h4 style="display: inline;margin-left: 5px;">我的题库</h4></a></li>
-							<li><h4>我</h4></li>
-							<li><h4>周炬辉</h4></li>
-							<li><h4>退出</h4></li>
-						</ul>
-					</div>
+			</div>
+			<div class="col-md-6 col-xs-6 col-sm-6">
+				<div class="text-right">
+					<ul class="list-unstyle list-inline" style="margin-top: 4px;" th:object="${session.user}">
+						<li><a th:href="@{/task_list}"><span class="glyphicon glyphicon-flag"></span><h4 style="display: inline;margin-left: 5px;">任务中心</h4></a></li>
+						<li><a th:href="@{/course_package}"><span class="glyphicon glyphicon-folder-close"></span><h4 style="display: inline;margin-left: 5px;">课程包</h4></a></li>
+						<li><a th:href="@{/exam_list}"><span class="glyphicon glyphicon-hdd"></span><h4 style="display: inline;margin-left: 5px;">库管理</h4></a></li>
+						<li><a th:href="@{/exam_list}"><span class="glyphicon glyphicon-list-alt"></span><h4 style="display: inline;margin-left: 5px;">我的题库</h4></a></li>
+						<li><img th:src="@{${session.user.getAvatar()}}" style="width:34px;height:34px" class="img-responsive img-thumbnail"></li>
+						<li><h4 th:text="*{userName}"></h4></li>
+						<li><a onclick="loginOut()"><h4>退出</h4></a></li>
+					</ul>
 				</div>
 			</div>
 		</div>
 	</div>
+</div>
 	<div class="coursePackageMain">
 		<div class="container">
 			<div class="row" style="margin-top: 30px">
@@ -51,30 +51,28 @@
 					<a href="" style="float: right;"><span class="glyphicon glyphicon-folder-close" style="color:#00BBDD"></span><h4 style="color: #00BBDD;display: inline;margin-left: 10px;" id="coursePackageLogo">课程包管理</h4></a>
 				</div>
 			</div>
-			<img class="img-responsive" th:src="@{/image/course_package_logo.jpg}" alt="course_package_logo">
+			<img class="img-responsive" style="margin-top: 20px" th:src="@{/image/course_package_logo.jpg}" alt="course_package_logo">
 			<h4 style="border-left: #00BBDD 4px solid;margin-top: 20px;padding-left: 20px">优选课程包</h4>
-			<div class="row" style="margin-top: 40px;">
-			<div class="col-md-4">
-				<img th:src="@{/image/logo.png}" class="img-responsive img-thumbnail">
-				<h3 class="page-header">课程名</h3>
-				<p>任课老师</p>
+			<div class="row" style="margin-top: 40px;" th:each="course:${#httpServletRequest.getAttribute('courseList')}">
+				<div class="col-md-3">
+					<img th:src="${course.getAvatar()}" class="img-responsive img-thumbnail">
+					<h3 class="page-header" th:text="${course.getCourseName()}">课程名</h3>
+					<p th:text="${course.getUserName()}">任课老师</p>
+				</div>
 			</div>
-			<div class="col-md-4">
-				<img th:src="@{/image/logo.png}" class="img-responsive img-thumbnail">
-				<h3 class="page-header">课程名</h3>
-				<p>任课老师</p>
-			</div>
-			<div class="col-md-4">
-				<img th:src="@{/image/logo.png}" class="img-responsive img-thumbnail">
-				<h3 class="page-header">课程名</h3>
-				<p>任课老师</p>
-			</div>
-		</div>
 		</div>
 	</div>
 	<div id="footer">
 		<h5 class="text-center">©2018 上海建桥学院</h5>
 		<h5 class="text-center">地址：上海市浦东新区康桥路1500号    联系电话：13127945312    电子邮件：2637666515@qq.com </h5>
 	</div>
+	<script type="text/javascript">
+		function loginOut(){
+			//$(location).attr('href', 'index');
+			//$(window).attr('location','index');
+			$(location).prop('href', 'index');
+			$.session.clear();
+		}
+	</script>
 </body>
 </html>

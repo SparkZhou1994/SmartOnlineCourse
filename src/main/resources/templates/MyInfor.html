@@ -40,40 +40,29 @@
 </div>
 	<div class="myIndexMain">
 		<div class="container">
-			<div class="input-group" style="margin-left: 30%;width: 50%;margin-top: 50px">
-				<input type="search" name="search" id="search" class="form-control" placeholder="Search">
-				<div class="input-group-addon"><span class="glyphicon glyphicon-search"></span></div>
-			</div>
-			<div class="table-responsive" style="margin-top: 50px;">
-				<table class="table table-bordered table-hover table-striped talbe-condensed">
-					<tr class="active">
-						<td>任务编号</td>
-						<td>类型</td>
-						<td>任务名称</td>
-						<td>导出时间</td>
-						<td>状态</td>
-						<td>文件大小</td>
-						<td>操作</td>
-					</tr>
-					<tr class="info">
-						<td>1</td>
-						<td>doc</td>
-						<td>课堂作业</td>
-						<td>2018/6/8-09:00</td>
-						<td>待完成</td>
-						<td>200M</td>
-						<td>删除</td>
-					</tr>
-				</table>
-			</div>
-			<div class="pageNav" style="float: right;">
-				<ul class="pagination">
-					<li><a href="#">&laquo;</a></li>
-					<li class="active"><a href="#">1</a></li>
-					<li><a href="#">2</a></li>
-					<li><a href="#">&raquo;</a></li>
-				</ul>
-			</div>
+			<form>
+				<div class="form-group" style="padding:0px 20px;margin:50px auto 0 auto;width:700px">
+					<div class="input-group">
+						<span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+						<input name="username" id="username" class="form-control">
+					</div>
+					<div class="input-group" style="margin-top: 20px">
+						<span class="input-group-addon"><span class="glyphicon glyphicon-earphone"></span></span>
+						<input name="tel" id="tel" class="form-control">
+					</div>
+					<div class="input-group" style="margin-top: 20px">
+						<span class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></span>
+						<input name="email" id="email" class="form-control">
+					</div>
+					<div class="row" style="margin-top: 20px">
+						<div class="col-md-4 col-xs-4 col-sm-4"></div>
+						<div class="col-md-1 col-xs-1 col-sm-1"><button class="btn">保存</button></div>
+						<div class="col-md-2 col-xs-2 col-sm-2"></div>
+						<div class="col-md-1 col-xs-1 col-sm-1"><button class="btn">取消</button></div>
+						<div class="col-md-4 col-xs-4 col-sm-4"></div>
+					</div>
+				</div>
+			</form>
 		</div>
 	</div>
 	<div id="footer">

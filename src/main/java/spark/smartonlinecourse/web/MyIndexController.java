@@ -7,7 +7,6 @@ import spark.smartonlinecourse.entity.ChooseCourse;
 import spark.smartonlinecourse.entity.User;
 import spark.smartonlinecourse.service.ChooseCourseService;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.HashMap;
