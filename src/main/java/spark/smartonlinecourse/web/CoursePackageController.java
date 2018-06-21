@@ -18,7 +18,7 @@ public class CoursePackageController {
     @GetMapping("/course_package")
     public String coursePackage(HttpServletRequest request, HttpServletResponse response){
         Integer start=0;
-        ArrayList<Course> courseList=courseService.selectTop(start);
+        ArrayList<Course> courseList= (ArrayList<Course>) courseService.selectTop(start);
         request.setAttribute("courseList",courseList);
         return "CoursePackage";
     }

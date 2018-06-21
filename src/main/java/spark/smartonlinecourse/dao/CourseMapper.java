@@ -2,7 +2,7 @@ package spark.smartonlinecourse.dao;
 
 import spark.smartonlinecourse.entity.Course;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @ClassName CourseMapper
@@ -12,5 +12,5 @@ import java.util.ArrayList;
  * @Version 1.0
  **/
 public interface CourseMapper {
-    ArrayList<Course> selectTop(Integer start);
+    List<Course> selectTop(Integer start);
 }

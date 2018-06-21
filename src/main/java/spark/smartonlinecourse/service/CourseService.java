@@ -3,6 +3,7 @@ package spark.smartonlinecourse.service;
 import spark.smartonlinecourse.entity.Course;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @ClassName CourseService
@@ -12,5 +13,5 @@ import java.util.ArrayList;
  * @Version 1.0
  **/
 public interface CourseService {
-    ArrayList<Course> selectTop(Integer start);
+    List<Course> selectTop(Integer start);
 }

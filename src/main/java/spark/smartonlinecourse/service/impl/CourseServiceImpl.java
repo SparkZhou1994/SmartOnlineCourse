@@ -6,7 +6,7 @@ import spark.smartonlinecourse.dao.CourseMapper;
 import spark.smartonlinecourse.entity.Course;
 import spark.smartonlinecourse.service.CourseService;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @ClassName CourseServiceImpl
@@ -21,8 +21,8 @@ public class CourseServiceImpl implements CourseService {
     private CourseMapper courseMapper;
 
     @Override
-    public ArrayList<Course> selectTop(Integer start) {
-        ArrayList<Course> courseList=courseMapper.selectTop(start);
+    public List<Course> selectTop(Integer start) {
+        List<Course> courseList=courseMapper.selectTop(start);
         return courseList;
     }
 }

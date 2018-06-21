@@ -21,4 +21,14 @@ public class UserServiceImpl implements UserService {
             throw  new RuntimeException("用户密码错误!");
         }
     }
+
+    @Override
+    public User updateUser(User user) {
+        int result=-1;
+        result=userMapper.updateUser(user);
+        if(result==1){
+            return null;
+        }
+        return null;
+    }
 }

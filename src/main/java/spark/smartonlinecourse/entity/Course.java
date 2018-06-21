@@ -7,7 +7,7 @@ public class Course {
 
     private String userName;
 
-    private String catalog;
+    private String catalogs;
 
     private String avatar;
 
@@ -35,6 +35,14 @@ public class Course {
         this.userName = userName;
     }
 
+    public String getCatalogs() {
+        return catalogs;
+    }
+
+    public void setCatalogs(String catalogs) {
+        this.catalogs = catalogs;
+    }
+
     public String getAvatar() {
         return avatar;
     }
@@ -42,4 +50,5 @@ public class Course {
     public void setAvatar(String avatar) {
         this.avatar = avatar == null ? null : avatar.trim();
     }
+
 }
