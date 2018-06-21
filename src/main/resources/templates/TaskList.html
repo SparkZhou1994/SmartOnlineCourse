@@ -30,7 +30,7 @@
 						<li><a th:href="@{/exam_list}"><span class="glyphicon glyphicon-hdd"></span><h4 style="display: inline;margin-left: 5px;">库管理</h4></a></li>
 						<li><a th:href="@{/exam_list}"><span class="glyphicon glyphicon-list-alt"></span><h4 style="display: inline;margin-left: 5px;">我的题库</h4></a></li>
 						<li><img th:src="@{${session.user.getAvatar()}}" style="width:34px;height:34px" class="img-responsive img-thumbnail"></li>
-						<li><h4 th:text="*{userName}"></h4></li>
+                        <li><a th:href="@{/my_infor}"><h4 th:text="*{userName}"></h4></a></li>
 						<li><a onclick="loginOut()"><h4>退出</h4></a></li>
 					</ul>
 				</div>

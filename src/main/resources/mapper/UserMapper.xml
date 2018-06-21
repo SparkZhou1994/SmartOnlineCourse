@@ -19,4 +19,13 @@
     from user
     where email = #{email,jdbcType=VARCHAR}
   </select>
+  <update id="updateUser" parameterType="spark.smartonlinecourse.entity.User">
+    update user
+    <set>
+      <if test="userName != null">user_name=#{userName},</if>
+      <if test="tel != null">tel=#{tel},</if>
+      <if test="email != null">email=#{email}</if>
+    </set>
+    where user_id=#{uerId}
+  </update>
 </mapper>
