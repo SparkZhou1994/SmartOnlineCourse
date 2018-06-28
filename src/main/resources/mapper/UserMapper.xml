@@ -24,8 +24,9 @@
     <set>
       <if test="userName != null">user_name=#{userName},</if>
       <if test="tel != null">tel=#{tel},</if>
-      <if test="email != null">email=#{email}</if>
+      <if test="email != null">email=#{email},</if>
+      <if test="avatar != null">avatar=#{avatar}</if>
     </set>
-    where user_id=#{uerId}
+    where user_id=#{userId}
   </update>
 </mapper>
