@@ -13,4 +13,5 @@ import java.util.List;
  **/
 public interface CourseMapper {
     List<Course> selectTop(Integer start);
+    int insertCourse(Course course);
 }

@@ -1,7 +1,9 @@
 package spark.smartonlinecourse.service;
 
+import org.springframework.web.multipart.MultipartFile;
 import spark.smartonlinecourse.entity.Course;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,4 +16,5 @@ import java.util.List;
  **/
 public interface CourseService {
     List<Course> selectTop(Integer start);
+    Course insertCourse(Course course, MultipartFile file, HttpServletRequest request);
 }

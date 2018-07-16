@@ -9,6 +9,20 @@
 	<link rel="icon" type="image/x-icon" th:href="@{/favicon.ico}">
 	<script type="text/javascript" th:src="@{/js/jquery-3.3.1.min.js}"></script>
 	<script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+    <script type="text/javascript">
+        function check(){
+            var courseName=$("#course_name").val();
+            if(courseName.length==0||courseName==""){
+                alert("课程名不能为空");
+                return false;
+            }
+            var catalog=$("#catalog").val();
+            if(catalog.length==0||catalog==""){
+                alert("课程分类不能为空");
+                return false;
+            }
+        }
+    </script>
 	<meta name="viewprot"
 		content="width=devive-width,initial-scale=1,user-scalable=no">
 </head>
@@ -40,27 +54,32 @@
 	</div>
 	<div class="creatCourse">
 		<div class="container">
-			<form>
+			<form enctype="multipart/form-data" method="post" onsubmit="return check()" th:action="@{/course_add}">
 				<div class="form-group" style="padding:0px 20px;margin:50px auto 0 auto;width:700px">
 					<div class="input-group">
 						<span class="input-group-addon"><span class="glyphicon glyphicon-tag"></span></span>
-						<input type="search" name="coursename" id="coursename" class="form-control" placeholder="请输入课程名">
+						<input type="search" name="course_name" id="course_name" class="form-control" placeholder="请输入课程名">
 					</div>
 					<div class="input-group" style="margin-top: 20px">
 						<span class="input-group-addon"><span class="glyphicon glyphicon-list"></span></span>
 						<div class="form-group">
-						    <select class="form-control">
-						      <option>信息</option>
-						      <option>电机</option>
-						      <option>新闻</option>
-						      <option>商</option>
-						      <option>艺术</option>
+						    <select class="form-control" id="catalog" name="catalog">
+                                <option>信息</option>
+                                <option>电机</option>
+                                <option>新闻</option>
+                                <option>商</option>
+                                <option>艺术</option>
+                                <option>基础</option>
 						    </select>
 					  </div>
 					</div>
+                    <div class="input-group" style="margin-top: 20px">
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-picture"></span></span>
+                        <input type="file" id="file" name="file" class="form-control"/>
+                    </div>
 					<div class="row" style="margin-top: 20px">
 						<div class="col-md-4 col-xs-4 col-sm-4"></div>
-						<div class="col-md-1 col-xs-1 col-sm-1"><button class="btn">确定</button></div>
+						<div class="col-md-1 col-xs-1 col-sm-1"><button class="btn" type="submit">确定</button></div>
 						<div class="col-md-2 col-xs-2 col-sm-2"></div>
 						<div class="col-md-1 col-xs-1 col-sm-1"><button class="btn">取消</button></div>
 						<div class="col-md-4 col-xs-4 col-sm-4"></div>

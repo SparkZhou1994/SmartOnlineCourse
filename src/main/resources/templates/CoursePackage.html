@@ -53,9 +53,9 @@
 			</div>
 			<img class="img-responsive" style="margin-top: 20px" th:src="@{/image/course_package_logo.jpg}" alt="course_package_logo">
 			<h4 style="border-left: #00BBDD 4px solid;margin-top: 20px;padding-left: 20px">优选课程包</h4>
-			<div class="row" style="margin-top: 40px;" th:each="course:${#httpServletRequest.getAttribute('courseList')}">
-				<div class="col-md-3">
-					<img th:src="${course.getAvatar()}" class="img-responsive img-thumbnail">
+			<div class="row" style="margin-top: 40px;">
+				<div class="col-md-3" th:each="course:${#httpServletRequest.getAttribute('courseList')}">
+					<img th:src="@{${course.getAvatar()}}" class="img-responsive img-thumbnail">
 					<h3 class="page-header" th:text="${course.getCourseName()}">课程名</h3>
 					<p th:text="${course.getUserName()}">任课老师</p>
 				</div>

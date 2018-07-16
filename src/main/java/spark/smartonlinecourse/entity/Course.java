@@ -7,7 +7,9 @@ public class Course {
 
     private String userName;
 
-    private String catalogs;
+    private Integer userId;
+
+    private String catalog;
 
     private String avatar;
 
@@ -35,12 +37,12 @@ public class Course {
         this.userName = userName;
     }
 
-    public String getCatalogs() {
-        return catalogs;
+    public String getCatalog() {
+        return catalog;
     }
 
-    public void setCatalogs(String catalogs) {
-        this.catalogs = catalogs;
+    public void setCatalog(String catalog) {
+        this.catalog = catalog;
     }
 
     public String getAvatar() {
@@ -51,4 +53,11 @@ public class Course {
         this.avatar = avatar == null ? null : avatar.trim();
     }
 
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
 }
