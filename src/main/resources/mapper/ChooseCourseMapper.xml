@@ -25,4 +25,8 @@
         where choose_course.course_id=course.course_id
         and choose_course.user_id=#{userId,jdbcType=INTEGER}
     </select>
+    
+    <insert id="insertChooseCourse" parameterType="spark.smartonlinecourse.entity.Key">
+        insert into choose_course(course_id,user_id) values (#{courseId},#{userId})
+    </insert>
 </mapper>

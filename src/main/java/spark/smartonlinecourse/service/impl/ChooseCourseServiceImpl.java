@@ -28,4 +28,17 @@ public class ChooseCourseServiceImpl implements ChooseCourseService {
         map.put("chooseCourseCount",chooseCourseCount);
         return map;
     }
+
+    @Override
+    public Boolean joinCourse(Integer courseId,Integer userId) {
+        Key key=new Key();
+        key.setUserId(userId);
+        key.setCourseId(courseId);
+        Integer result=chooseCourseMapper.insertChooseCourse(key);
+        if(result==1){
+            return true;
+        }else{
+            throw  new RuntimeException("添加课程失败!");
+        }
+    }
 }

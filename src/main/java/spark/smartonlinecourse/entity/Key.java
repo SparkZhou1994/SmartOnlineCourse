@@ -10,7 +10,7 @@ package spark.smartonlinecourse.entity;
 public class Key {
     private Integer userId;
     private Integer start;
-
+    private Integer courseId;
     public Integer getUserId() {
         return userId;
     }
@@ -25,5 +25,13 @@ public class Key {
 
     public void setStart(Integer start) {
         this.start = start;
+    }
+
+    public Integer getCourseId() {
+        return courseId;
+    }
+
+    public void setCourseId(Integer courseId) {
+        this.courseId = courseId;
     }
 }

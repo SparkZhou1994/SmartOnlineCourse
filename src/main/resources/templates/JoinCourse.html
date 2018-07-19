@@ -9,6 +9,15 @@
 	<link rel="icon" type="image/x-icon" th:href="@{/favicon.ico}">
 	<script type="text/javascript" th:src="@{/js/jquery-3.3.1.min.js}"></script>
 	<script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+	<script type="text/javascript">
+        function check(){
+            var courseId=$("#course_id").val();
+            if(courseId.length==0||courseId==""){
+                alert("课程号不能为空");
+                return false;
+            }
+        }
+	</script>
 	<meta name="viewprot"
 		content="width=devive-width,initial-scale=1,user-scalable=no">
 </head>
@@ -40,16 +49,16 @@
 	</div>
 	<div class="joinCourse">
 		<div class="container">
-			<form>
+			<form enctype="multipart/form-data" method="post" onsubmit="return check()" th:action="@{/join_course_deal}">
 				<div class="form-group" style="padding:0px 20px;margin:50px auto 0 auto;width:700px">
 					<div class="input-group">
 						<span class="input-group-addon"><span class="glyphicon glyphicon-tag"></span></span>
-						<input type="search" name="courseid" id="courseid" class="form-control" placeholder="请输入课程号 ">
+						<input type="search" name="course_id" id="course_id" class="form-control" placeholder="请输入课程号 ">
 					</div>
 					</div>
 					<div class="row" style="margin-top: 20px">
 						<div class="col-md-4 col-xs-4 col-sm-4"></div>
-						<div class="col-md-1 col-xs-1 col-sm-1"><button class="btn">确定</button></div>
+						<div class="col-md-1 col-xs-1 col-sm-1"><button class="btn" type="submit">确定</button></div>
 						<div class="col-md-2 col-xs-2 col-sm-2"></div>
 						<div class="col-md-1 col-xs-1 col-sm-1"><button class="btn">取消</button></div>
 						<div class="col-md-4 col-xs-4 col-sm-4"></div>

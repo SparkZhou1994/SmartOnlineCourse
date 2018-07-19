@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface ChooseCourseMapper {
     List<ChooseCourse> selectByUserId(Key key);
-
     Integer getCountByUserId(Integer userId);
+    Integer insertChooseCourse(Key key);
 }

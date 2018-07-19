@@ -9,6 +9,43 @@
 	<link rel="icon" type="image/x-icon" th:href="@{/favicon.ico}">
 	<script type="text/javascript" th:src="@{/js/jquery-3.3.1.min.js}"></script>
 	<script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+	<script type="text/javascript">
+        function loginOut(){
+            //$(location).attr('href', 'index');
+            //$(window).attr('location','index');
+            $(location).prop('href', 'index');
+            $.session.clear();
+        }
+        function nextPage(){
+
+            $.ajax({
+                url:"my_index_next_page",  // 后台地址
+                contentType : 'application/json',
+                type:"GET",
+                dataType:"json",
+                data:{},  //自己需要传递的数据 {}
+                success: function(data){//成功
+                    window.location.reload();
+                },
+                error:function(){//出错
+                }
+            });
+		}
+		function prePage(){
+            $.ajax({
+                url:"my_index_pre_page",  // 后台地址
+                type:"GET",
+                dataType:"json",
+                data:{},  //自己需要传递的数据 {}
+                success: function(data){//成功
+                    //self.location='/templates/MyIndex.html';
+                    window.location.reload();
+                },
+                error:function(){//出错
+                }
+            });
+		}
+	</script>
 	<meta name="viewprot"
 		content="width=devive-width,initial-scale=1,user-scalable=no">
 </head>
@@ -69,9 +106,9 @@
 				</div>
 			</div>
 			<div style="text-align: right;margin-top:20px;">
-				<input type="buttom" id="pageDown" value="上一页" class="btn btn-xs" th:if="${session.page>0}">
+				<input type="button" id="pageDown" value="上一页" class="btn btn-xs" th:if="${session.page>0}" onclick="prePage()">
 				<span th:text="'第'+${session.page+1}+'页'"></span>
-				<input type="buttom" id="pageUp" value="下一页" class="btn btn-xs">
+				<input type="button" id="pageUp" value="下一页" class="btn btn-xs" onclick="nextPage()">
 			</div>
 		</div>
 	</div>
@@ -79,13 +116,5 @@
 		<h5 class="text-center">©2018 上海建桥学院</h5>
 		<h5 class="text-center">地址：上海市浦东新区康桥路1500号    联系电话：13127945312    电子邮件：2637666515@qq.com </h5>
 	</div>
-	<script type="text/javascript">
-        function loginOut(){
-            //$(location).attr('href', 'index');
-            //$(window).attr('location','index');
-            $(location).prop('href', 'index');
-            $.session.clear();
-        }
-	</script>
 </body>
 </html>

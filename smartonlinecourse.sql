@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50560
 File Encoding         : 65001
 
-Date: 2018-06-19 12:18:56
+Date: 2018-06-21 17:33:51
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -57,11 +57,11 @@ CREATE TABLE `course` (
 -- ----------------------------
 -- Records of course
 -- ----------------------------
-INSERT INTO `course` VALUES ('1', '高数', '2', null, '/image/course/default.png');
-INSERT INTO `course` VALUES ('2', '大物', '3', null, '/image/course/default.png');
-INSERT INTO `course` VALUES ('3', 'Java', '4', null, '/image/course/default.png');
-INSERT INTO `course` VALUES ('4', 'HTML', '5', null, '/image/course/default.png');
-INSERT INTO `course` VALUES ('5', 'Python', '6', null, '/image/course/default.png');
+INSERT INTO `course` VALUES ('1', '高数', '2', '通识', '/image/course/default.png');
+INSERT INTO `course` VALUES ('2', '大物', '3', '通识', '/image/course/default.png');
+INSERT INTO `course` VALUES ('3', 'Java', '4', '后端', '/image/course/default.png');
+INSERT INTO `course` VALUES ('4', 'HTML', '5', '前端', '/image/course/default.png');
+INSERT INTO `course` VALUES ('5', 'Python', '6', '后端', '/image/course/default.png');
 
 -- ----------------------------
 -- Table structure for `homework`
