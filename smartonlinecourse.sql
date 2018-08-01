@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50560
 File Encoding         : 65001
 
-Date: 2018-06-21 17:33:51
+Date: 2018-08-01 22:28:20
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -52,16 +52,53 @@ CREATE TABLE `course` (
   PRIMARY KEY (`course_id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `course_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of course
 -- ----------------------------
-INSERT INTO `course` VALUES ('1', '高数', '2', '通识', '/image/course/default.png');
-INSERT INTO `course` VALUES ('2', '大物', '3', '通识', '/image/course/default.png');
-INSERT INTO `course` VALUES ('3', 'Java', '4', '后端', '/image/course/default.png');
-INSERT INTO `course` VALUES ('4', 'HTML', '5', '前端', '/image/course/default.png');
-INSERT INTO `course` VALUES ('5', 'Python', '6', '后端', '/image/course/default.png');
+INSERT INTO `course` VALUES ('1', '高数', '2', '基础', '/image/course/default.png');
+INSERT INTO `course` VALUES ('2', '大物', '3', '基础', '/image/course/default.png');
+INSERT INTO `course` VALUES ('3', 'Java', '4', '信息', '/image/course/default.png');
+INSERT INTO `course` VALUES ('4', 'HTML', '5', '信息', '/image/course/default.png');
+INSERT INTO `course` VALUES ('5', 'Python', '6', '信息', '/image/course/default.png');
+
+-- ----------------------------
+-- Table structure for `courseware`
+-- ----------------------------
+DROP TABLE IF EXISTS `courseware`;
+CREATE TABLE `courseware` (
+  `courseware_id` int(11) NOT NULL DEFAULT '0',
+  `choose_course_id` int(11) DEFAULT NULL,
+  `title` varchar(20) DEFAULT NULL,
+  `attachment` varchar(50) DEFAULT NULL,
+  `batch` int(11) DEFAULT NULL,
+  PRIMARY KEY (`courseware_id`),
+  KEY `choose_course_id` (`choose_course_id`),
+  CONSTRAINT `courseware_ibfk_1` FOREIGN KEY (`choose_course_id`) REFERENCES `choose_course` (`choose_course_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of courseware
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `discuss`
+-- ----------------------------
+DROP TABLE IF EXISTS `discuss`;
+CREATE TABLE `discuss` (
+  `discuss_id` int(11) NOT NULL DEFAULT '0',
+  `choose_course_id` int(11) DEFAULT NULL,
+  `context` tinytext,
+  `publish_time` datetime DEFAULT NULL,
+  PRIMARY KEY (`discuss_id`),
+  KEY `choose_course_id` (`choose_course_id`),
+  CONSTRAINT `discuss_ibfk_1` FOREIGN KEY (`choose_course_id`) REFERENCES `choose_course` (`choose_course_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of discuss
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for `homework`
@@ -72,6 +109,12 @@ CREATE TABLE `homework` (
   `choose_course_id` int(11) DEFAULT NULL,
   `describe` varchar(50) DEFAULT NULL,
   `attachment` varchar(50) DEFAULT NULL,
+  `batch` int(11) DEFAULT NULL,
+  `start_date` date DEFAULT NULL,
+  `end_date` date DEFAULT NULL,
+  `submit_date` date DEFAULT NULL,
+  `range` char(1) DEFAULT NULL,
+  `title` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`homework_id`),
   KEY `choose_course_id` (`choose_course_id`),
   CONSTRAINT `homework_ibfk_1` FOREIGN KEY (`choose_course_id`) REFERENCES `choose_course` (`choose_course_id`)
@@ -80,11 +123,29 @@ CREATE TABLE `homework` (
 -- ----------------------------
 -- Records of homework
 -- ----------------------------
-INSERT INTO `homework` VALUES ('1', '1', null, null);
-INSERT INTO `homework` VALUES ('2', '2', null, null);
-INSERT INTO `homework` VALUES ('3', '3', null, null);
-INSERT INTO `homework` VALUES ('4', '4', null, null);
-INSERT INTO `homework` VALUES ('5', '5', null, null);
+INSERT INTO `homework` VALUES ('1', '1', null, null, null, null, null, null, null, null);
+INSERT INTO `homework` VALUES ('2', '2', null, null, null, null, null, null, null, null);
+INSERT INTO `homework` VALUES ('3', '3', null, null, null, null, null, null, null, null);
+INSERT INTO `homework` VALUES ('4', '4', null, null, null, null, null, null, null, null);
+INSERT INTO `homework` VALUES ('5', '5', null, null, null, null, null, null, null, null);
+
+-- ----------------------------
+-- Table structure for `message`
+-- ----------------------------
+DROP TABLE IF EXISTS `message`;
+CREATE TABLE `message` (
+  `message_id` int(11) NOT NULL DEFAULT '0',
+  `choose_course_id` int(11) DEFAULT NULL,
+  `context` tinytext,
+  `publish_date` date DEFAULT NULL,
+  PRIMARY KEY (`message_id`),
+  KEY `choose_course_id` (`choose_course_id`),
+  CONSTRAINT `message_ibfk_1` FOREIGN KEY (`choose_course_id`) REFERENCES `choose_course` (`choose_course_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of message
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for `score`
@@ -109,6 +170,28 @@ INSERT INTO `score` VALUES ('4', '4', '70');
 INSERT INTO `score` VALUES ('5', '5', '60');
 
 -- ----------------------------
+-- Table structure for `sign`
+-- ----------------------------
+DROP TABLE IF EXISTS `sign`;
+CREATE TABLE `sign` (
+  `sign_id` int(11) NOT NULL AUTO_INCREMENT,
+  `choose_course_id` int(11) DEFAULT NULL,
+  `batch` int(11) DEFAULT NULL,
+  `code` char(6) DEFAULT NULL,
+  `sign_time` datetime DEFAULT NULL,
+  `start_time` datetime DEFAULT NULL,
+  `end_time` datetime DEFAULT NULL,
+  `range` char(1) DEFAULT NULL,
+  PRIMARY KEY (`sign_id`),
+  KEY `choose_course_id` (`choose_course_id`),
+  CONSTRAINT `sign_ibfk_1` FOREIGN KEY (`choose_course_id`) REFERENCES `choose_course` (`choose_course_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of sign
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for `user`
 -- ----------------------------
 DROP TABLE IF EXISTS `user`;
@@ -119,7 +202,7 @@ CREATE TABLE `user` (
   `tel` char(11) DEFAULT NULL,
   `email` varchar(20) DEFAULT NULL,
   `credit` tinyint(4) DEFAULT NULL,
-  `avatar` varchar(50) DEFAULT '/image/user/default.png',
+  `avatar` varchar(500) DEFAULT '/image/user/default.png',
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `idx_tel` (`tel`) USING BTREE,
   UNIQUE KEY `idx_email` (`email`) USING BTREE

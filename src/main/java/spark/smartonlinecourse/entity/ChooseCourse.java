@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class ChooseCourse extends Course{
     private ArrayList<Integer> scoreList;
     private ArrayList<Homework> homeworkList;
+    private ArrayList<Sign> signList;
 
     public ArrayList<Integer> getScoreList() {
         return scoreList;

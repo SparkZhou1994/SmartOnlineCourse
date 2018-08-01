@@ -66,4 +66,9 @@ public class CourseController {
         chooseCourseService.joinCourse(courseId,user.getUserId());
         return "redirect:/my_index";
     }
+
+    @GetMapping("/choose_course_info")
+    public String chooseCourseInfo(){
+        return "CourseDetail";
+    }
 }
