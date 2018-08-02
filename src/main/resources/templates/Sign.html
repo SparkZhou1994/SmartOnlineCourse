@@ -58,57 +58,49 @@
 			</div>	
 		</div>
 	</div>
-	<div style="width: 480px;height:336px;margin:20px auto" id="sign" class="container">
+	<div style="width: 480px;height:336px;margin:20px auto" id="sign" class="container" th:if="${not session.own_flag}">
 		<form>
 			<input type="text" name="code" id="code" placeholder="请输入6位验证码"/>
 			<input type="submit" value="签到">
 		</form>
-		<table>
-			<tr>
-				<th>签到批次</th>
-				<th>开始时间</th>
-                <th>结束时间</th>
-                <th>签到时间</th>
-                <th>是否有效</th>
-			</tr>
-            <tr>
-                <td></td>
-            </tr>
-		</table>
+		<div class="table-responsive" style="margin-top: 20px">
+			<table class="table table-bordered table-striped table-condensed">
+				<tr>
+					<th>签到批次</th>
+					<th>开始时间</th>
+					<th>结束时间</th>
+					<th>签到时间</th>
+					<th>是否有效</th>
+				</tr>
+				<tr>
+					<td></td>
+				</tr>
+			</table>
+		</div>
 	</div>
-    <div id="courseware" class="container">
-
-    </div>
-    <div id="homework" class="container">
-        <table>
-            <tr>
-                <th>作业名</th>
-                <th>开始日期</th>
-                <th>截止日期</th>
-                <th>提交时间</th>
-                <th>是否提交</th>
-                <th>操作</th>
-            </tr>
-            <tr>
-                <td></td>
-            </tr>
-        </table>
-    </div>
-    <div id="discuss" class="container">
-        <div>
-            <form>
-                <input type="text" id="context" name="context">
-                <button class="btn" type="submit">发表</button>
-            </form>
-        </div>
-        <div>
-            <h4 class="text-left">讨论人</h4>
-            <h4 class="text-right">日期</h4>
-            <h5>内容</h5>
-        </div>
-    </div>
-    <div id="message" class="container">
-
-    </div>
+    <div style="width: 480px;height:336px;margin:20px auto" id="sign_release" class="container" th:if="${session.own_flag}">
+		<form>
+			<div class="form-group" style="padding:0px 20px;margin:50px auto 0 auto;width:700px">
+				<div class="input-group">
+					<span class="input-group-addon"><span class="glyphicon glyphicon-tag"></span></span>
+					<input type="search" name="course_id" id="sign_check" class="form-control" placeholder="请输入签到验证码 ">
+				</div>
+			</div>
+			<div class="form-group" style="padding:0px 20px;margin:50px auto 0 auto;width:700px">
+				<div class="input-group">
+					<span class="input-group-addon"><span class="glyphicon glyphicon-tag"></span></span>
+					<input type="search" name="sign_min" id="sign_min" class="form-control" placeholder="请输入签到有效时间（分钟） ">
+				</div>
+			</div>
+			<div class="row" style="margin-top: 20px">
+				<div class="col-md-4 col-xs-4 col-sm-4"></div>
+				<div class="col-md-1 col-xs-1 col-sm-1"><button class="btn" type="submit">确定</button></div>
+				<div class="col-md-2 col-xs-2 col-sm-2"></div>
+				<div class="col-md-1 col-xs-1 col-sm-1"><button class="btn">取消</button></div>
+				<div class="col-md-4 col-xs-4 col-sm-4"></div>
+			</div>
+	</div>
+		</form>
+	</div>
 </body>
 </html>

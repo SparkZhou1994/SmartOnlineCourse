@@ -99,11 +99,12 @@
 			</div>
 			<h4 class="page-header">进行中的班课<small th:text="${session.chooseCourseCount}+'个进行中的班课'"></small></h4>
 			<div class="row" style="margin-top: 40px;">
-				<div class="col-md-3" th:each="course:${session.user.getChooseCourseList()}">
+				<a class="col-md-3" th:each="course:${session.user.getChooseCourseList()}" th:href="@{'/sign/'+${course.getCourseId()}}">
 					<img th:src="@{${course.getAvatar()}}" class="img-responsive img-thumbnail">
 					<h3 class="page-header" th:text="${course.getCourseName()}"></h3>
 					<p th:text="${course.getUserName()}"></p>
-				</div>
+					<h6 th:text="${course.getCourseId()}" style="display:none"></h6>
+				</a>
 			</div>
 			<div style="text-align: right;margin-top:20px;">
 				<input type="button" id="pageDown" value="上一页" class="btn btn-xs" th:if="${session.page>0}" onclick="prePage()">

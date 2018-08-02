@@ -3,7 +3,9 @@ package spark.smartonlinecourse.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import spark.smartonlinecourse.dao.ChooseCourseMapper;
+import spark.smartonlinecourse.dao.CourseMapper;
 import spark.smartonlinecourse.entity.ChooseCourse;
+import spark.smartonlinecourse.entity.Course;
 import spark.smartonlinecourse.entity.Key;
 import spark.smartonlinecourse.service.ChooseCourseService;
 
@@ -15,6 +17,9 @@ import java.util.Map;
 public class ChooseCourseServiceImpl implements ChooseCourseService {
     @Autowired
     private ChooseCourseMapper chooseCourseMapper;
+
+    @Autowired
+    private CourseMapper courseMapper;
 
     @Override
     public Map<String, Object> chooseCourseLoad(Integer userId,Integer start) {
@@ -40,5 +45,14 @@ public class ChooseCourseServiceImpl implements ChooseCourseService {
         }else{
             throw  new RuntimeException("添加课程失败!");
         }
+    }
+
+    @Override
+    public Boolean ownCourse(Integer courseId, Integer userId) {
+        Course course=courseMapper.selectCourseByCourseId(courseId);
+        if(course.getUserId()==userId){
+            return true;
+        }
+        return false;
     }
 }

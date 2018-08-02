@@ -3,6 +3,7 @@ package spark.smartonlinecourse.web;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -30,6 +31,7 @@ public class CourseController {
 
     @Autowired
     ChooseCourseService chooseCourseService;
+
     @PostMapping("/course_add")
     public String addCourse(@RequestParam("file") MultipartFile file, HttpSession session, @RequestParam("course_name") String courseName, @RequestParam("catalog") String catalog, HttpServletRequest request){
         Course course=new Course();
@@ -67,8 +69,13 @@ public class CourseController {
         return "redirect:/my_index";
     }
 
-    @GetMapping("/choose_course_info")
-    public String chooseCourseInfo(){
-        return "CourseDetail";
+    @GetMapping("/sign/{course_id}")
+    public String sign(@PathVariable(name="course_id")Integer courseId,HttpSession session){
+        User user= (User) session.getAttribute("user");
+        Boolean ownFlag=chooseCourseService.ownCourse(courseId,user.getUserId());
+        session.setAttribute("own_flag",ownFlag);
+        return "Sign";
     }
+
+
 }
