@@ -70,7 +70,8 @@
                 <th>操作</th>
             </tr>
             <tr>
-                <td></td>
+                <th th:if="${session.own_flag}"><a>下载作业</a></th>
+                <th th:if="${ not session.own_flag}"><a>上传作业</a></th>
             </tr>
         </table>
     </div>

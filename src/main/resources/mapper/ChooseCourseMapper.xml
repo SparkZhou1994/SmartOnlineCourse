@@ -19,7 +19,7 @@
         and choose_course.user_id=#{userId} limit #{start},4
     </select>
     
-    <select id="getCountByUserId" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+    <select id="selectCountByUserId" resultType="java.lang.Integer" parameterType="java.lang.Integer">
         select count(*) as countNum
         from choose_course,course
         where choose_course.course_id=course.course_id
@@ -28,5 +28,32 @@
     
     <insert id="insertChooseCourse" parameterType="spark.smartonlinecourse.entity.Key">
         insert into choose_course(course_id,user_id) values (#{courseId},#{userId})
+    </insert>
+
+    <select id="selectChooseCourseId" parameterType="spark.smartonlinecourse.entity.Key" resultType="java.lang.Integer">
+        select choose_course_id from choose_course
+        <where>
+            <if test="userId != null and userId != ''">
+                and user_id=#{userId}
+            </if>
+            <if test="courseId != null and courseId != ''">
+                and course_id=#{courseId}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insertSign" parameterType="spark.smartonlinecourse.entity.Sign">
+        insert into sign(choose_course_id,batch,code,sign_time,start_time,end_time,range)
+        values(
+        <if test="chooseChooseId ！= null and chooseChooseId ！=  ''">
+            #{chooseChooseId},
+        </if>
+        <if test="batch != null and batch != ''">
+            #{batch}
+        </if>
+        <if test="code != null and code != ''">
+
+        </if>
+        )
     </insert>
 </mapper>

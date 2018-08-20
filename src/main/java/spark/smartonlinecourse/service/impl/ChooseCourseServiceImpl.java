@@ -23,7 +23,7 @@ public class ChooseCourseServiceImpl implements ChooseCourseService {
 
     @Override
     public Map<String, Object> chooseCourseLoad(Integer userId,Integer start) {
-        int chooseCourseCount=chooseCourseMapper.getCountByUserId(userId);
+        int chooseCourseCount=chooseCourseMapper.selectCountByUserId(userId);
         Key key=new Key();
         key.setUserId(userId);
         key.setStart(start);

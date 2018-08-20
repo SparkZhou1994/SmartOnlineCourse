@@ -1,6 +1,7 @@
 package spark.smartonlinecourse.dao;
 
 import org.junit.FixMethodOrder;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
@@ -8,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import spark.smartonlinecourse.entity.Course;
+import spark.smartonlinecourse.entity.Key;
+
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
@@ -25,9 +29,23 @@ public class CourseMapperTest {
     @Autowired
     private CourseMapper courseMapper;
 
+    @Ignore
     @Test
     public void courseTest(){
         Course course=courseMapper.selectCourseByCourseId(1);
         assertEquals(new Integer(2), course.getUserId());
+    }
+
+    @Autowired
+    private ChooseCourseMapper chooseCourseMapper;
+
+    @Test
+    public void chooseCourseTest(){
+        Key key=new Key();
+        key.setCourseId(1);
+        List<Integer> chooseCourseIdList=chooseCourseMapper.selectChooseCourseId(key);
+        for(Integer chooseCourseId : chooseCourseIdList){
+            System.out.println(chooseCourseId);
+        }
     }
 }

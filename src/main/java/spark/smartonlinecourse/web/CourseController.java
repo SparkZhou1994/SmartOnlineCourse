@@ -76,6 +76,23 @@ public class CourseController {
         session.setAttribute("own_flag",ownFlag);
         return "Sign";
     }
-
-
+    @GetMapping("/course_ware/{course_id}")
+    public String courseWare(@PathVariable(name="course_id") Integer courseId,HttpSession session){
+        User user= (User) session.getAttribute("user");
+        Boolean ownFlag=chooseCourseService.ownCourse(courseId,user.getUserId());
+        session.setAttribute("own_flag",ownFlag);
+        return "Courseware";
+    }
+    @GetMapping("/discuss/{course_id}")
+    public String discuss(@PathVariable(name="course_id") Integer courseId){
+        return "Discuss";
+    }
+    @GetMapping("/homework/{course_id}")
+    public String homework(@PathVariable(name="course_id") Integer courseId,HttpSession session){
+        return "Homework";
+    }
+    @GetMapping("/message/{course_id}")
+    public String message(@PathVariable(name="course_id") Integer courseId){
+        return "Message";
+    }
 }

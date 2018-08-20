@@ -1,5 +1,7 @@
 package spark.smartonlinecourse.entity;
 
+import java.sql.Timestamp;
+
 /**
  * @ClassName Sign
  * @Description TODO
@@ -9,8 +11,13 @@ package spark.smartonlinecourse.entity;
  **/
 public class Sign {
     private Integer signId;
+    private Integer chooseCourseId;
     private Integer batch;
     private String code;
+    private Timestamp signTime;
+    private Timestamp startTime;
+    private Timestamp endTime;
+    private Boolean range;
 
     public Integer getSignId() {
         return signId;
@@ -36,12 +43,57 @@ public class Sign {
         this.code = code;
     }
 
+    public Integer getChooseCourseId() {
+        return chooseCourseId;
+    }
+
+    public void setChooseCourseId(Integer chooseCourseId) {
+        this.chooseCourseId = chooseCourseId;
+    }
+
+    public Timestamp getSignTime() {
+        return signTime;
+    }
+
+    public void setSignTime(Timestamp signTime) {
+        this.signTime = signTime;
+    }
+
+    public Timestamp getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Timestamp startTime) {
+        this.startTime = startTime;
+    }
+
+    public Timestamp getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Timestamp endTime) {
+        this.endTime = endTime;
+    }
+
+    public Boolean getRange() {
+        return range;
+    }
+
+    public void setRange(Boolean range) {
+        this.range = range;
+    }
+
     @Override
     public String toString() {
         return "Sign{" +
                 "signId=" + signId +
+                ", chooseCourseId=" + chooseCourseId +
                 ", batch=" + batch +
                 ", code='" + code + '\'' +
+                ", signTime=" + signTime +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", range=" + range +
                 '}';
     }
 }
