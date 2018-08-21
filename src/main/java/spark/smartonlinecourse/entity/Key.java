@@ -11,6 +11,9 @@ public class Key {
     private Integer userId;
     private Integer start;
     private Integer courseId;
+    private Integer chooseCourseId;
+    private Integer batch;
+
     public Integer getUserId() {
         return userId;
     }
@@ -33,5 +36,21 @@ public class Key {
 
     public void setCourseId(Integer courseId) {
         this.courseId = courseId;
+    }
+
+    public Integer getChooseCourseId() {
+        return chooseCourseId;
+    }
+
+    public void setChooseCourseId(Integer chooseCourseId) {
+        this.chooseCourseId = chooseCourseId;
+    }
+
+    public Integer getBatch() {
+        return batch;
+    }
+
+    public void setBatch(Integer batch) {
+        this.batch = batch;
     }
 }

@@ -11,5 +11,4 @@ public interface ChooseCourseMapper {
     Integer selectCountByUserId(Integer userId);
     Integer insertChooseCourse(Key key);
     List<Integer> selectChooseCourseId(Key key);
-    Integer insertSign(Sign sign);
 }

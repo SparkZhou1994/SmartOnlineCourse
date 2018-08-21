@@ -2,6 +2,7 @@ package spark.smartonlinecourse.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -70,17 +71,20 @@ public class CourseController {
     }
 
     @GetMapping("/sign/{course_id}")
-    public String sign(@PathVariable(name="course_id")Integer courseId,HttpSession session){
+    public String sign(@PathVariable(name="course_id")Integer courseId,HttpSession session,Model model){
         User user= (User) session.getAttribute("user");
         Boolean ownFlag=chooseCourseService.ownCourse(courseId,user.getUserId());
         session.setAttribute("own_flag",ownFlag);
+        model.addAttribute("current_course_id",courseId);
         return "Sign";
     }
+    @GetMapping("/sign/{course_id}/{}")
     @GetMapping("/course_ware/{course_id}")
-    public String courseWare(@PathVariable(name="course_id") Integer courseId,HttpSession session){
+    public String courseWare(@PathVariable(name="course_id") Integer courseId,HttpSession session,Model model){
         User user= (User) session.getAttribute("user");
         Boolean ownFlag=chooseCourseService.ownCourse(courseId,user.getUserId());
         session.setAttribute("own_flag",ownFlag);
+        model.addAttribute("current_course_id",courseId);
         return "Courseware";
     }
     @GetMapping("/discuss/{course_id}")

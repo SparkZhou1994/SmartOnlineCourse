@@ -1,6 +1,6 @@
 package spark.smartonlinecourse.entity;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 /**
  * @ClassName Sign
@@ -14,10 +14,9 @@ public class Sign {
     private Integer chooseCourseId;
     private Integer batch;
     private String code;
-    private Timestamp signTime;
-    private Timestamp startTime;
-    private Timestamp endTime;
-    private Boolean range;
+    private LocalDateTime signTime;
+    private LocalDateTime endTime;
+    private Character range;
 
     public Integer getSignId() {
         return signId;
@@ -51,36 +50,29 @@ public class Sign {
         this.chooseCourseId = chooseCourseId;
     }
 
-    public Timestamp getSignTime() {
-        return signTime;
-    }
 
-    public void setSignTime(Timestamp signTime) {
-        this.signTime = signTime;
-    }
-
-    public Timestamp getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(Timestamp startTime) {
-        this.startTime = startTime;
-    }
-
-    public Timestamp getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(Timestamp endTime) {
-        this.endTime = endTime;
-    }
-
-    public Boolean getRange() {
+    public Character getRange() {
         return range;
     }
 
-    public void setRange(Boolean range) {
+    public void setRange(Character range) {
         this.range = range;
+    }
+
+    public LocalDateTime getSignTime() {
+        return signTime;
+    }
+
+    public void setSignTime(LocalDateTime signTime) {
+        this.signTime = signTime;
+    }
+
+    public LocalDateTime getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
     }
 
     @Override
@@ -91,7 +83,6 @@ public class Sign {
                 ", batch=" + batch +
                 ", code='" + code + '\'' +
                 ", signTime=" + signTime +
-                ", startTime=" + startTime +
                 ", endTime=" + endTime +
                 ", range=" + range +
                 '}';

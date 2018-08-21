@@ -34,4 +34,8 @@
         from course
         where course_id=#{courseId}
     </select>
+    <select id="selectBatchByCourseId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select MAX(batch) from sign join choose_course on sign.choose_course_id=choose_course.choose_course_id
+        where course_id=#{courseId,javaType=java.lang.Integer,jdbcType=INTEGER}
+    </select>
 </mapper>

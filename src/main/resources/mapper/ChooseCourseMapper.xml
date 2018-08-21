@@ -41,19 +41,4 @@
             </if>
         </where>
     </select>
-
-    <insert id="insertSign" parameterType="spark.smartonlinecourse.entity.Sign">
-        insert into sign(choose_course_id,batch,code,sign_time,start_time,end_time,range)
-        values(
-        <if test="chooseChooseId ！= null and chooseChooseId ！=  ''">
-            #{chooseChooseId},
-        </if>
-        <if test="batch != null and batch != ''">
-            #{batch}
-        </if>
-        <if test="code != null and code != ''">
-
-        </if>
-        )
-    </insert>
 </mapper>

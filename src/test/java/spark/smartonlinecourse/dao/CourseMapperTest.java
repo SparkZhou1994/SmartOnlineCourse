@@ -1,5 +1,6 @@
 package spark.smartonlinecourse.dao;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.junit.FixMethodOrder;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -10,7 +11,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import spark.smartonlinecourse.entity.Course;
 import spark.smartonlinecourse.entity.Key;
+import spark.smartonlinecourse.entity.Sign;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -39,13 +42,28 @@ public class CourseMapperTest {
     @Autowired
     private ChooseCourseMapper chooseCourseMapper;
 
+    @Ignore
     @Test
     public void chooseCourseTest(){
         Key key=new Key();
         key.setCourseId(1);
         List<Integer> chooseCourseIdList=chooseCourseMapper.selectChooseCourseId(key);
         for(Integer chooseCourseId : chooseCourseIdList){
-            System.out.println(chooseCourseId);
+            System.out.println("chooseCourseId:"+String.valueOf(chooseCourseId));
         }
+    }
+
+    @Test
+    public void insertSignTest(){
+        Sign sign=new Sign();
+        sign.setChooseCourseId(1);
+        sign.setBatch(1);
+        sign.setCode("666666");
+        //LocalDateTime dateTime=LocalDateTime.of(2018,8,21,13,26,20);
+        LocalDateTime dateTime=LocalDateTime.now();
+        LocalDateTime dateTimePlus=dateTime.plusSeconds(60*2);
+        Boolean after=dateTimePlus.isAfter(dateTime);
+        sign.setEndTime(dateTime);
+        System.out.print(after.toString());
     }
 }
