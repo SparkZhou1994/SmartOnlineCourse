@@ -18,4 +18,5 @@ public interface SignService {
     Boolean signIn(Integer courseId,Integer userId,String code);
     List<Sign> selectSignByCourseIdAndUserIdAndStart(Integer courseId,Integer userId,Integer page);
     Integer selectCountByCourseIdAndUserId(Integer courseId,Integer userId);
+    String signListToJson(Integer courseId,Integer userId,Integer page,Boolean ownFlag);
 }

@@ -1,5 +1,6 @@
 package spark.smartonlinecourse.service.impl;
 
+import com.google.gson.Gson;
 import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -7,10 +8,12 @@ import org.springframework.transaction.annotation.Transactional;
 import spark.smartonlinecourse.dao.ChooseCourseMapper;
 import spark.smartonlinecourse.dao.SignMapper;
 import spark.smartonlinecourse.entity.Key;
+import spark.smartonlinecourse.entity.Page;
 import spark.smartonlinecourse.entity.Sign;
 import spark.smartonlinecourse.service.SignService;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -86,8 +89,16 @@ public class SignServiceImpl implements SignService {
         Key key=new Key();
         key.setUserId(userId);
         key.setCourseId(courseId);
-        key.setStart(page*10);
+        key.setStart((page-1)*10);
         List<Sign> signList=signMapper.selectSignByCourseIdAndUserIdAndStart(key);
+        for(Sign sign:signList){
+            if(sign.getRange()=='1'){
+                sign.setStatus("正常");
+            }else{
+                sign.setStatus("迟到");
+            }
+            sign.setRange(null);
+        }
         return signList;
     }
 
@@ -98,5 +109,28 @@ public class SignServiceImpl implements SignService {
         key.setCourseId(courseId);
         Integer signCount=signMapper.selectCountByCourseIdAndUserId(key);
         return signCount;
+    }
+
+    @Override
+    public String signListToJson(Integer courseId, Integer userId, Integer page,Boolean ownFlag) {
+        List<Sign> signList=new ArrayList<Sign>();
+        Integer signCount;
+        Integer total;
+        if(ownFlag){
+            signList=selectSignByCourseIdAndUserIdAndStart(courseId,null,page);
+            signCount=selectCountByCourseIdAndUserId(courseId,null);
+        }else{
+            signList=selectSignByCourseIdAndUserIdAndStart(courseId,userId,page);
+            signCount=selectCountByCourseIdAndUserId(courseId,userId);
+        }
+        total=(int)Math.ceil(signCount/10);
+        Page pageEntity=new Page();
+        pageEntity.setPage(page);
+        pageEntity.setTotal(total);
+        pageEntity.setRecords(signCount);
+        pageEntity.setData(signList);
+        Gson json =new Gson();
+        String jsonString=json.toJson(pageEntity);
+        return jsonString;
     }
 }

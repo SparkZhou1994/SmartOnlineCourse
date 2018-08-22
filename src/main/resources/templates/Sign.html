@@ -7,12 +7,37 @@
 	<link rel="stylesheet" th:href="@{/css/bootstrap-theme.css}">
 	<link rel="stylesheet" th:href="@{/css/index.css}">
 	<link rel="icon" type="image/x-icon" th:href="@{/favicon.ico}">
+    <link rel="stylesheet" th:href="@{/css/ui.jqgrid.css}">
 	<script type="text/javascript" th:src="@{/js/jquery-3.3.1.min.js}"></script>
 	<script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/jquery.jqGrid.src.js}"></script>
 	<script type="text/javascript">
         $(function(){
+            var courseId=[[${current_course.getCourseId()}]];
+            var ownFlag=[[${current_course.getOwnFlag()}]];
+            var urlTemp='sign_list/'+courseId+'/'+ownFlag;
             jQuery("#sign_list").jqGrid({
-                url:'',
+                url:urlTemp,
+				datatype:"json",
+				mtype:"post",
+				colNames:['签到批次','结束时间','签到时间','签到状态'],
+				colModel:[
+				    {name:'batch',index:'batch',align:'center'},
+					{name:'endTime',index:'endTime',align:'center'},
+                    {name:'signTime',index:'signTime',align:'center'},
+                    {name:'range',index:'range',align:'center'}
+				],
+                viewrecords:true,
+                rowNum:10,
+                rowList:[10],
+                pager:'#sign_page',
+                jsonReader:{
+                    root:"data",
+                    page:"page",
+                    total:"total",
+                    records:"records",
+                    repeatitems:false
+                }
             });
         });
 	</script>
@@ -54,20 +79,22 @@
 						<h2 th:text="${current_course.getCourseName()}"></h2>
 						<h3 th:text="${current_course.getUserName()}"></h3>
 						<ul class="list-unstyle list-inline" style="margin-top: 4px;">
-							<li><a class="btn" th:href="@{'/course_ware/'+${current_course_id}}"><h4>课件</h4></a></li>
-							<li><a class="btn" th:href="@{'/homework/'+${current_course_id}}"><h4>作业</h4></a></li>
-							<li><a class="btn" th:href="@{'/sign/'+${current_course_id}}"><h4>讨论</h4></a></li>
-							<li><a class="btn" th:href="@{'/discuss/'+${current_course_id}}"><h4>消息</h4></a></li>
-							<li><a class="btn" th:href="@{'/sign/'+${current_course_id}}"><h4>签到</h4></a></li>
+							<li><a class="btn" th:href="@{'/course_ware/'+${current_course.getCourseId()}}"><h4>课件</h4></a></li>
+							<li><a class="btn" th:href="@{'/homework/'+${current_course.getCourseId()}}"><h4>作业</h4></a></li>
+							<li><a class="btn" th:href="@{'/sign/'+${current_course.getCourseId()}}"><h4>讨论</h4></a></li>
+							<li><a class="btn" th:href="@{'/discuss/'+${current_course.getCourseId()}}"><h4>消息</h4></a></li>
+							<li><a class="btn" th:href="@{'/sign/'+${current_course.getCourseId()}}"><h4>签到</h4></a></li>
 						</ul>
 					</div>
 				</div>
 			</div>	
 		</div>
 	</div>
-    <div id="sign_list"></div>
-    <div id="sign_page"></div>
-	<div style="width: 480px;height:336px;margin:20px auto" id="sign" class="container" th:if="${not session.own_flag}">
+    <div class="container">
+        <table id="sign_list"></table>
+        <div id="sign_page"></div>
+    </div>
+	<div style="width: 480px;height:336px;margin:20px auto" id="sign" class="container" th:if="${not current_course.getOwnFlag()}">
 		<form>
 			<input type="text" name="code" id="code" placeholder="请输入6位验证码"/>
 			<input type="submit" value="签到">
@@ -94,7 +121,7 @@
             </div>-->
 		</div>
 	</div>
-    <div style="width: 480px;height:336px;margin:20px auto" id="sign_release" class="container" th:if="${session.own_flag}">
+    <div style="width: 480px;height:336px;margin:20px auto" id="sign_release" class="container" th:if="${current_course.getOwnFlag()}">
 		<form>
 			<div class="form-group" style="padding:0px 20px;margin:50px auto 0 auto;width:700px">
 				<div class="input-group">

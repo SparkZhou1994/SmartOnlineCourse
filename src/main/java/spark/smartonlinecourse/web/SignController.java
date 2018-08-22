@@ -6,15 +6,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import spark.smartonlinecourse.entity.Course;
+import spark.smartonlinecourse.entity.Page;
 import spark.smartonlinecourse.entity.Sign;
 import spark.smartonlinecourse.entity.User;
 import spark.smartonlinecourse.service.ChooseCourseService;
 import spark.smartonlinecourse.service.CourseService;
 import spark.smartonlinecourse.service.SignService;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,18 +42,6 @@ public class SignController {
         Course course=courseService.selecCoursetByCourseId(courseId);
         Boolean ownFlag=chooseCourseService.ownCourse(courseId,user.getUserId());
         course.setOwnFlag(ownFlag);
-        List<Sign> signList=new ArrayList<Sign>();
-        Integer signCount;
-        if(ownFlag){
-            signList=signService.selectSignByCourseIdAndUserIdAndStart(courseId,null,0);
-            signCount=signService.selectCountByCourseIdAndUserId(courseId,null);
-        }else{
-            signList=signService.selectSignByCourseIdAndUserIdAndStart(courseId,user.getUserId(),0);
-            signCount=signService.selectCountByCourseIdAndUserId(courseId,user.getUserId());
-        }
-        model.addAttribute("sign_page",0);
-        model.addAttribute("sign_list",signList);
-        model.addAttribute("sign_count",signCount);
         model.addAttribute("current_course",course);
         return "Sign";
     }
@@ -74,7 +61,14 @@ public class SignController {
         return "Sign";
     }
 
-    @PostMapping("/sign_next_page")
+    @PostMapping("/sign_list/{course_id}/{own_flag}")
+    @ResponseBody
+    public String signList(@PathVariable(name="course_id") Integer courseId,@PathVariable(name="own_flag")Boolean ownFlag,
+                           HttpSession session,@RequestBody Integer page){
+        User user=(User)session.getAttribute("user");
+        return signService.signListToJson(courseId,user.getUserId(),page,ownFlag);
+    }
+/*    @PostMapping("/sign_next_page")
     public void signNextPage(@RequestBody Integer signPage,
                              @RequestBody Boolean ownFlag,
                              @RequestBody Integer currentCourseId,
@@ -132,5 +126,5 @@ public class SignController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 }

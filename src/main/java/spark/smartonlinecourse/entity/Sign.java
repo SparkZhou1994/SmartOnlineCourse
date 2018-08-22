@@ -17,6 +17,7 @@ public class Sign {
     private LocalDateTime signTime;
     private LocalDateTime endTime;
     private Character range;
+    private String Status;
 
     public Integer getSignId() {
         return signId;
@@ -74,6 +75,14 @@ public class Sign {
         this.endTime = endTime;
     }
 
+    public String getStatus() {
+        return Status;
+    }
+
+    public void setStatus(String status) {
+        Status = status;
+    }
+
     @Override
     public String toString() {
         return "Sign{" +
@@ -84,6 +93,7 @@ public class Sign {
                 ", signTime=" + signTime +
                 ", endTime=" + endTime +
                 ", range=" + range +
+                ", Status='" + Status + '\'' +
                 '}';
     }
 }
