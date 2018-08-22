@@ -51,4 +51,9 @@ public class CourseServiceImpl implements CourseService {
         }
         return null;
     }
+
+    @Override
+    public Course selecCoursetByCourseId(Integer courseId) {
+        return courseMapper.selectCourseByCourseId(courseId);
+    }
 }

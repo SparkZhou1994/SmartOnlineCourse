@@ -24,7 +24,7 @@ public class LoginAndRegisterController {
         User user=new User(password,email);
         User userResult= userService.loginComfirm(user);
         session.setAttribute("user",userResult);
-        session.setAttribute("page",0);
+        session.setAttribute("index_page",0);
         return "redirect:/my_index";
     }
 }

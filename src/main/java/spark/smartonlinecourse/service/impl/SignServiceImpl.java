@@ -80,4 +80,23 @@ public class SignServiceImpl implements SignService {
         }
         return Boolean.TRUE;
     }
+
+    @Override
+    public List<Sign> selectSignByCourseIdAndUserIdAndStart(Integer courseId, Integer userId, Integer page) {
+        Key key=new Key();
+        key.setUserId(userId);
+        key.setCourseId(courseId);
+        key.setStart(page*10);
+        List<Sign> signList=signMapper.selectSignByCourseIdAndUserIdAndStart(key);
+        return signList;
+    }
+
+    @Override
+    public Integer selectCountByCourseIdAndUserId(Integer courseId, Integer userId) {
+        Key key=new Key();
+        key.setUserId(userId);
+        key.setCourseId(courseId);
+        Integer signCount=signMapper.selectCountByCourseIdAndUserId(key);
+        return signCount;
+    }
 }

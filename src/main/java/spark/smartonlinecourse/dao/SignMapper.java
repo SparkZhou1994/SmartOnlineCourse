@@ -3,6 +3,8 @@ package spark.smartonlinecourse.dao;
 import spark.smartonlinecourse.entity.Key;
 import spark.smartonlinecourse.entity.Sign;
 
+import java.util.List;
+
 /**
  * @ClassName SignMapper
  * @Description TODO
@@ -15,4 +17,6 @@ public interface SignMapper {
     Integer insertSign(Sign sign);
     Integer updateSign(Sign sign);
     Sign selectSignByChooseCourseIdAndBatch(Key key);
+    List<Sign> selectSignByCourseIdAndUserIdAndStart(Key key);
+    Integer selectCountByCourseIdAndUserId(Key key);
 }

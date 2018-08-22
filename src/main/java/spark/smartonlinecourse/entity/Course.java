@@ -13,6 +13,8 @@ public class Course {
 
     private String avatar;
 
+    private Boolean ownFlag;
+
     public Integer getCourseId() {
         return courseId;
     }
@@ -59,5 +61,13 @@ public class Course {
 
     public void setUserId(Integer userId) {
         this.userId = userId;
+    }
+
+    public Boolean getOwnFlag() {
+        return ownFlag;
+    }
+
+    public void setOwnFlag(Boolean ownFlag) {
+        this.ownFlag = ownFlag;
     }
 }

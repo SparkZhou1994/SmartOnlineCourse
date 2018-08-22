@@ -10,8 +10,9 @@
         <result column="end_time" property="endTime" jdbcType="TIMESTAMP"/>
         <result column="range" property="range" jdbcType="CHAR"/>
     </resultMap>
+
     <sql id="Sign_Column_List" >
-        sign_id,choose_course_id,batch,code,sign_time,end_time,range
+        sign_id,sign.choose_course_id,batch,`code`,sign_time,end_time,`range`
     </sql>
 
     <select id="selectBatchByCourseId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
@@ -39,6 +40,31 @@
             </if>
             <if test="batch != null and batch != ''">
                 and batch=#{batch}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectSignByCourseIdAndUserIdAndStart" parameterType="spark.smartonlinecourse.entity.Key" resultMap="SignResultMap">
+        select
+        <include refid="Sign_Column_List"/>
+        from sign
+        join choose_course on choose_course.choose_course_id = sign.choose_course_id
+        <where>
+            course_id=#{courseId}
+            <if test="userId != null and userId != ''">
+                and user_id=#{userId}
+            </if>
+        </where>
+        limit #{start},10
+    </select>
+    
+    <select id="selectCountByCourseIdAndUserId" parameterType="spark.smartonlinecourse.entity.Key" resultType="java.lang.Integer">
+        select count(*) from sign
+        join choose_course on choose_course.choose_course_id = sign.choose_course_id
+        <where>
+            course_id=#{courseId}
+            <if test="userId != null and userId != ''">
+                and user_id=#{userId}
             </if>
         </where>
     </select>

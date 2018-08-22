@@ -30,8 +30,9 @@
     </insert>
     <select id="selectCourseByCourseId" parameterType="java.lang.Integer" resultMap="CourseResultMap">
         select
-        course_id, course_name, user_id, `catalog`
+        <include refid="Course_Column_List"/>
         from course
+        join `user` on course.user_id = `user`.user_id
         where course_id=#{courseId}
     </select>
     <select id="selectBatchByCourseId" parameterType="java.lang.Integer" resultType="java.lang.Integer">

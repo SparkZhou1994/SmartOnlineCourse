@@ -47,11 +47,11 @@
                     <h2>课程名</h2>
                     <h3>任课老师</h3>
                     <ul class="list-unstyle list-inline" style="margin-top: 4px;">
-                        <li><a class="btn"><h4>课件</h4></a></li>
-                        <li><a class="btn"><h4>作业</h4></a></li>
-                        <li><a class="btn"><h4>讨论</h4></a></li>
-                        <li><a class="btn"><h4>消息</h4></a></li>
-                        <li><a class="btn"><h4>签到</h4></a></li>
+                        <li><a class="btn" th:href="@{'/course_ware/'+${current_course_id}}"><h4>课件</h4></a></li>
+                        <li><a class="btn" th:href="@{'/homework/'+${current_course_id}}"><h4>作业</h4></a></li>
+                        <li><a class="btn" th:href="@{'/sign/'+${current_course_id}}"><h4>讨论</h4></a></li>
+                        <li><a class="btn" th:href="@{'/discuss/'+${current_course_id}}"><h4>消息</h4></a></li>
+                        <li><a class="btn" th:href="@{'/sign/'+${current_course_id}}"><h4>签到</h4></a></li>
                     </ul>
                 </div>
             </div>

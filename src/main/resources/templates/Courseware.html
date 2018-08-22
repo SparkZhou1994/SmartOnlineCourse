@@ -37,21 +37,21 @@
             </div>
         </div>
     </div>
-    <div style="height:172px;width: 100%;background: url(/static/image/header_background.JPG) no-repeat;">
+    <div style="height:172px;width: 100%;background: url(../image/header_background.jpg) no-repeat;">
         <div class="container">
             <div class="row">
                 <div class="col-md-2 col-xs-2 col-sm-2">
-                    <img src="images/3.jpg" class="img-responsive img-thumbnail">
+                    <img th:src="@{${current_course.getAvatar()}}" class="img-responsive img-thumbnail">
                 </div>
                 <div class="col-md-10 col-xs-10 col-sm-10">
-                    <h2>课程名</h2>
-                    <h3>任课老师</h3>
+                    <h2 th:text="${current_course.getCourseName()}"></h2>
+                    <h3 th:text="${current_course.getUserName()}"></h3>
                     <ul class="list-unstyle list-inline" style="margin-top: 4px;">
-                        <li><a class="btn"><h4>课件</h4></a></li>
-                        <li><a class="btn"><h4>作业</h4></a></li>
-                        <li><a class="btn"><h4>讨论</h4></a></li>
-                        <li><a class="btn"><h4>消息</h4></a></li>
-                        <li><a class="btn"><h4>签到</h4></a></li>
+                        <li><a class="btn" th:href="@{'/course_ware/'+${current_course_id}}"><h4>课件</h4></a></li>
+                        <li><a class="btn" th:href="@{'/homework/'+${current_course_id}}"><h4>作业</h4></a></li>
+                        <li><a class="btn" th:href="@{'/sign/'+${current_course_id}}"><h4>讨论</h4></a></li>
+                        <li><a class="btn" th:href="@{'/discuss/'+${current_course_id}}"><h4>消息</h4></a></li>
+                        <li><a class="btn" th:href="@{'/sign/'+${current_course_id}}"><h4>签到</h4></a></li>
                     </ul>
                 </div>
             </div>

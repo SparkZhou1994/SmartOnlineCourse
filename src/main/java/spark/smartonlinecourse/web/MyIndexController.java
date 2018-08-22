@@ -24,7 +24,7 @@ public class MyIndexController {
     @GetMapping("/my_index")
     public String myIndex(HttpSession session){
         User user= (User) session.getAttribute("user");
-        Integer page = (Integer) session.getAttribute("page");
+        Integer page = (Integer) session.getAttribute("index_page");
         Integer start=page*4;
         Map<String,Object> map=new HashMap<String,Object>();
         map=chooseCourseService.chooseCourseLoad(user.getUserId(),start);
@@ -39,7 +39,7 @@ public class MyIndexController {
     @GetMapping("/my_index_next_page")
     public void nextPage(HttpSession session, HttpServletResponse response){
         User user= (User) session.getAttribute("user");
-        Integer page = (Integer) session.getAttribute("page")+1;
+        Integer page = (Integer) session.getAttribute("index_page")+1;
         Integer start=page*4;
         Map<String,Object> map=new HashMap<String,Object>();
         map=chooseCourseService.chooseCourseLoad(user.getUserId(),start);
@@ -48,7 +48,7 @@ public class MyIndexController {
         user.setChooseCourseList(chooseCourseList);
         session.setAttribute("user",user);
         session.setAttribute("chooseCourseCount",chooseCourseCount);
-        session.setAttribute("page",page);
+        session.setAttribute("index_page",page);
         try {
             response.getWriter().write("123");
         } catch (IOException e) {
@@ -59,7 +59,7 @@ public class MyIndexController {
     @GetMapping("/my_index_pre_page")
     public void prePage(HttpSession session,HttpServletResponse response){
         User user= (User) session.getAttribute("user");
-        Integer page = (Integer) session.getAttribute("page")-1;
+        Integer page = (Integer) session.getAttribute("index_page")-1;
         Integer start=page*4;
         Map<String,Object> map=new HashMap<String,Object>();
         map=chooseCourseService.chooseCourseLoad(user.getUserId(),start);
@@ -68,7 +68,7 @@ public class MyIndexController {
         user.setChooseCourseList(chooseCourseList);
         session.setAttribute("user",user);
         session.setAttribute("chooseCourseCount",chooseCourseCount);
-        session.setAttribute("page",page);
+        session.setAttribute("index_page",page);
         try {
             response.getWriter().write("123");
         } catch (IOException e) {

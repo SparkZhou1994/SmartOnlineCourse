@@ -50,7 +50,6 @@ public class Sign {
         this.chooseCourseId = chooseCourseId;
     }
 
-
     public Character getRange() {
         return range;
     }

@@ -32,7 +32,10 @@ public class MyInforController {
     }
 
     @PostMapping("/user_update")
-    public String userAvatarUpload(@RequestParam("file") MultipartFile file, HttpSession session, @RequestParam("username") String userName, @RequestParam("tel") String tel, @RequestParam("email") String email, HttpServletRequest request){
+    public String userAvatarUpload(@RequestParam("file") MultipartFile file, HttpSession session,
+                                   @RequestParam("username") String userName,
+                                   @RequestParam("tel") String tel,
+                                   @RequestParam("email") String email, HttpServletRequest request){
         User user=(User)session.getAttribute("user");
         user.setUserName(userName);
         user.setTel(tel);

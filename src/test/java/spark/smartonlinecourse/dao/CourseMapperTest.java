@@ -53,6 +53,10 @@ public class CourseMapperTest {
         }
     }
 
+    @Autowired
+    SignMapper signMapper;
+
+    @Ignore
     @Test
     public void insertSignTest(){
         Sign sign=new Sign();
@@ -65,5 +69,17 @@ public class CourseMapperTest {
         Boolean after=dateTimePlus.isAfter(dateTime);
         sign.setEndTime(dateTime);
         System.out.print(after.toString());
+    }
+
+    @Test
+    public void selectSignTest(){
+        Key key=new Key();
+        key.setUserId(null);
+        key.setCourseId(1);
+        key.setStart(0);
+        List<Sign> signList=signMapper.selectSignByCourseIdAndUserIdAndStart(key);
+        for(Sign sign : signList){
+            System.out.println(sign);
+        }
     }
 }
