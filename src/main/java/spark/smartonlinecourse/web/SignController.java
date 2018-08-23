@@ -40,91 +40,74 @@ public class SignController {
     public String sign(@PathVariable(name="course_id")Integer courseId, HttpSession session, Model model){
         User user= (User) session.getAttribute("user");
         Course course=courseService.selecCoursetByCourseId(courseId);
-        Boolean ownFlag=chooseCourseService.ownCourse(courseId,user.getUserId());
+        Boolean ownFlag=courseService.ownCourse(courseId,user.getUserId());
         course.setOwnFlag(ownFlag);
         model.addAttribute("current_course",course);
         return "Sign";
     }
 
-    @PostMapping("/sign_release")
-    public String signRelease(@RequestParam("course_id") Integer courseId, String code,
-                              @RequestParam("effective_minute") Integer effectiveMinute, RedirectAttributes model){
+/*    @ResponseBody
+    @PostMapping("/sign_release/{course_id}")
+    public String signRelease(@PathVariable("course_id") Integer courseId, @RequestParam("sign_code") String code,
+                              @RequestParam("effective_minute") Integer effectiveMinute, RedirectAttributes model,HttpSession session){
         Boolean flag=signService.releaseSign(courseId,code,effectiveMinute*60);
-        model.addFlashAttribute("sign_status",flag);
-        return "Sign";
-    }
-
-    @PostMapping("/sign_in/")
-    public String signIn(@RequestParam("course_id") Integer courseId,@RequestParam("user_id") Integer userId,String code,RedirectAttributes model){
-        Boolean flag=signService.signIn(courseId,userId,code);
-        model.addFlashAttribute("sign_status",flag);
-        return "Sign";
-    }
-
-    @PostMapping("/sign_list/{course_id}/{own_flag}")
-    @ResponseBody
-    public String signList(@PathVariable(name="course_id") Integer courseId,@PathVariable(name="own_flag")Boolean ownFlag,
-                           HttpSession session,@RequestBody Integer page){
-        User user=(User)session.getAttribute("user");
-        return signService.signListToJson(courseId,user.getUserId(),page,ownFlag);
-    }
-/*    @PostMapping("/sign_next_page")
-    public void signNextPage(@RequestBody Integer signPage,
-                             @RequestBody Boolean ownFlag,
-                             @RequestBody Integer currentCourseId,
-                             HttpSession session,Model model,
-                             HttpServletResponse response){
-        signPage+=1;
-        List<Sign> signList=new ArrayList<Sign>();
-        Integer signCount;
-        User user=(User)session.getAttribute("user");
-        Course course=courseService.selecCoursetByCourseId(currentCourseId);
-        if(ownFlag){
-            signList=signService.selectSignByCourseIdAndUserIdAndStart(currentCourseId,null,signPage);
-            signCount=signService.selectCountByCourseIdAndUserId(currentCourseId,null);
+        String status=null;
+        if(flag==Boolean.TRUE){
+            status="签到发布成功";
         }else{
-            signList=signService.selectSignByCourseIdAndUserIdAndStart(currentCourseId,user.getUserId(),signPage);
-            signCount=signService.selectCountByCourseIdAndUserId(currentCourseId,user.getUserId());
+            status="签到发布失败";
         }
-        model.addAttribute("current_course_id",currentCourseId);
-        model.addAttribute("sign_page",signPage);
-        model.addAttribute("sign_list",signList);
-        model.addAttribute("sign_count",signCount);
-        model.addAttribute("current_course",course);
-        try {
-            response.getWriter().write("123");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @PostMapping("/sign_pre_page")
-    public void signPrePage(@RequestBody Integer signPage,
-                               @RequestBody Boolean ownFlag,
-                               @RequestBody Integer currentCourseId,
-                               HttpSession session,Model model,
-                            HttpServletResponse response){
-        signPage-=1;
-        List<Sign> signList=new ArrayList<Sign>();
-        Integer signCount;
-        User user=(User)session.getAttribute("user");
-        Course course=courseService.selecCoursetByCourseId(currentCourseId);
-        if(ownFlag){
-            signList=signService.selectSignByCourseIdAndUserIdAndStart(currentCourseId,null,signPage);
-            signCount=signService.selectCountByCourseIdAndUserId(currentCourseId,null);
-        }else{
-            signList=signService.selectSignByCourseIdAndUserIdAndStart(currentCourseId,user.getUserId(),signPage);
-            signCount=signService.selectCountByCourseIdAndUserId(currentCourseId,user.getUserId());
-        }
-        model.addAttribute("current_course_id",currentCourseId);
-        model.addAttribute("sign_page",signPage);
-        model.addAttribute("sign_list",signList);
-        model.addAttribute("sign_count",signCount);
-        model.addAttribute("current_course",course);
-        try {
-            response.getWriter().write("123");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        return status;
     }*/
+
+    @ResponseBody
+    @PostMapping("/sign_release")
+    public String signRelease(Integer courseId,String code,Integer effectiveMinute){
+        Boolean flag=signService.releaseSign(courseId,code,effectiveMinute*60);
+        String status=null;
+        if(flag==Boolean.TRUE){
+            status="签到发布成功";
+        }else{
+            status="签到发布失败";
+        }
+        return status;
+    }
+
+/*    @ResponseBody
+    @PostMapping("/sign_in/{course_id}")
+    public String signIn(@PathVariable("course_id") Integer courseId,@RequestParam("user_id") Integer userId,
+                         @RequestParam("sign_code") String code,RedirectAttributes model,HttpSession session){
+        Boolean flag=signService.signIn(courseId,userId,code);
+        String status=null;
+        if(flag==Boolean.TRUE){
+            status="签到成功";
+        }else{
+            status="签到失败";
+        }
+
+        return status;
+    }*/
+
+    @ResponseBody
+    @PostMapping("/sign_in")
+    public String signIn(Integer courseId,Integer userId,
+                         String code){
+        Boolean flag=signService.signIn(courseId,userId,code);
+        String status=null;
+        if(flag==Boolean.TRUE){
+            status="签到成功";
+        }else{
+            status="签到失败";
+        }
+        return status;
+    }
+
+    @ResponseBody
+    @PostMapping("/sign_list/{course_id}/{own_flag}")
+    public String signList(@PathVariable(name="course_id") Integer courseId,@PathVariable(name="own_flag")Boolean ownFlag,
+                           HttpSession session,@RequestParam Integer page,@RequestParam Integer rows){
+        User user=(User)session.getAttribute("user");
+        String temp =signService.signListToJson(courseId,user.getUserId(),page,rows,ownFlag);
+        return temp;
+    }
 }

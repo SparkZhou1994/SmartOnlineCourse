@@ -1,6 +1,7 @@
 package spark.smartonlinecourse.dao;
 
 import com.sun.org.apache.xpath.internal.operations.Bool;
+import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -12,6 +13,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import spark.smartonlinecourse.entity.Course;
 import spark.smartonlinecourse.entity.Key;
 import spark.smartonlinecourse.entity.Sign;
+import spark.smartonlinecourse.service.SignService;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -71,15 +73,25 @@ public class CourseMapperTest {
         System.out.print(after.toString());
     }
 
+    @Ignore
     @Test
     public void selectSignTest(){
         Key key=new Key();
         key.setUserId(null);
         key.setCourseId(1);
         key.setStart(0);
-        List<Sign> signList=signMapper.selectSignByCourseIdAndUserIdAndStart(key);
+        key.setRow(10);
+        List<Sign> signList=signMapper.selectSignByCourseIdAndUserIdAndStartAndRow(key);
         for(Sign sign : signList){
             System.out.println(sign);
         }
+    }
+
+    @Autowired
+    SignService signService;
+
+    @Test
+    public void signJsonTest(){
+        System.out.print(signService.signListToJson(1,1,1,10,false));
     }
 }

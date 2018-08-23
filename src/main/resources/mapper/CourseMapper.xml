@@ -4,12 +4,13 @@
     <resultMap id="CourseResultMap" type="spark.smartonlinecourse.entity.Course" >
         <id column="course_id" property="courseId" jdbcType="INTEGER" />
         <result column="course_name" property="courseName" jdbcType="VARCHAR" />
+        <result column="user_id" property="userId" jdbcType="INTEGER"/>
         <result column="user_name" property="userName" jdbcType="VARCHAR" />
         <result column="catalog" property="catalog" jdbcType="VARCHAR"/>
         <result column="avatar" property="avatar" jdbcType="VARCHAR" />
     </resultMap>
     <sql id="Course_Column_List" >
-    course.course_id as course_id, course_name, user_name, `catalog`, course.avatar
+    course.course_id as course_id, course_name, course.user_id,user_name, `catalog`, course.avatar
     </sql>
     <select id="selectTop" resultMap="CourseResultMap" parameterType="java.lang.Integer">
         select

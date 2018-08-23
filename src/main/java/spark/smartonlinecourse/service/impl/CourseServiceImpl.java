@@ -56,4 +56,13 @@ public class CourseServiceImpl implements CourseService {
     public Course selecCoursetByCourseId(Integer courseId) {
         return courseMapper.selectCourseByCourseId(courseId);
     }
+
+    @Override
+    public Boolean ownCourse(Integer courseId, Integer userId) {
+        Course course=courseMapper.selectCourseByCourseId(courseId);
+        if(course.getUserId()==userId){
+            return true;
+        }
+        return false;
+    }
 }

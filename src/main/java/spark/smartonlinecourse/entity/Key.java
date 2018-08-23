@@ -10,6 +10,7 @@ package spark.smartonlinecourse.entity;
 public class Key {
     private Integer userId;
     private Integer start;
+    private Integer row;
     private Integer courseId;
     private Integer chooseCourseId;
     private Integer batch;
@@ -52,5 +53,13 @@ public class Key {
 
     public void setBatch(Integer batch) {
         this.batch = batch;
+    }
+
+    public Integer getRow() {
+        return row;
+    }
+
+    public void setRow(Integer row) {
+        this.row = row;
     }
 }

@@ -4,6 +4,7 @@
     <resultMap id="SignResultMap" type="spark.smartonlinecourse.entity.Sign" >
         <id column="sign_id" property="signId" jdbcType="INTEGER" />
         <result column="choose_course_id" property="chooseCourseId" jdbcType="INTEGER" />
+        <result column="user_name" property="userName" jdbcType="VARCHAR"/>
         <result column="batch" property="batch" jdbcType="INTEGER" />
         <result column="code" property="code" jdbcType="VARCHAR"/>
         <result column="sign_time" property="signTime" jdbcType="TIMESTAMP" />
@@ -12,7 +13,7 @@
     </resultMap>
 
     <sql id="Sign_Column_List" >
-        sign_id,sign.choose_course_id,batch,`code`,sign_time,end_time,`range`
+        sign_id,sign.choose_course_id,user_name,batch,`code`,sign_time,end_time,`range`
     </sql>
 
     <select id="selectBatchByCourseId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
@@ -34,9 +35,11 @@
         select
         <include refid="Sign_Column_List"/>
         from sign
+        join choose_course on choose_course.chooose_course_id=sign.choose_course_id
+        join `user` on `user`.user_id=choose_course.user_id
         <where>
             <if test="chooseCourseId != null and chooseCourseId != ''">
-                and choose_course_id=#{chooseCourseId}
+                and sign.choose_course_id=#{chooseCourseId}
             </if>
             <if test="batch != null and batch != ''">
                 and batch=#{batch}
@@ -44,18 +47,20 @@
         </where>
     </select>
 
-    <select id="selectSignByCourseIdAndUserIdAndStart" parameterType="spark.smartonlinecourse.entity.Key" resultMap="SignResultMap">
+    <select id="selectSignByCourseIdAndUserIdAndStartAndRow" parameterType="spark.smartonlinecourse.entity.Key" resultMap="SignResultMap">
         select
         <include refid="Sign_Column_List"/>
         from sign
         join choose_course on choose_course.choose_course_id = sign.choose_course_id
+        join `user` on `user`.user_id=choose_course.user_id
         <where>
             course_id=#{courseId}
             <if test="userId != null and userId != ''">
-                and user_id=#{userId}
+                and choose_course.user_id=#{userId}
             </if>
         </where>
-        limit #{start},10
+        order by batch desc
+        limit #{start},#{row}
     </select>
     
     <select id="selectCountByCourseIdAndUserId" parameterType="spark.smartonlinecourse.entity.Key" resultType="java.lang.Integer">

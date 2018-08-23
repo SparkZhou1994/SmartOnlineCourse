@@ -85,13 +85,18 @@ public class SignServiceImpl implements SignService {
     }
 
     @Override
-    public List<Sign> selectSignByCourseIdAndUserIdAndStart(Integer courseId, Integer userId, Integer page) {
+    public List<Sign> selectSignByCourseIdAndUserIdAndStartAndRow(Integer courseId, Integer userId, Integer page,Integer row) {
         Key key=new Key();
         key.setUserId(userId);
         key.setCourseId(courseId);
-        key.setStart((page-1)*10);
-        List<Sign> signList=signMapper.selectSignByCourseIdAndUserIdAndStart(key);
+        key.setStart((page-1)*row);
+        key.setRow(row);
+        List<Sign> signList=signMapper.selectSignByCourseIdAndUserIdAndStartAndRow(key);
         for(Sign sign:signList){
+            sign.setSignTimeString(sign.getSignTime().toString());
+            sign.setSignTime(null);
+            sign.setEndTimeString(sign.getEndTime().toString());
+            sign.setEndTime(null);
             if(sign.getRange()=='1'){
                 sign.setStatus("正常");
             }else{
@@ -112,23 +117,24 @@ public class SignServiceImpl implements SignService {
     }
 
     @Override
-    public String signListToJson(Integer courseId, Integer userId, Integer page,Boolean ownFlag) {
+    public String signListToJson(Integer courseId, Integer userId, Integer page,Integer row,Boolean ownFlag) {
         List<Sign> signList=new ArrayList<Sign>();
         Integer signCount;
         Integer total;
         if(ownFlag){
-            signList=selectSignByCourseIdAndUserIdAndStart(courseId,null,page);
+            signList=selectSignByCourseIdAndUserIdAndStartAndRow(courseId,null,page,row);
             signCount=selectCountByCourseIdAndUserId(courseId,null);
         }else{
-            signList=selectSignByCourseIdAndUserIdAndStart(courseId,userId,page);
+            signList=selectSignByCourseIdAndUserIdAndStartAndRow(courseId,userId,page,row);
             signCount=selectCountByCourseIdAndUserId(courseId,userId);
         }
-        total=(int)Math.ceil(signCount/10);
+        total=(int) Math.ceil((double)signCount/row);
         Page pageEntity=new Page();
         pageEntity.setPage(page);
-        pageEntity.setTotal(total);
         pageEntity.setRecords(signCount);
         pageEntity.setData(signList);
+        pageEntity.setTotal(total);
+        pageEntity.setRows(row);
         Gson json =new Gson();
         String jsonString=json.toJson(pageEntity);
         return jsonString;

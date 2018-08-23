@@ -19,7 +19,7 @@
         function nextPage(){
 
             $.ajax({
-                url:"my_index_next_page",  // 后台地址
+                url:"/SmartOnlineCourse/my_index_next_page",  // 后台地址
                 contentType : 'application/json',
                 type:"GET",
                 dataType:"json",
@@ -33,7 +33,7 @@
 		}
 		function prePage(){
             $.ajax({
-                url:"my_index_pre_page",  // 后台地址
+                url:"/SmartOnlineCourse/my_index_pre_page",  // 后台地址
                 type:"GET",
                 dataType:"json",
                 data:{},  //自己需要传递的数据 {}

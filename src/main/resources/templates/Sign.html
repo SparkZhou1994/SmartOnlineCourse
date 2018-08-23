@@ -6,30 +6,33 @@
 	<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
 	<link rel="stylesheet" th:href="@{/css/bootstrap-theme.css}">
 	<link rel="stylesheet" th:href="@{/css/index.css}">
-	<link rel="icon" type="image/x-icon" th:href="@{/favicon.ico}">
     <link rel="stylesheet" th:href="@{/css/ui.jqgrid.css}">
+    <link rel="stylesheet" th:href="@{/css/jquery-ui-1.8.16.custom.css}">
+	<link rel="icon" type="image/x-icon" th:href="@{/favicon.ico}">
 	<script type="text/javascript" th:src="@{/js/jquery-3.3.1.min.js}"></script>
 	<script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
     <script type="text/javascript" th:src="@{/js/jquery.jqGrid.src.js}"></script>
+    <script type="text/javascript" th:src="@{/js/grid.locale-cn.js}"></script>
 	<script type="text/javascript">
         $(function(){
             var courseId=[[${current_course.getCourseId()}]];
             var ownFlag=[[${current_course.getOwnFlag()}]];
-            var urlTemp='sign_list/'+courseId+'/'+ownFlag;
+            var urlTemp='/SmartOnlineCourse/sign_list/'+courseId+'/'+ownFlag;
             jQuery("#sign_list").jqGrid({
-                url:urlTemp,
-				datatype:"json",
-				mtype:"post",
-				colNames:['签到批次','结束时间','签到时间','签到状态'],
-				colModel:[
-				    {name:'batch',index:'batch',align:'center'},
-					{name:'endTime',index:'endTime',align:'center'},
-                    {name:'signTime',index:'signTime',align:'center'},
-                    {name:'range',index:'range',align:'center'}
-				],
+				url:urlTemp,
+                datatype:"json",
+                mtype:"POST",
+                colNames:['学生姓名','签到批次','结束时间','签到时间','签到状态'],
+                colModel:[
+                    {name:'userName',index:'userName',align:'center'},
+                    {name:'batch',index:'batch',align:'center'},
+                    {name:'endTimeString',index:'endTime',align:'center'},
+                    {name:'signTimeString',index:'signTime',align:'center'},
+                    {name:'status',index:'status',align:'center'}
+                ],
                 viewrecords:true,
                 rowNum:10,
-                rowList:[10],
+                rowList:[10,20,30],
                 pager:'#sign_page',
                 jsonReader:{
                     root:"data",
@@ -40,6 +43,49 @@
                 }
             });
         });
+        function signIn() {
+            var courseId=[[${current_course.getCourseId()}]];
+            var userId=[[${session.user.getUserId()}]];
+            var code=$("#sign_code").val();
+            $.ajax({
+                url:"/SmartOnlineCourse/sign_in",
+                type:"POST",
+                dataType:"json",
+                data:{
+                    "courseId":courseId,"userId":userId,"code":code
+                },
+                success: function(data){
+                    alter(date);
+                },
+                error:function(){
+                }
+            });
+        }
+        function signRelease() {
+            var courseId=[[${current_course.getCourseId()}]];
+            var code=$("#sign_code_own").val();
+            var effectiveMinute=$("#effective_minute").val();
+            var ownFlag=[[${current_course.getOwnFlag()}]];
+            var urlTemp='/SmartOnlineCourse/sign_list/'+courseId+'/'+ownFlag;
+            $.ajax({
+                url:"/SmartOnlineCourse/sign_release",
+                type:"POST",
+                dataType:"json",
+                data:{
+                    "courseId":courseId,"code":code,"effectiveMinute":effectiveMinute
+                },
+                success: function(data){
+                    alter(date);
+                },
+                error:function(){
+                }
+            });
+            $("#sign_list").jqGrid('setGridParam', {
+                url: urlTemp,
+                mtype: "POST",
+                datatype: "json",
+            }).trigger("reloadGrid");
+        }
 	</script>
 	<meta name="viewprot"
 		  content="width=devive-width,initial-scale=1,user-scalable=no">
@@ -90,59 +136,41 @@
 			</div>	
 		</div>
 	</div>
-    <div class="container">
-        <table id="sign_list"></table>
-        <div id="sign_page"></div>
-    </div>
-	<div style="width: 480px;height:336px;margin:20px auto" id="sign" class="container" th:if="${not current_course.getOwnFlag()}">
-		<form>
-			<input type="text" name="code" id="code" placeholder="请输入6位验证码"/>
-			<input type="submit" value="签到">
+	<div style="width: 235px;height:30px;margin:200px auto 0 auto" id="sign" class="container" th:if="${not current_course.getOwnFlag()}">
+		<!--<form th:action="@{'/sign_in/'+${current_course.getCourseId()}}" name="sign_in" method="post">-->
+        <form>
+			<input type="text" name="sign_code" id="sign_code" placeholder="请输入6位验证码"/>
+			<input onclick="signIn()" value="签到">
 		</form>
-<!--		<div class="table-responsive" style="margin-top: 20px">
-			<table class="table table-bordered table-striped table-condensed">
-				<tr>
-					<th>签到批次</th>
-					<th>结束时间</th>
-					<th>签到时间</th>
-					<th>是否有效</th>
-				</tr>
-				<tr th:each="sign:${sign_list}">
-					<td th:text="${sign.getBatch()}"></td>
-                    <td th:text="${sign.getEndTime()}"></td>
-                    <td th:text="${sign.getSignTime()}"></td>
-                    <td th:text="${sign.getRange()}=='1'?'正常':'迟到'"></td>
-				</tr>
-			</table>
-            <div style="text-align: right;margin-top:20px;">
-                <input type="button" id="pageDown" value="上一页" class="btn btn-xs" th:if="${sign_page>0}" onclick="prePage()">
-                <span th:text="'第'+${sign_page+1}+'页'"></span>
-                <input type="button" id="pageUp" value="下一页" class="btn btn-xs" th:if="${(sign_page+1)*10<sign_count}" onclick="nextPage()">
-            </div>-->
 		</div>
 	</div>
-    <div style="width: 480px;height:336px;margin:20px auto" id="sign_release" class="container" th:if="${current_course.getOwnFlag()}">
-		<form>
+    <div style="width: 740px;height:240px;margin:200px auto 0 auto" id="sign_release" class="container" th:if="${current_course.getOwnFlag()}">
+		<!--<form th:action="@{'/sign_release/'+${current_course.getCourseId()}}" name="sign_release" method="post">-->
+        <form>
 			<div class="form-group" style="padding:0px 20px;margin:50px auto 0 auto;width:700px">
 				<div class="input-group">
 					<span class="input-group-addon"><span class="glyphicon glyphicon-tag"></span></span>
-					<input type="search" name="course_id" id="sign_check" class="form-control" placeholder="请输入签到验证码 ">
+					<input type="search" name="sign_code_own" id="sign_code_own" class="form-control" placeholder="请输入签到验证码 ">
 				</div>
 			</div>
 			<div class="form-group" style="padding:0px 20px;margin:50px auto 0 auto;width:700px">
 				<div class="input-group">
-					<span class="input-group-addon"><span class="glyphicon glyphicon-tag"></span></span>
-					<input type="search" name="sign_min" id="sign_min" class="form-control" placeholder="请输入签到有效时间（分钟） ">
+					<span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
+					<input type="search" name="effective_minute" id="effective_minute" class="form-control" placeholder="请输入签到有效时间（分钟） ">
 				</div>
 			</div>
 			<div class="row" style="margin-top: 20px">
 				<div class="col-md-4 col-xs-4 col-sm-4"></div>
-				<div class="col-md-1 col-xs-1 col-sm-1"><button class="btn" type="submit">确定</button></div>
+				<div class="col-md-1 col-xs-1 col-sm-1"><button class="btn" onclick="signRelease()">确定</button></div>
 				<div class="col-md-2 col-xs-2 col-sm-2"></div>
 				<div class="col-md-1 col-xs-1 col-sm-1"><button class="btn">取消</button></div>
 				<div class="col-md-4 col-xs-4 col-sm-4"></div>
 			</div>
 		</form>
 	</div>
+    <div class="container">
+        <table id="sign_list"></table>
+        <div id="sign_page"></div>
+    </div>
 </body>
 </html>

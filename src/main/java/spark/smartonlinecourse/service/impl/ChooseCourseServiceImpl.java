@@ -46,13 +46,4 @@ public class ChooseCourseServiceImpl implements ChooseCourseService {
             throw  new RuntimeException("添加课程失败!");
         }
     }
-
-    @Override
-    public Boolean ownCourse(Integer courseId, Integer userId) {
-        Course course=courseMapper.selectCourseByCourseId(courseId);
-        if(course.getUserId()==userId){
-            return true;
-        }
-        return false;
-    }
 }

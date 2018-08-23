@@ -12,12 +12,15 @@ import java.time.LocalDateTime;
 public class Sign {
     private Integer signId;
     private Integer chooseCourseId;
+    private String userName;
     private Integer batch;
     private String code;
     private LocalDateTime signTime;
+    private String signTimeString;
     private LocalDateTime endTime;
+    private String endTimeString;
     private Character range;
-    private String Status;
+    private String status;
 
     public Integer getSignId() {
         return signId;
@@ -76,11 +79,27 @@ public class Sign {
     }
 
     public String getStatus() {
-        return Status;
+        return status;
     }
 
     public void setStatus(String status) {
-        Status = status;
+        this.status = status;
+    }
+
+    public String getSignTimeString() {
+        return signTimeString;
+    }
+
+    public void setSignTimeString(String signTimeString) {
+        this.signTimeString = signTimeString;
+    }
+
+    public String getEndTimeString() {
+        return endTimeString;
+    }
+
+    public void setEndTimeString(String endTimeString) {
+        this.endTimeString = endTimeString;
     }
 
     @Override
@@ -91,9 +110,11 @@ public class Sign {
                 ", batch=" + batch +
                 ", code='" + code + '\'' +
                 ", signTime=" + signTime +
+                ", signTimeString='" + signTimeString + '\'' +
                 ", endTime=" + endTime +
+                ", endTimeString='" + endTimeString + '\'' +
                 ", range=" + range +
-                ", Status='" + Status + '\'' +
+                ", status='" + status + '\'' +
                 '}';
     }
 }
