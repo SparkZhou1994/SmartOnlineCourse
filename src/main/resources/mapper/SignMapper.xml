@@ -27,15 +27,15 @@
 
     <update id="updateSign" parameterType="spark.smartonlinecourse.entity.Sign">
         update sign set sign_time=#{signTime,jdbcType=TIMESTAMP,javaType=java.time.LocalDateTime},
-        range=#{range,jdbcType=CHAR,javaType=java.lang.Character}
-        where sign_id=#{sign_id,jdbcType=INTEGER,javaType=java.lang.Integer}
+        `range`=#{range,jdbcType=CHAR,javaType=java.lang.Character}
+        where sign_id=#{signId,jdbcType=INTEGER,javaType=java.lang.Integer}
     </update>
 
     <select id="selectSignByChooseCourseIdAndBatch" parameterType="spark.smartonlinecourse.entity.Key" resultType="spark.smartonlinecourse.entity.Sign">
         select
         <include refid="Sign_Column_List"/>
         from sign
-        join choose_course on choose_course.chooose_course_id=sign.choose_course_id
+        join choose_course on choose_course.choose_course_id=sign.choose_course_id
         join `user` on `user`.user_id=choose_course.user_id
         <where>
             <if test="chooseCourseId != null and chooseCourseId != ''">

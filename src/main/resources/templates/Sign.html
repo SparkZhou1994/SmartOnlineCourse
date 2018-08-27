@@ -47,6 +47,8 @@
             var courseId=[[${current_course.getCourseId()}]];
             var userId=[[${session.user.getUserId()}]];
             var code=$("#sign_code").val();
+            var ownFlag=[[${current_course.getOwnFlag()}]];
+            var urlTemp='/SmartOnlineCourse/sign_list/'+courseId+'/'+ownFlag;
             $.ajax({
                 url:"/SmartOnlineCourse/sign_in",
                 type:"POST",
@@ -60,6 +62,11 @@
                 error:function(){
                 }
             });
+            $("#sign_list").jqGrid('setGridParam', {
+                url: urlTemp,
+                mtype: "POST",
+                datatype: "json",
+            }).trigger("reloadGrid");
         }
         function signRelease() {
             var courseId=[[${current_course.getCourseId()}]];
@@ -140,11 +147,11 @@
 		<!--<form th:action="@{'/sign_in/'+${current_course.getCourseId()}}" name="sign_in" method="post">-->
         <form>
 			<input type="text" name="sign_code" id="sign_code" placeholder="请输入6位验证码"/>
-			<input onclick="signIn()" value="签到">
+			<input type="button" class="btn btn-primary" style="margin: 10px 0 0 50px" onclick="signIn()" value="签到">
 		</form>
 		</div>
 	</div>
-    <div style="width: 740px;height:240px;margin:200px auto 0 auto" id="sign_release" class="container" th:if="${current_course.getOwnFlag()}">
+    <div style="width: 740px;height:240px;margin:200px auto 0px auto" id="sign_release" class="container" th:if="${current_course.getOwnFlag()}">
 		<!--<form th:action="@{'/sign_release/'+${current_course.getCourseId()}}" name="sign_release" method="post">-->
         <form>
 			<div class="form-group" style="padding:0px 20px;margin:50px auto 0 auto;width:700px">
@@ -168,7 +175,7 @@
 			</div>
 		</form>
 	</div>
-    <div class="container">
+    <div class="container" style="margin-top: 5%">
         <table id="sign_list"></table>
         <div id="sign_page"></div>
     </div>

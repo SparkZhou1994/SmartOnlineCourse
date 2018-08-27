@@ -4,8 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import spark.smartonlinecourse.dao.ChooseCourseMapper;
 import spark.smartonlinecourse.dao.CourseMapper;
 import spark.smartonlinecourse.entity.Course;
+import spark.smartonlinecourse.entity.Key;
 import spark.smartonlinecourse.service.CourseService;
 import spark.smartonlinecourse.util.FileUtil;
 
@@ -25,6 +27,9 @@ public class CourseServiceImpl implements CourseService {
     @Autowired
     private CourseMapper courseMapper;
 
+    @Autowired
+    private ChooseCourseMapper chooseCourseMapper;
+
     @Override
     public List<Course> selectTop(Integer start) {
         List<Course> courseList=courseMapper.selectTop(start);
@@ -33,7 +38,7 @@ public class CourseServiceImpl implements CourseService {
 
     @Transactional
     @Override
-    public Course insertCourse(Course course, MultipartFile file, HttpServletRequest request) {
+    public Course insertCourse(Course course, MultipartFile file, HttpServletRequest request,Integer userId) {
         if(!file.isEmpty()) {
             String fileName = course.getCourseName() + "_" + UUID.randomUUID() + "_" + file.getOriginalFilename();
             String filePath="E:/SmartOnlineCourse/course/";
@@ -47,7 +52,17 @@ public class CourseServiceImpl implements CourseService {
         int result=-1;
         result=courseMapper.insertCourse(course);
         if(result==1){
-            return course;
+            Key key=new Key();
+            key.setUserId(userId);
+            key.setCourseName(course.getCourseName());
+            int courseId=courseMapper.selectCoursIdByCourseNameAndUserId(key);
+            key.setCourseId(courseId);
+            int status=chooseCourseMapper.insertChooseCourse(key);
+            if(status==1){
+                return course;
+            }else{
+                return null;
+            }
         }
         return null;
     }

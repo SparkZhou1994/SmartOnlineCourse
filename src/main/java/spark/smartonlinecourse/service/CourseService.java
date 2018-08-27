@@ -16,7 +16,7 @@ import java.util.List;
  **/
 public interface CourseService {
     List<Course> selectTop(Integer start);
-    Course insertCourse(Course course, MultipartFile file, HttpServletRequest request);
+    Course insertCourse(Course course, MultipartFile file, HttpServletRequest request,Integer userId);
     Course selecCoursetByCourseId(Integer courseId);
     Boolean ownCourse(Integer courseId,Integer userId);
 }

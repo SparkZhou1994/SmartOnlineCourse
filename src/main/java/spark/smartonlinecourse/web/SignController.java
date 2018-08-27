@@ -62,8 +62,9 @@ public class SignController {
 
     @ResponseBody
     @PostMapping("/sign_release")
-    public String signRelease(Integer courseId,String code,Integer effectiveMinute){
-        Boolean flag=signService.releaseSign(courseId,code,effectiveMinute*60);
+    public String signRelease(Integer courseId,String code,Integer effectiveMinute,HttpSession session){
+        User user=(User)session.getAttribute("user");
+        Boolean flag=signService.releaseSign(courseId,code,effectiveMinute*60,user.getUserId());
         String status=null;
         if(flag==Boolean.TRUE){
             status="签到发布成功";

@@ -32,10 +32,12 @@ public class SignServiceImpl implements SignService {
 
     @Transactional
     @Override
-    public Boolean releaseSign(Integer courseId, String code,Integer effectiveSecond) {
+    public Boolean releaseSign(Integer courseId, String code,Integer effectiveSecond,Integer userId) {
         Key key=new Key();
         key.setCourseId(courseId);
         List<Integer> chooseCourseIdList=chooseCourseMapper.selectChooseCourseId(key);
+        key.setUserId(userId);
+        List<Integer> chooseCoursIdOwner=chooseCourseMapper.selectChooseCourseId(key);
         Integer batch=signMapper.selectBatchByCourseId(courseId);
         if(batch==null){
             batch=0;
@@ -48,6 +50,9 @@ public class SignServiceImpl implements SignService {
         LocalDateTime endTime =LocalDateTime.now().plusSeconds(effectiveSecond);
         sign.setEndTime(endTime);
         for(Integer chooseCourseId : chooseCourseIdList){
+            if(chooseCourseId==chooseCoursIdOwner.get(0)){
+                continue;
+            }
             sign.setChooseCourseId(chooseCourseId);
             Integer status=signMapper.insertSign(sign);
             if(status!=1){
@@ -66,6 +71,7 @@ public class SignServiceImpl implements SignService {
         if(chooseCourseIdList.size()>1){
             throw new RuntimeException("签到失败，程序异常");
         }else{
+            key.setChooseCourseId(chooseCourseIdList.get(0));
             Integer batch=signMapper.selectBatchByCourseId(courseId);
             key.setBatch(batch);
             Sign sign=signMapper.selectSignByChooseCourseIdAndBatch(key);
@@ -93,14 +99,26 @@ public class SignServiceImpl implements SignService {
         key.setRow(row);
         List<Sign> signList=signMapper.selectSignByCourseIdAndUserIdAndStartAndRow(key);
         for(Sign sign:signList){
-            sign.setSignTimeString(sign.getSignTime().toString());
-            sign.setSignTime(null);
-            sign.setEndTimeString(sign.getEndTime().toString());
-            sign.setEndTime(null);
-            if(sign.getRange()=='1'){
-                sign.setStatus("正常");
+            if(sign.getSignTime()!=null){
+                sign.setSignTimeString(sign.getSignTime().toString());
+                sign.setSignTime(null);
             }else{
-                sign.setStatus("迟到");
+                sign.setSignTimeString("未签到");
+            }
+            if(sign.getEndTime()!=null){
+                sign.setEndTimeString(sign.getEndTime().toString());
+                sign.setEndTime(null);
+            }else{
+                sign.setEndTimeString("未设置");
+            }
+            if(sign.getRange()!=null){
+                if(sign.getRange()=='1'){
+                    sign.setStatus("正常");
+                }else{
+                    sign.setStatus("迟到");
+                }
+            }else{
+                sign.setStatus("未签到");
             }
             sign.setRange(null);
         }

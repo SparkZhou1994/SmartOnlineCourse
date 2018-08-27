@@ -42,7 +42,7 @@ public class CourseController {
         course.setUserName(user.getUserName());
         course.setCourseName(courseName);
         course.setCatalog(catalog);
-        course=courseService.insertCourse(course,file,request);
+        course=courseService.insertCourse(course,file,request,user.getUserId());
         return "MyIndex";
     }
 
@@ -71,14 +71,6 @@ public class CourseController {
         return "redirect:/my_index";
     }
 
-    @GetMapping("/course_ware/{course_id}")
-    public String courseWare(@PathVariable(name="course_id") Integer courseId,HttpSession session,Model model){
-        User user= (User) session.getAttribute("user");
-        Boolean ownFlag=courseService.ownCourse(courseId,user.getUserId());
-        session.setAttribute("own_flag",ownFlag);
-        model.addAttribute("current_course_id",courseId);
-        return "Courseware";
-    }
     @GetMapping("/discuss/{course_id}")
     public String discuss(@PathVariable(name="course_id") Integer courseId){
         return "Discuss";

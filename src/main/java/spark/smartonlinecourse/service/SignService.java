@@ -14,7 +14,7 @@ import java.util.List;
  * @Version 1.0
  **/
 public interface SignService {
-    Boolean releaseSign(Integer courseId, String code,Integer effectiveSecond);
+    Boolean releaseSign(Integer courseId, String code,Integer effectiveSecond,Integer userId);
     Boolean signIn(Integer courseId,Integer userId,String code);
     List<Sign> selectSignByCourseIdAndUserIdAndStartAndRow(Integer courseId,Integer userId,Integer page,Integer row);
     Integer selectCountByCourseIdAndUserId(Integer courseId,Integer userId);

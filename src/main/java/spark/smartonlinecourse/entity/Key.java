@@ -14,6 +14,7 @@ public class Key {
     private Integer courseId;
     private Integer chooseCourseId;
     private Integer batch;
+    private String courseName;
 
     public Integer getUserId() {
         return userId;
@@ -61,5 +62,13 @@ public class Key {
 
     public void setRow(Integer row) {
         this.row = row;
+    }
+
+    public String getCourseName() {
+        return courseName;
+    }
+
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
     }
 }
