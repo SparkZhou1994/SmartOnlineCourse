@@ -3,6 +3,8 @@ package spark.smartonlinecourse.dao;
 import spark.smartonlinecourse.entity.CourseWare;
 import spark.smartonlinecourse.entity.Key;
 
+import java.util.List;
+
 /**
  * @InterfaceName CourseWareMapper
  * @Description TODO
@@ -11,5 +13,7 @@ import spark.smartonlinecourse.entity.Key;
  * @Version 1.0
  **/
 public interface CourseWareMapper {
-    CourseWare selectByCourseIdAndStartAndRow(Key key);
+    List<CourseWare> selectByCourseIdAndStartAndRow(Key key);
+    Integer selectCountByCourseId(Integer courseId);
+    Integer insertCourseWare(CourseWare courseWare);
 }

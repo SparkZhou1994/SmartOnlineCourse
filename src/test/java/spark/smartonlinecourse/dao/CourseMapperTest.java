@@ -13,6 +13,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import spark.smartonlinecourse.entity.Course;
 import spark.smartonlinecourse.entity.Key;
 import spark.smartonlinecourse.entity.Sign;
+import spark.smartonlinecourse.service.CourseWareService;
 import spark.smartonlinecourse.service.SignService;
 
 import java.time.LocalDateTime;
@@ -90,8 +91,19 @@ public class CourseMapperTest {
     @Autowired
     SignService signService;
 
+    @Ignore
     @Test
     public void signJsonTest(){
         System.out.print(signService.signListToJson(1,1,1,10,false));
     }
+
+    @Autowired
+    CourseWareService courseWareService;
+
+    @Test
+    public void courseWare(){
+        String json=courseWareService.courseWareListToJson(1, 1, 10);
+        System.out.print(json);
+    }
+
 }

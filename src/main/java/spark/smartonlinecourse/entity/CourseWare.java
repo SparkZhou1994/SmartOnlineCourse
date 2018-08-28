@@ -8,19 +8,19 @@ package spark.smartonlinecourse.entity;
  * @Version 1.0
  **/
 public class CourseWare {
-    private Integer courseWareid;
+    private Integer courseWareId;
     private Integer courseId;
     private String courseName;
     private String title;
     private String attachment;
     private Integer batch;
 
-    public Integer getCourseWareid() {
-        return courseWareid;
+    public Integer getCourseWareId() {
+        return courseWareId;
     }
 
-    public void setCourseWareid(Integer courseWareid) {
-        this.courseWareid = courseWareid;
+    public void setCourseWareId(Integer courseWareId) {
+        this.courseWareId = courseWareId;
     }
 
     public Integer getCourseId() {
@@ -62,4 +62,5 @@ public class CourseWare {
     public void setBatch(Integer batch) {
         this.batch = batch;
     }
+
 }

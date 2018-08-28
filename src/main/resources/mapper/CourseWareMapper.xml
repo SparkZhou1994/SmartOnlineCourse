@@ -11,15 +11,23 @@
     </resultMap>
 
     <sql id="Sign_Column_List" >
-        course_ware_id,courseware.course_id,course_name,title,attachment,batch
+        course_ware_id,course_ware.course_id,course_name,title,attachment,batch
     </sql>
 
     <select id="selectByCourseIdAndStartAndRow" resultMap="CourseWareResultMap" parameterType="spark.smartonlinecourse.entity.Key">
         select
         <include refid="Sign_Column_List"></include>
-        from courseware
-        join course on course.course_id=courseware.course_id
-        where courseware.course_id=#{courseId}
+        from course_ware
+        join course on course.course_id=course_ware.course_id
+        where course_ware.course_id=#{courseId}
         limit #{start},#{row}
     </select>
+    
+    <select id="selectCountByCourseId" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+        select count(*) from course_ware where course_id=#{courseId}
+    </select>
+    
+    <insert id="insertCourseWare" parameterType="spark.smartonlinecourse.entity.CourseWare">
+        insert into course_ware(course_id,title,attachment,batch) values(#{courseId},#{title},#{attachment},#{batch})
+    </insert>
 </mapper>

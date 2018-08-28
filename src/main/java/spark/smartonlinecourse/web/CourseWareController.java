@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import spark.smartonlinecourse.entity.Course;
 import spark.smartonlinecourse.entity.User;
 import spark.smartonlinecourse.service.CourseService;
@@ -42,5 +43,18 @@ public class CourseWareController {
                                  @RequestParam Integer page, @RequestParam Integer rows){
         String json=courseWareService.courseWareListToJson(courseId,page,rows);
         return json;
+    }
+
+    @PostMapping("/course_ware_upload/{course_id}")
+    public String courseWareUpload(@PathVariable (name="course_id") Integer courseId,
+                                   @RequestParam("title") String title,@RequestParam("batch") Integer batch,
+                                   @RequestParam("file") MultipartFile file,HttpSession session,Model model
+                                   ){
+        Boolean status=courseWareService.courseWareUpload(courseId, title, batch, file);
+        if(status){
+            return courseWare(courseId, session, model);
+        }else{
+            throw new RuntimeException("上传失败:" );
+        }
     }
 }

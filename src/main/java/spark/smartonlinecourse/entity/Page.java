@@ -10,12 +10,19 @@ import java.util.List;
  * @Version 1.0
  **/
 public class Page {
+    //当前页
     private Integer page;
+    //每页多少行
     private Integer rows;
+    //一共多少页
     private Integer total;
+    //一共多少数据
     private Integer records;
+    // 按什么排序
     private String sidx;
+    // 升序还是降序
     private String sord;
+    //类对象
     private List<? extends Object> data;
 
     public Integer getPage() {
