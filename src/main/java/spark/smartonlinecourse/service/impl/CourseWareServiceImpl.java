@@ -2,6 +2,7 @@ package spark.smartonlinecourse.service.impl;
 
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import spark.smartonlinecourse.dao.CourseMapper;
@@ -13,6 +14,7 @@ import spark.smartonlinecourse.entity.Page;
 import spark.smartonlinecourse.service.CourseWareService;
 import spark.smartonlinecourse.util.FileUtil;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.UUID;
 
@@ -77,5 +79,14 @@ public class CourseWareServiceImpl implements CourseWareService {
         }else{
             return  false;
         }
+    }
+
+    @Override
+    public ResponseEntity<byte[]> courseWareDownload(HttpServletRequest request, Integer courseWareId) {
+        CourseWare courseWare=courseWareMapper.selectByCourseWareId(courseWareId);
+        String fileName=courseWare.getAttachment();
+        String filePath="E://SmartOnlineCourse//courseware";
+        ResponseEntity<byte[]> entity=FileUtil.downloadFile(fileName,filePath , request);
+        return entity;
     }
 }

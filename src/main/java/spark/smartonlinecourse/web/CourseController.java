@@ -2,7 +2,6 @@ package spark.smartonlinecourse.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,7 +11,7 @@ import spark.smartonlinecourse.entity.Course;
 import spark.smartonlinecourse.entity.User;
 import spark.smartonlinecourse.service.ChooseCourseService;
 import spark.smartonlinecourse.service.CourseService;
-import spark.smartonlinecourse.service.SignService;
+
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
