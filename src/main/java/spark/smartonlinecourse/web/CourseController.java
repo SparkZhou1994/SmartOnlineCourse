@@ -45,22 +45,12 @@ public class CourseController {
         return "MyIndex";
     }
 
-    @GetMapping("/create_course")
-    public String createCourse(){
-        return "CreateCourse";
-    }
-
     @GetMapping("/course_package")
     public String coursePackage(HttpServletRequest request, HttpServletResponse response){
         Integer start=0;
         ArrayList<Course> courseList= (ArrayList<Course>) courseService.selectTop(start);
         request.setAttribute("courseList",courseList);
         return "CoursePackage";
-    }
-
-    @GetMapping("/join_course")
-    public String joinCourse(){
-        return "JoinCourse";
     }
 
     @PostMapping("/join_course_deal")
@@ -74,10 +64,7 @@ public class CourseController {
     public String discuss(@PathVariable(name="course_id") Integer courseId){
         return "Discuss";
     }
-    @GetMapping("/homework/{course_id}")
-    public String homework(@PathVariable(name="course_id") Integer courseId,HttpSession session){
-        return "Homework";
-    }
+
     @GetMapping("/message/{course_id}")
     public String message(@PathVariable(name="course_id") Integer courseId){
         return "Message";
