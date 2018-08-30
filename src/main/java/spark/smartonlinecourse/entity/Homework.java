@@ -1,6 +1,7 @@
 package spark.smartonlinecourse.entity;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Homework {
     private Integer homeworkId;
@@ -11,8 +12,8 @@ public class Homework {
     private String title;
     private String attachment;
     private Integer batch;
-    private LocalDate endDate;
-    private LocalDate submitDate;
+    private LocalDateTime endTime;
+    private LocalDateTime submitTime;
     private Character range;
     private Integer score;
 
@@ -80,20 +81,20 @@ public class Homework {
         this.title = title;
     }
 
-    public LocalDate getEndDate() {
-        return endDate;
+    public LocalDateTime getEndTime() {
+        return endTime;
     }
 
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
     }
 
-    public LocalDate getSubmitDate() {
-        return submitDate;
+    public LocalDateTime getSubmitTime() {
+        return submitTime;
     }
 
-    public void setSubmitDate(LocalDate submitDate) {
-        this.submitDate = submitDate;
+    public void setSubmitTime(LocalDateTime submitTime) {
+        this.submitTime = submitTime;
     }
 
     public Character getRange() {
@@ -123,8 +124,8 @@ public class Homework {
                 ", title='" + title + '\'' +
                 ", attachment='" + attachment + '\'' +
                 ", batch=" + batch +
-                ", endDate=" + endDate +
-                ", submitDate=" + submitDate +
+                ", endTime=" + endTime +
+                ", submitTime=" + submitTime +
                 ", range=" + range +
                 ", score=" + score +
                 '}';

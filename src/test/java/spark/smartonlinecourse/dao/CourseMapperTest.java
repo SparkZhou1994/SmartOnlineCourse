@@ -11,12 +11,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import spark.smartonlinecourse.entity.Course;
+import spark.smartonlinecourse.entity.Homework;
 import spark.smartonlinecourse.entity.Key;
 import spark.smartonlinecourse.entity.Sign;
 import spark.smartonlinecourse.service.CourseWareService;
 import spark.smartonlinecourse.service.SignService;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -32,6 +35,7 @@ import static org.junit.Assert.assertEquals;
 @SpringBootTest
 @FixMethodOrder(MethodSorters.NAME_ASCENDING) // 按方法名大小升序执行
 public class CourseMapperTest {
+
     @Autowired
     private CourseMapper courseMapper;
 
@@ -100,10 +104,47 @@ public class CourseMapperTest {
     @Autowired
     CourseWareService courseWareService;
 
+    @Ignore
     @Test
     public void courseWare(){
         String json=courseWareService.courseWareListToJson(1, 1, 10);
         System.out.print(json);
     }
 
+    @Autowired
+    HomeworkMapper homeworkMapper;
+
+    @Ignore
+    @Test
+    public void homeworkTest(){
+        List<Homework> homeworkList=new ArrayList<Homework>();
+        Homework homework=new Homework();
+        homework.setChooseCourseId(1);
+        homework.setAttachment("1");
+        homework.setBatch(1);
+        homework.setDescribe("1");
+        homework.setEndTime(LocalDateTime.now());
+        homework.setTitle("1");
+        homeworkList.add(homework);
+        homeworkList.add(homework);
+        Integer resutl=homeworkMapper.insertHomework(homeworkList);
+    }
+
+    @Ignore
+    @Test
+    public void homeworkUpdateTest(){
+        Homework homework=new Homework();
+        homework.setHomeworkId(13);
+        homework.setSubmitTime(LocalDateTime.now());
+        homeworkMapper.updateHomework(homework);
+    }
+
+    @Ignore
+    @Test
+    public void homeworkUpdate2Test(){
+        Homework homework=new Homework();
+        homework.setHomeworkId(13);
+        homework.setScore(100);
+        homeworkMapper.updateHomework(homework);
+    }
 }

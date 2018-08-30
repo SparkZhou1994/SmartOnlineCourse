@@ -40,7 +40,7 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public Course insertCourse(Course course, MultipartFile file, HttpServletRequest request,Integer userId) {
         if(!file.isEmpty()) {
-            String fileName = course.getCourseName() + "_" + UUID.randomUUID() + "_" + file.getOriginalFilename();
+            String fileName = course.getCourseName() + "_" + file.getOriginalFilename() + "_" + UUID.randomUUID();
             String filePath="E:/SmartOnlineCourse/course/";
             try{
                 FileUtil.uploadFile(file, filePath, fileName);
