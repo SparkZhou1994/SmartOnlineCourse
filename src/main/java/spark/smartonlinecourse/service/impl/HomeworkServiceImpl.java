@@ -1,5 +1,6 @@
 package spark.smartonlinecourse.service.impl;
 
+import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -10,6 +11,8 @@ import spark.smartonlinecourse.dao.HomeworkMapper;
 import spark.smartonlinecourse.entity.Course;
 import spark.smartonlinecourse.entity.Homework;
 import spark.smartonlinecourse.entity.Key;
+import spark.smartonlinecourse.entity.Page;
+import spark.smartonlinecourse.service.CourseService;
 import spark.smartonlinecourse.service.HomeworkService;
 import spark.smartonlinecourse.util.FileUtil;
 
@@ -39,26 +42,26 @@ public class HomeworkServiceImpl implements HomeworkService {
     @Autowired
     HomeworkMapper homeworkMapper;
 
+    @Autowired
+    CourseService courseService;
+
     @Override
-    public Boolean homeworkRelease(String title, String describe, MultipartFile file, Integer courseId,String endTimeString) {
+    public Boolean homeworkRelease(String title, String describe, MultipartFile file,
+                                   Integer courseId,String endTimeString,Integer batch) {
         List<Homework> homeworkList=new ArrayList<Homework>();
         Key key=new Key();
         key.setCourseId(courseId);
         Course course =courseMapper.selectCourseByCourseId(courseId);
         List<Integer> chooseCourseIdList=chooseCourseMapper.selectChooseCourseId(key);
         Integer count=chooseCourseIdList.size();
-        Homework homework=new Homework();
-        homework.setTitle(title);
-        homework.setDescribe(describe);
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-mm-dd HH:mm");
-        LocalDateTime endTime = LocalDateTime.parse("2017-09-28 17:07:05",dateTimeFormatter);
-        homework.setEndTime(endTime);
+        String fileName=null;
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime endTime = LocalDateTime.parse(endTimeString,dateTimeFormatter);
         if(!file.isEmpty()) {
-            String fileName =course.getCourseName() + "_" + file.getOriginalFilename() + "_" + UUID.randomUUID();
+            fileName =course.getCourseName() + "_" + UUID.randomUUID() + "_" + file.getOriginalFilename();
             String filePath="E:/SmartOnlineCourse/homework/";
             try{
                 FileUtil.uploadFile(file, filePath, fileName);
-                homework.setAttachment(fileName);
             }catch (Exception e){
                 return false;
             }
@@ -66,7 +69,13 @@ public class HomeworkServiceImpl implements HomeworkService {
             return false;
         }
         for(Integer chooseCourseId:chooseCourseIdList){
+            Homework homework=new Homework();
+            homework.setTitle(title);
+            homework.setDescribe(describe);
+            homework.setBatch(batch);
+            homework.setEndTime(endTime);
             homework.setChooseCourseId(chooseCourseId);
+            homework.setAttachment(fileName);
             homeworkList.add(homework);
         }
         Integer result=homeworkMapper.insertHomework(homeworkList);
@@ -93,7 +102,7 @@ public class HomeworkServiceImpl implements HomeworkService {
     }
 
     @Override
-    public Boolean homeworkUpload(Integer homeworkId, MultipartFile file) {
+    public Boolean homeworkUpload(Integer homeworkId, MultipartFile file,Integer courseId) {
         Key key=new Key();
         key.setHomeworkId(homeworkId);
         List<Homework> homework=homeworkMapper.selectHomework(key);
@@ -101,7 +110,8 @@ public class HomeworkServiceImpl implements HomeworkService {
             return null;
         }else {
             if (!file.isEmpty()) {
-                String fileName = homework.get(0).getHomeworkId() + "_" + file.getOriginalFilename() + "_" + UUID.randomUUID();
+                Course course=courseMapper.selectCourseByCourseId(courseId);
+                String fileName = course.getCourseName() + "_" + UUID.randomUUID() + "_" + file.getOriginalFilename();
                 String filePath = "E:/SmartOnlineCourse/homework/";
                 try {
                     FileUtil.uploadFile(file, filePath, fileName);
@@ -133,5 +143,57 @@ public class HomeworkServiceImpl implements HomeworkService {
         }else{
             return false;
         }
+    }
+
+    @Override
+    public String homeworkListToJson(Integer courseId, Integer userId, Integer page, Integer row) {
+        Boolean ownFlag=courseService.ownCourse(courseId,userId);
+        Key key=new Key();
+        key.setStart((page-1)*row);
+        key.setRow(row);
+        List<Homework> homeworkList=new ArrayList<Homework>();
+        Integer total;
+        Integer homeworkCount;
+        if(ownFlag){
+            key.setCourseId(courseId);
+            homeworkList=homeworkMapper.selectHomework(key);
+        }else{
+            key.setCourseId(courseId);
+            key.setUserId(userId);
+            homeworkList=homeworkMapper.selectHomework(key);
+        }
+        for(Homework homework:homeworkList){
+            if(homework.getSubmitTime()==null){
+                homework.setSubmitTimeString("未设置");
+            }else{
+                homework.setSubmitTimeString(homework.getSubmitTime().toString());
+            }
+            if(homework.getEndTime()==null){
+                homework.setEndTimeString("未设置");
+            }else{
+                homework.setEndTimeString(homework.getEndTime().toString());
+            }
+            if(homework.getRange()==null){
+                homework.setStatus("未提交");
+            }else{
+                switch (homework.getRange()){
+                    case '0':homework.setStatus("超时提交");break;
+                    case '1':homework.setStatus("按时提交");break;
+                    default:homework.setStatus("未提交");break;
+                }
+            }
+            homework.setRange(null);
+        }
+        homeworkCount=homeworkList.size();
+        total=(int) Math.ceil((double)homeworkCount/row);
+        Page pageEntity=new Page();
+        pageEntity.setPage(page);
+        pageEntity.setRecords(homeworkCount);
+        pageEntity.setData(homeworkList);
+        pageEntity.setTotal(total);
+        pageEntity.setRows(row);
+        Gson json =new Gson();
+        String jsonString=json.toJson(pageEntity);
+        return jsonString;
     }
 }

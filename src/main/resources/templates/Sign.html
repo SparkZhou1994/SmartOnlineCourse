@@ -57,7 +57,6 @@
                     "courseId":courseId,"userId":userId,"code":code
                 },
                 success: function(data){
-                    alter(date);
                 },
                 error:function(){
                 }
@@ -92,6 +91,12 @@
                 mtype: "POST",
                 datatype: "json",
             }).trigger("reloadGrid");
+        }
+        function loginOut(){
+            //$(location).attr('href', 'index');
+            //$(window).attr('location','index');
+            $(location).prop('href', 'index');
+            $.session.clear();
         }
 	</script>
 	<meta name="viewprot"

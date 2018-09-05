@@ -69,6 +69,12 @@
                 window.location.href="/SmartOnlineCourse/course_ware_download/"+courseWareId;
             }
         }
+        function loginOut(){
+            //$(location).attr('href', 'index');
+            //$(window).attr('location','index');
+            $(location).prop('href', 'index');
+            $.session.clear();
+        }
     </script>
     <meta name="viewprot"
           content="width=devive-width,initial-scale=1,user-scalable=no">

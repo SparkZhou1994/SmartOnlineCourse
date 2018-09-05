@@ -28,6 +28,12 @@
             }
             return true;
         }
+        function loginOut(){
+            //$(location).attr('href', 'index');
+            //$(window).attr('location','index');
+            $(location).prop('href', 'index');
+            $.session.clear();
+        }
     </script>
     <meta name="viewprot"
           content="width=devive-width,initial-scale=1,user-scalable=no">

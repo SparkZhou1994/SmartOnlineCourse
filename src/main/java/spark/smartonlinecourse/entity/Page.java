@@ -25,6 +25,7 @@ public class Page {
     //类对象
     private List<? extends Object> data;
 
+
     public Integer getPage() {
         return page;
     }

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="spark.smartonlinecourse.dao.DiscussMapper" >
+    <resultMap id="DiscussContentResultMap" type="spark.smartonlinecourse.entity.DiscussContent" >
+        <id column="discuss_content_id" property="discussContentId" jdbcType="INTEGER" />
+        <result column="discuss_id" property="discussId" jdbcType="INTEGER" />
+        <result column="user_id" property="userId" jdbcType="INTEGER"/>
+        <result column="content" property="content" jdbcType="VARCHAR"/>
+        <result column="publish_time" property="publishTime" jdbcType="TIMESTAMP"/>
+        <result column="choose" property="choose" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Discuss_Content_Column_List" >
+      discuss_content_id,discuss_id,user_id,content,publish_time,choose
+    </sql>
+
+    <select id="selectByDiscussId" parameterType="spark.smartonlinecourse.entity.Key" resultMap="Discuss_Content_Column_List">
+      select
+      <include refid="Discuss_Content_Column_List"/>
+      from discuss_content
+      where discuss_id=#{discussId}
+      order by publish_time desc
+      limit #{start},10
+    </select>
+
+    <insert id="insertDiscussContent" parameterType="spark.smartonlinecourse.entity.DiscussContent">
+        insert into discuss_content(discuss_id,user_id,publish_time
+        <if test="content != null and content != ''">
+            ,content
+        </if>
+        <if test="choose != null and choose != ''">
+            ,choose
+        </if>
+        )
+        values(#{discussId},#{userId},#{publishTime,jdbcType=TIMESTAMP,javaType=java.time.LocalDateTime}
+        <if test="content != null and content != ''">
+            ,#{content}
+        </if>
+        <if test="choose != null and choose != ''">
+            ,#{choose}
+        </if>
+        )
+    </insert>
+
+    <select id="selectAllCountByDiscussId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select count(*) from discuss_content where discuss_id=#{discussId}
+    </select>
+
+    <select id="selectChooseCountByDiscussIdAndChoose" parameterType="spark.smartonlinecourse.entity.Key" resultType="java.lang.Integer">
+        select count(*) from discuss_content where discuss_id=#{discussId}
+        and choose=#{choose,javaType=java.lang.String,jdbcType=CHAR}
+    </select>
+</mapper>

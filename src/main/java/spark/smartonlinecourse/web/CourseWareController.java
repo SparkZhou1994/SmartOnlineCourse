@@ -66,7 +66,7 @@ public class CourseWareController {
         if(status){
             return courseWare(courseId, session, model);
         }else{
-            throw new RuntimeException("上传失败:" );
+            throw new RuntimeException("上传失败！" );
         }
     }
 

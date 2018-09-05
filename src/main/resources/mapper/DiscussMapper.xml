@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="spark.smartonlinecourse.dao.DiscussMapper" >
+    <resultMap id="DiscussResultMap" type="spark.smartonlinecourse.entity.Discuss" >
+        <id column="discuss_id" property="discussId" jdbcType="INTEGER" />
+        <result column="course_id" property="courseId" jdbcType="INTEGER" />
+        <result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="last_publish_time" property="lastPublishTime" jdbcType="TIMESTAMP" />
+        <result column="vote" property="type" jdbcType="CHAR"/>
+        <result column="choose1" property="choose1" jdbcType="VARCHAR" />
+        <result column="choose2" property="choose2" jdbcType="VARCHAR"/>
+        <result column="choose3" property="choose3" jdbcType="VARCHAR"/>
+        <result column="choose4" property="choose4" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Discuss_Column_List" >
+    discuss_id,course_id,title,last_publish_time,vote,choose1,choose2,choose3,choose4
+    </sql>
+
+    <select id="selectByCourseId" parameterType="java.lang.Integer" resultMap="Discuss_Column_List">
+        select
+        <include refid="Discuss_Column_List"/>
+        from discuss
+        where course_id=#{courseId}
+    </select>
+
+    <insert id="insertDiscuss" parameterType="spark.smartonlinecourse.entity.Discuss">
+        insert into discuss(course_id,title,vote
+        <if test="vote =='1'">
+            <if test="choose1 != null and choose1 !=''">
+                ,choose1
+            </if>
+            <if test="choose2 != null and choose2 != ''">
+                ,choose2
+            </if>
+            <if test="choose3 != null and choose3 !=''">
+                ,choose3
+            </if>
+            <if test="choose4 !=null and choose4 != ''">
+                ,choose4
+            </if>
+        </if>
+        ) values(#{courseId},#{title},#{vote}
+        <if test="vote =='1'">
+            <if test="choose1 != null and choose1 !=''">
+                ,#{choose1}
+            </if>
+            <if test="choose2 != null and choose2 != ''">
+                ,#{choose2}
+            </if>
+            <if test="choose3 != null and choose3 !=''">
+                ,#{choose3}
+            </if>
+            <if test="choose4 !=null and choose4 != ''">
+                ,#{choose4}
+            </if>
+        </if>
+        )
+    </insert>
+
+    <update id="updateDiscuss" parameterType="spark.smartonlinecourse.entity.Discuss">
+        update discuss set last_publish_time=#{lastPublishTime,jdbcType=TIMESTAMP,javaType=java.time.LocalDateTime}
+    </update>
+</mapper>

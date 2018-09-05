@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
         if(!file.isEmpty()) {
             String fileName = null;
             if ("/image/user/default.png".equals(user.getAvatar())) {
-                fileName = user.getUserName() + "_" + file.getOriginalFilename() + "_" + UUID.randomUUID();
+                fileName = user.getUserName() + "_" + UUID.randomUUID() + "_" + file.getOriginalFilename();
             } else {
                 fileName = user.getAvatar();
             }

@@ -61,7 +61,7 @@ public class CourseWareServiceImpl implements CourseWareService {
         courseWare.setBatch(batch);
         courseWare.setTitle(title);
         if(!file.isEmpty()) {
-            String fileName =course.getCourseName() + "_" + file.getOriginalFilename() + "_" + UUID.randomUUID();
+            String fileName =course.getCourseName() + "_" + UUID.randomUUID() + "_" + file.getOriginalFilename();
             String filePath="E:/SmartOnlineCourse/courseware/";
             try{
                 FileUtil.uploadFile(file, filePath, fileName);

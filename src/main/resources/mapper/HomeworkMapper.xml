@@ -17,7 +17,7 @@
     </resultMap>
 
     <sql id="Homework_Column_List" >
-        homework_id,homework.choose_course_id,user_id,course_id,title,`describe`,attachment,batch,end_time,submit_time,range,score
+        homework_id,homework.choose_course_id,user_id,course_id,title,`describe`,attachment,batch,end_time,submit_time,`range`,score
     </sql>
 
     <select id="selectHomework" parameterType="spark.smartonlinecourse.entity.Key" resultMap="HomeworkResultMap">
@@ -36,25 +36,32 @@
                 and user_id=#{userId}
             </if>
         </where>
-        order by batch desc
-        limit #{start},#{row}
+        order by homework_id desc
+        <if test="start != null and start != ''">
+            limit #{start},#{row}
+        </if>
     </select>
 
     <insert id="insertHomework" parameterType="java.util.List">
-        insert into homework(choose_course_id,title,`describe`,attachment,batch,end_date) values
+        insert into homework(choose_course_id,title,`describe`,attachment,batch,end_time) values
         <foreach collection="list" item="homework" separator=",">
-            (#{homework.chooseCourseId},#{homework.title},#{homework.describe},#{homework.attachment},#{homework.batch},#{homework.endDate,jdbcType=TIMESTAMP,javaType=java.time.LocalDateTime})
+            (#{homework.chooseCourseId},#{homework.title},#{homework.describe},#{homework.attachment},#{homework.batch},#{homework.endTime,jdbcType=TIMESTAMP,javaType=java.time.LocalDateTime})
         </foreach>
     </insert>
     
     <update id="updateHomework" parameterType="spark.smartonlinecourse.entity.Homework">
         update homework
-        <if test="submitDate != null">
-            set submit_date=#{submitDate,jdbcType=TIMESTAMP,javaType=java.time.LocalDateTime}
-        </if>
-        <if test="score != null and score != ''">
-            set score=#{score}
-        </if>
+        <set>
+            <if test="attachment != null">
+                attachment =#{attachment},
+            </if>
+            <if test="submitTime != null">
+                submit_time=#{submitTime,jdbcType=TIMESTAMP,javaType=java.time.LocalDateTime},
+            </if>
+            <if test="score != null and score != ''">
+                score=#{score}
+            </if>
+        </set>
         where homework_id=#{homeworkId}
     </update>
 </mapper>

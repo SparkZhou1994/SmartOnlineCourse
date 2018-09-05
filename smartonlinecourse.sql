@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50560
 File Encoding         : 65001
 
-Date: 2018-08-21 22:35:34
+Date: 2018-09-05 21:44:13
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -28,17 +28,17 @@ CREATE TABLE `choose_course` (
   KEY `course_id` (`course_id`),
   CONSTRAINT `choose_course_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`),
   CONSTRAINT `choose_course_ibfk_2` FOREIGN KEY (`course_id`) REFERENCES `course` (`course_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of choose_course
 -- ----------------------------
 INSERT INTO `choose_course` VALUES ('1', '1', '1');
-INSERT INTO `choose_course` VALUES ('2', '2', '1');
+INSERT INTO `choose_course` VALUES ('2', '1', '2');
 INSERT INTO `choose_course` VALUES ('3', '3', '1');
 INSERT INTO `choose_course` VALUES ('4', '4', '1');
 INSERT INTO `choose_course` VALUES ('5', '5', '1');
-INSERT INTO `choose_course` VALUES ('6', '1', '2');
+INSERT INTO `choose_course` VALUES ('6', '1', '3');
 
 -- ----------------------------
 -- Table structure for `course`
@@ -53,7 +53,7 @@ CREATE TABLE `course` (
   PRIMARY KEY (`course_id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `course_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of course
@@ -65,43 +65,69 @@ INSERT INTO `course` VALUES ('4', 'HTML', '5', '信息', '/image/course/default.
 INSERT INTO `course` VALUES ('5', 'Python', '6', '信息', '/image/course/default.png');
 
 -- ----------------------------
--- Table structure for `courseware`
+-- Table structure for `course_ware`
 -- ----------------------------
-DROP TABLE IF EXISTS `courseware`;
-CREATE TABLE `courseware` (
-  `courseware_id` int(11) NOT NULL DEFAULT '0',
-  `choose_course_id` int(11) DEFAULT NULL,
+DROP TABLE IF EXISTS `course_ware`;
+CREATE TABLE `course_ware` (
+  `course_ware_id` int(11) NOT NULL AUTO_INCREMENT,
+  `course_id` int(11) DEFAULT NULL,
   `title` varchar(20) DEFAULT NULL,
-  `attachment` varchar(50) DEFAULT NULL,
+  `attachment` varchar(100) DEFAULT NULL,
   `batch` int(11) DEFAULT NULL,
-  PRIMARY KEY (`courseware_id`),
-  KEY `choose_course_id` (`choose_course_id`),
-  CONSTRAINT `courseware_ibfk_1` FOREIGN KEY (`choose_course_id`) REFERENCES `choose_course` (`choose_course_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`course_ware_id`),
+  KEY `course_id` (`course_id`),
+  CONSTRAINT `course_ware_ibfk_1` FOREIGN KEY (`course_id`) REFERENCES `course` (`course_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of courseware
+-- Records of course_ware
 -- ----------------------------
-INSERT INTO `courseware` VALUES ('1', '1', 'Preface', null, '1');
 
 -- ----------------------------
 -- Table structure for `discuss`
 -- ----------------------------
 DROP TABLE IF EXISTS `discuss`;
 CREATE TABLE `discuss` (
-  `discuss_id` int(11) NOT NULL DEFAULT '0',
+  `discuss_id` int(11) NOT NULL AUTO_INCREMENT,
   `course_id` int(11) DEFAULT NULL,
-  `context` tinytext,
-  `publish_time` datetime DEFAULT NULL,
+  `title` varchar(60) DEFAULT NULL,
+  `last_publish_time` datetime DEFAULT NULL,
+  `vote` char(1) DEFAULT NULL,
+  `choose_1` varchar(60) DEFAULT NULL,
+  `choose_2` varchar(60) DEFAULT NULL,
+  `choose_3` varchar(60) DEFAULT NULL,
+  `choose_4` varchar(60) DEFAULT NULL,
   PRIMARY KEY (`discuss_id`),
   KEY `course_id` (`course_id`),
   CONSTRAINT `discuss_ibfk_1` FOREIGN KEY (`course_id`) REFERENCES `course` (`course_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of discuss
 -- ----------------------------
-INSERT INTO `discuss` VALUES ('1', '1', 'Test', '2018-08-03 17:28:14');
+INSERT INTO `discuss` VALUES ('1', '1', 'Test', '2018-08-03 17:28:14', null, null, null, null, null);
+
+-- ----------------------------
+-- Table structure for `discuss_content`
+-- ----------------------------
+DROP TABLE IF EXISTS `discuss_content`;
+CREATE TABLE `discuss_content` (
+  `discuss_content_id` int(11) NOT NULL AUTO_INCREMENT,
+  `discuss_id` int(11) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `content` tinytext,
+  `publish_time` datetime DEFAULT NULL,
+  `choose` char(2) DEFAULT NULL,
+  PRIMARY KEY (`discuss_content_id`),
+  KEY `discuss_id` (`discuss_id`),
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `discuss_content_ibfk_1` FOREIGN KEY (`discuss_id`) REFERENCES `discuss` (`discuss_id`),
+  CONSTRAINT `discuss_content_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of discuss_content
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for `homework`
@@ -111,39 +137,38 @@ CREATE TABLE `homework` (
   `homework_id` int(11) NOT NULL AUTO_INCREMENT,
   `choose_course_id` int(11) DEFAULT NULL,
   `describe` varchar(50) DEFAULT NULL,
-  `attachment` varchar(50) DEFAULT NULL,
-  `batch` int(11) DEFAULT NULL,
-  `end_date` date DEFAULT NULL,
-  `submit_date` date DEFAULT NULL,
-  `range` char(1) DEFAULT NULL,
   `title` varchar(20) DEFAULT NULL,
+  `attachment` varchar(100) DEFAULT NULL,
+  `batch` int(11) DEFAULT NULL,
+  `end_time` datetime DEFAULT NULL,
+  `submit_time` datetime DEFAULT NULL,
+  `range` char(1) DEFAULT NULL,
+  `score` int(11) DEFAULT NULL,
   PRIMARY KEY (`homework_id`),
   KEY `choose_course_id` (`choose_course_id`),
   CONSTRAINT `homework_ibfk_1` FOREIGN KEY (`choose_course_id`) REFERENCES `choose_course` (`choose_course_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of homework
 -- ----------------------------
-INSERT INTO `homework` VALUES ('1', '1', 'Test', null, '1', '2018-08-04', '2018-08-03', '1', 'Test');
-INSERT INTO `homework` VALUES ('2', '2', null, null, null, null, null, null, null);
-INSERT INTO `homework` VALUES ('3', '3', null, null, null, null, null, null, null);
-INSERT INTO `homework` VALUES ('4', '4', null, null, null, null, null, null, null);
-INSERT INTO `homework` VALUES ('5', '5', null, null, null, null, null, null, null);
+INSERT INTO `homework` VALUES ('42', '1', 'Test File', 'Test', '高数_fe2617a1-e7cc-42c6-b174-c8d13f52170b_开题报告.txt', '1', '2018-09-30 17:05:00', null, null, null);
+INSERT INTO `homework` VALUES ('43', '2', 'Test File', 'Test', '高数_2919becc-27f2-48a9-a154-b178db8148a1_周炬辉-1321386-开题报告.doc', '1', '2018-09-30 17:05:00', '2018-09-04 17:10:20', null, null);
+INSERT INTO `homework` VALUES ('44', '6', 'Test File', 'Test', '高数_fe2617a1-e7cc-42c6-b174-c8d13f52170b_开题报告.txt', '1', '2018-09-30 17:05:00', null, null, null);
 
 -- ----------------------------
 -- Table structure for `message`
 -- ----------------------------
 DROP TABLE IF EXISTS `message`;
 CREATE TABLE `message` (
-  `message_id` int(11) NOT NULL DEFAULT '0',
+  `message_id` int(11) NOT NULL AUTO_INCREMENT,
   `choose_course_id` int(11) DEFAULT NULL,
   `context` tinytext,
   `publish_date` date DEFAULT NULL,
   PRIMARY KEY (`message_id`),
   KEY `choose_course_id` (`choose_course_id`),
   CONSTRAINT `message_ibfk_1` FOREIGN KEY (`choose_course_id`) REFERENCES `choose_course` (`choose_course_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of message
@@ -187,12 +212,13 @@ CREATE TABLE `sign` (
   PRIMARY KEY (`sign_id`),
   KEY `choose_course_id` (`choose_course_id`),
   CONSTRAINT `sign_ibfk_1` FOREIGN KEY (`choose_course_id`) REFERENCES `choose_course` (`choose_course_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sign
 -- ----------------------------
-INSERT INTO `sign` VALUES ('1', '1', '1', '1234', '2018-08-03 17:29:58', '2018-08-03 17:30:05', '1');
+INSERT INTO `sign` VALUES ('1', '1', '1', '1234', '2018-08-23 21:27:13', '2018-08-03 17:30:05', '0');
+INSERT INTO `sign` VALUES ('2', '6', '1', '1234', '2018-08-03 17:35:58', '2018-08-03 17:30:05', '0');
 
 -- ----------------------------
 -- Table structure for `user`

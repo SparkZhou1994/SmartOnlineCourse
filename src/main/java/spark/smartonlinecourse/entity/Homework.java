@@ -13,9 +13,12 @@ public class Homework {
     private String attachment;
     private Integer batch;
     private LocalDateTime endTime;
+    private String endTimeString;
     private LocalDateTime submitTime;
+    private String submitTimeString;
     private Character range;
     private Integer score;
+    private String status;
 
     public Integer getHomeworkId() {
         return homeworkId;
@@ -111,6 +114,30 @@ public class Homework {
 
     public void setScore(Integer score) {
         this.score = score;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getEndTimeString() {
+        return endTimeString;
+    }
+
+    public void setEndTimeString(String endTimeString) {
+        this.endTimeString = endTimeString;
+    }
+
+    public String getSubmitTimeString() {
+        return submitTimeString;
+    }
+
+    public void setSubmitTimeString(String submitTimeString) {
+        this.submitTimeString = submitTimeString;
     }
 
     @Override

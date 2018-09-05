@@ -16,6 +16,8 @@ public class Key {
     private Integer batch;
     private String courseName;
     private Integer homeworkId;
+    private Integer discussId;
+    private String choose;
 
     public Integer getUserId() {
         return userId;
@@ -79,5 +81,21 @@ public class Key {
 
     public void setHomeworkId(Integer homeworkId) {
         this.homeworkId = homeworkId;
+    }
+
+    public Integer getDiscussId() {
+        return discussId;
+    }
+
+    public void setDiscussId(Integer discussId) {
+        this.discussId = discussId;
+    }
+
+    public String getChoose() {
+        return choose;
+    }
+
+    public void setChoose(String choose) {
+        this.choose = choose;
     }
 }
