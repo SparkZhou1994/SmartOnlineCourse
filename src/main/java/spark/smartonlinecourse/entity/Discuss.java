@@ -12,9 +12,14 @@ import java.time.LocalDateTime;
 public class Discuss {
     private Integer discussId;
     private Integer courseId;
+    private Integer useId;
+    private String userName;
     private String title;
+    private String describe;
     private LocalDateTime lastPublishTime;
+    private String lastPublishTimeString;
     private Character vote;
+    private String voteString;
     private String choose1;
     private String choose2;
     private String choose3;
@@ -90,5 +95,45 @@ public class Discuss {
 
     public void setChoose4(String choose4) {
         this.choose4 = choose4;
+    }
+
+    public String getLastPublishTimeString() {
+        return lastPublishTimeString;
+    }
+
+    public void setLastPublishTimeString(String lastPublishTimeString) {
+        this.lastPublishTimeString = lastPublishTimeString;
+    }
+
+    public String getVoteString() {
+        return voteString;
+    }
+
+    public void setVoteString(String voteString) {
+        this.voteString = voteString;
+    }
+
+    public Integer getUseId() {
+        return useId;
+    }
+
+    public void setUseId(Integer useId) {
+        this.useId = useId;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getDescribe() {
+        return describe;
+    }
+
+    public void setDescribe(String describe) {
+        this.describe = describe;
     }
 }

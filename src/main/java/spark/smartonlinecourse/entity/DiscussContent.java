@@ -13,6 +13,7 @@ public class DiscussContent {
     private Integer discussContentId;
     private Integer discussId;
     private Integer userId;
+    private String userName;
     private String content;
     private LocalDateTime publishTime;
     private String choose;
@@ -63,5 +64,13 @@ public class DiscussContent {
 
     public void setChoose(String choose) {
         this.choose = choose;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }

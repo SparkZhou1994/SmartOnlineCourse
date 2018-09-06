@@ -4,7 +4,10 @@
     <resultMap id="DiscussResultMap" type="spark.smartonlinecourse.entity.Discuss" >
         <id column="discuss_id" property="discussId" jdbcType="INTEGER" />
         <result column="course_id" property="courseId" jdbcType="INTEGER" />
+        <result column="user_id" property="userId" jdbcType="INTEGER"/>
+        <result column="user_name" property="userName" jdbcType="VARCHAR"/>
         <result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="describe" property="describe" jdbcType="VARCHAR"/>
         <result column="last_publish_time" property="lastPublishTime" jdbcType="TIMESTAMP" />
         <result column="vote" property="type" jdbcType="CHAR"/>
         <result column="choose1" property="choose1" jdbcType="VARCHAR" />
@@ -13,18 +16,21 @@
         <result column="choose4" property="choose4" jdbcType="VARCHAR"/>
     </resultMap>
     <sql id="Discuss_Column_List" >
-    discuss_id,course_id,title,last_publish_time,vote,choose1,choose2,choose3,choose4
+    discuss_id,course_id,discuss.user_id,user_name,title,`describe`,last_publish_time,vote,choose1,choose2,choose3,choose4
     </sql>
 
-    <select id="selectByCourseId" parameterType="java.lang.Integer" resultMap="Discuss_Column_List">
+    <select id="selectByCourseIdAndStart" parameterType="spark.smartonlinecourse.entity.Key" resultMap="Discuss_Column_List">
         select
         <include refid="Discuss_Column_List"/>
         from discuss
+        join `user` on `user`.user_id=discuss.user_id
         where course_id=#{courseId}
+        order by last_publish_time desc
+        limit #{start},10
     </select>
 
     <insert id="insertDiscuss" parameterType="spark.smartonlinecourse.entity.Discuss">
-        insert into discuss(course_id,title,vote
+        insert into discuss(course_id,user_id,title,vote
         <if test="vote =='1'">
             <if test="choose1 != null and choose1 !=''">
                 ,choose1
@@ -39,7 +45,7 @@
                 ,choose4
             </if>
         </if>
-        ) values(#{courseId},#{title},#{vote}
+        ) values(#{courseId},#{userId},#{title},#{vote}
         <if test="vote =='1'">
             <if test="choose1 != null and choose1 !=''">
                 ,#{choose1}
@@ -59,5 +65,10 @@
 
     <update id="updateDiscuss" parameterType="spark.smartonlinecourse.entity.Discuss">
         update discuss set last_publish_time=#{lastPublishTime,jdbcType=TIMESTAMP,javaType=java.time.LocalDateTime}
+        where discuss_id=#{discussId}
     </update>
+
+    <select id="selectCountByCourseId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select count(*) from discuss where course_id=#{courseId}
+    </select>
 </mapper>

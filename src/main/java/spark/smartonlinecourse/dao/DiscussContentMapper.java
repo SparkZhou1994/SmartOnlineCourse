@@ -13,8 +13,8 @@ import java.util.List;
  * @Version 1.0
  **/
 public interface DiscussContentMapper {
-    List<DiscussContent> selectByDiscussId(Integer discussId);
+    List<DiscussContent> selectByDiscussIdAndStart(Key key);
     Integer insertDiscussContent(DiscussContent discussContent);
     Integer selectAllCountByDiscussId(Integer discussId);
-    Integer selectChooseCountByDiscussIdAndChoose(Key key);
+    Integer selectChooseCountByDiscussIdAndChoose(DiscussContent discussContent);
 }

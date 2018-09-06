@@ -1,6 +1,9 @@
 package spark.smartonlinecourse.dao;
 
 import spark.smartonlinecourse.entity.Discuss;
+import spark.smartonlinecourse.entity.Key;
+
+import java.util.List;
 
 /**
  * @InterfaceName DiscussMapper
@@ -10,7 +13,8 @@ import spark.smartonlinecourse.entity.Discuss;
  * @Version 1.0
  **/
 public interface DiscussMapper {
-    Discuss selectByCourseId(Integer courseId);
+    List<Discuss> selectByCourseIdAndStart(Key key);
     Integer insertDiscuss(Discuss discuss);
     Integer updateDiscuss(Discuss discuss);
+    Integer selectCountByCourseId(Integer courseId);
 }

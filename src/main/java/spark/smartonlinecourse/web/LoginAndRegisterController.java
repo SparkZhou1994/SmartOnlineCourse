@@ -25,6 +25,8 @@ public class LoginAndRegisterController {
         User userResult= userService.loginComfirm(user);
         session.setAttribute("user",userResult);
         session.setAttribute("index_page",0);
+        session.setAttribute("discuss_page", 0);
+        session.setAttribute("discuss_content_page",0 );
         return "redirect:/my_index";
     }
 }

@@ -60,11 +60,6 @@ public class CourseController {
         return "redirect:/my_index";
     }
 
-    @GetMapping("/discuss/{course_id}")
-    public String discuss(@PathVariable(name="course_id") Integer courseId){
-        return "Discuss";
-    }
-
     @GetMapping("/message/{course_id}")
     public String message(@PathVariable(name="course_id") Integer courseId){
         return "Message";

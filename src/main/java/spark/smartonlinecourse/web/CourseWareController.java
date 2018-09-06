@@ -1,9 +1,6 @@
 package spark.smartonlinecourse.web;
 
-import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,16 +10,10 @@ import spark.smartonlinecourse.entity.Course;
 import spark.smartonlinecourse.entity.User;
 import spark.smartonlinecourse.service.CourseService;
 import spark.smartonlinecourse.service.CourseWareService;
-import spark.smartonlinecourse.util.FileUtil;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.URLEncoder;
+
 
 /**
  * @ClassName CourseWareController

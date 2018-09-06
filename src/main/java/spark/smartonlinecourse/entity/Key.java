@@ -17,7 +17,6 @@ public class Key {
     private String courseName;
     private Integer homeworkId;
     private Integer discussId;
-    private String choose;
 
     public Integer getUserId() {
         return userId;
@@ -89,13 +88,5 @@ public class Key {
 
     public void setDiscussId(Integer discussId) {
         this.discussId = discussId;
-    }
-
-    public String getChoose() {
-        return choose;
-    }
-
-    public void setChoose(String choose) {
-        this.choose = choose;
     }
 }
