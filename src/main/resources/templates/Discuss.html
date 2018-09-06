@@ -19,14 +19,14 @@
         }
         body{font-family:"微软雅黑";font-size:12px;}
         ul,li{list-style:none;}
-        .ylcon{width:100%;min-width:320px;}
-        .tit{height:26px;line-height:26px;padding:0px 15px;position:relative;font-size:15px;color:#aaa;border-bottom:1px solid rgba(0, 0, 0, 0.15);}
+        .discuss{width:100%;min-width:320px;}
+        .title{height:26px;line-height:26px;padding:0px 15px;position:relative;font-size:15px;color:#aaa;border-bottom:1px solid rgba(0, 0, 0, 0.15);}
 
-        .story{border-bottom:1px dashed #cecece;padding:0 15px 3px;position:relative;}
-        .story_t{font-size:1.2em;color:rgba(0,0,0,1);padding-top:5px;padding-bottom:2px;}
-        .story_m{color:rgba(110,110,110,1);line-height:21px;word-break:break-all;word-wrap:break-word;overflow:hidden;font-size:1.2em;padding:2px 0;}
-        .story_time{color:rgba(154,154,154,1);padding:2px 0;}
-        .story_hf{background:rgb(245,245,245);font-size:1.2em;border:1px solid rgba(204,204,204,0.2);border-radius:2px;color:rgba(110,110,110,1);padding:4px;margin-bottom:5px;}
+        .discuss_main{border-bottom:1px dashed #cecece;padding:0 15px 3px;position:relative;}
+        .discuss_title{font-size:1.2em;color:rgba(0,0,0,1);padding-top:5px;padding-bottom:2px;}
+        .discuss_desc{color:rgba(110,110,110,1);line-height:21px;word-break:break-all;word-wrap:break-word;overflow:hidden;font-size:1.2em;padding:2px 0;}
+        .discuss_time{color:rgba(154,154,154,1);padding:2px 0;}
+        .discuss_person{background:rgb(245,245,245);font-size:1.2em;border:1px solid rgba(204,204,204,0.2);border-radius:2px;color:rgba(110,110,110,1);padding:4px;margin-bottom:5px;}
         .opbtn{position:absolute;top: 0;right: 0;}
     </style>
     <meta name="viewprot"
@@ -92,12 +92,12 @@
             <div class="modal-body">
                 <form enctype="multipart/form-data" method="post" onsubmit="return check()" th:action="@{'/homework_release/'+${current_course.getCourseId()}}">
                     <div class="form-group">
-                        <label for="title" class="control-label">讨论标题：</label>
-                        <input type="text" class="form-control" id="title" name="title">
+                        <label for="discuss_title" class="control-label">讨论标题：</label>
+                        <input type="text" class="form-control" id="discuss_title" name="title">
                     </div>
                     <div class="form-group">
-                        <label for="describe" class="control-label">讨论描述：</label>
-                        <input type="text" class="form-control" id="describe" name="describe">
+                        <label for="discuss_describe" class="control-label">讨论描述：</label>
+                        <input type="text" class="form-control" id="discuss_describe" name="describe">
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
@@ -113,32 +113,32 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="modalLabel">发起投票</h4>
+                <h4 class="modal-title" id="modalLabel2">发起投票</h4>
             </div>
             <div class="modal-body">
                 <form enctype="multipart/form-data" method="post" onsubmit="return check()" th:action="@{'/homework_release/'+${current_course.getCourseId()}}">
                     <div class="form-group">
-                        <label for="title" class="control-label">投票标题：</label>
-                        <input type="text" class="form-control" id="title" name="title">
+                        <label for="vote_title" class="control-label">投票标题：</label>
+                        <input type="text" class="form-control" id="vote_title" name="title">
                     </div>
                     <div class="form-group">
-                        <label for="describe" class="control-label">投票描述：</label>
-                        <input type="text" class="form-control" id="describe" name="describe">
+                        <label for="vote_describe" class="control-label">投票描述：</label>
+                        <input type="text" class="form-control" id="vote_describe" name="describe">
                     </div>
                     <div class="form-group">
-                        <label for="describe" class="control-label">选项一：</label>
+                        <label for="choose1" class="control-label">选项一：</label>
                         <input type="text" class="form-control" id="choose1" name="choose1">
                     </div>
                     <div class="form-group">
-                        <label for="describe" class="control-label">选项二：</label>
+                        <label for="choose2" class="control-label">选项二：</label>
                         <input type="text" class="form-control" id="choose2" name="choose2">
                     </div>
                     <div class="form-group">
-                        <label for="describe" class="control-label">选项三：</label>
+                        <label for="choose3" class="control-label">选项三：</label>
                         <input type="text" class="form-control" id="choose3" name="choose3">
                     </div>
                     <div class="form-group">
-                        <label for="describe" class="control-label">选项四：</label>
+                        <label for="choose4" class="control-label">选项四：</label>
                         <input type="text" class="form-control" id="choose4" name="choose4">
                     </div>
                     <div class="modal-footer">
@@ -150,19 +150,24 @@
         </div>
     </div>
 </div>
-<div class="ylcon">
-    <p class="tit">
+<div class="discuss">
+    <p class="title">
         所有讨论
     </p>
     <div id="messDivId">
-        <div class="story">
+        <div class="discuss_main">
             <div class="opbtn"></div>
-            <p class="story_t">标题</p>
-            <p class="story_time">2015/07/12 20:48</p>
-            <p class="story_m">描述</p>
-            <p class="story_hf">发起人</p>
+            <p class="discuss_title">标题</p>
+            <p class="discuss_time">2015/07/12 20:48</p>
+            <p class="discuss_desc">描述</p>
+            <p class="discuss_person">发起人</p>
         </div>
     </div>
+</div>
+<div style="text-align: right;margin-top:20px;">
+    <input type="button" id="pageDown" value="上一页" class="btn btn-xs" th:if="${session.discuss_page>0}" onclick="prePage()">
+    <span th:text="'第'+${session.discuss_page+1}+'页'"></span>
+    <input type="button" id="pageUp" value="下一页" class="btn btn-xs" th:if="${(session.discuss_page+1)*4<session.chooseCourseCount}" onclick="nextPage()">
 </div>
 </body>
 </html>
