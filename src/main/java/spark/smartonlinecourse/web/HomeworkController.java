@@ -38,7 +38,7 @@ public class HomeworkController {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         String now=dateTimeFormatter.format(LocalDateTime.now());
         model.addAttribute("now",now);
-        Course course=courseService.selecCoursetByCourseId(courseId);
+        Course course=courseService.selectCourseByCourseId(courseId);
         User user= (User) session.getAttribute("user");
         Boolean ownFlag=courseService.ownCourse(courseId,user.getUserId());
         course.setOwnFlag(ownFlag);

@@ -68,7 +68,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public Course selecCoursetByCourseId(Integer courseId) {
+    public Course selectCourseByCourseId(Integer courseId) {
         return courseMapper.selectCourseByCourseId(courseId);
     }
 

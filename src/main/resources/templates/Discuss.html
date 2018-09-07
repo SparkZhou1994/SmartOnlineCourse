@@ -29,145 +29,208 @@
         .discuss_person{background:rgb(245,245,245);font-size:1.2em;border:1px solid rgba(204,204,204,0.2);border-radius:2px;color:rgba(110,110,110,1);padding:4px;margin-bottom:5px;}
         .opbtn{position:absolute;top: 0;right: 0;}
     </style>
+    <script type="text/javascript">
+        function discussCheck(){
+            var discussTitle=$("#discuss_title").val();
+            if(discussTitle.length==0||discussTitle==""){
+                alert("讨论标题不能为空");
+                return false;
+            }
+            var discussDescribe=$("#discuss_describe").val();
+            if(discussDescribe.length==0||discussDescribe==""){
+                alert("讨论描述不能为空");
+                return false;
+            }
+        }
+        function voteCheck(){
+            var voteTitle=$("#vote_title").val();
+            if(voteTitle.length==0||voteTitle==""){
+                alert("投票标题不能为空");
+                return false;
+            }
+            var voteDescribe=$("#vote_describe").val();
+            if(voteDescribe.length==0||voteDescribe==""){
+                alert("投票描述不能为空");
+                return false;
+            }
+        }
+        function loginOut(){
+            //$(location).attr('href', 'index');
+            //$(window).attr('location','index');
+            $(location).prop('href', 'index');
+            $.session.clear();
+        }
+        function nextPage(){
+            var courseId=[[${current_course.getCourseId()}]];
+            var url='/SmartOnlineCourse/discuss_next_page/'+courseId;
+            formPost(url,0);
+        }
+        function prePage(){
+            var courseId=[[${current_course.getCourseId()}]];
+            var url='/SmartOnlineCourse/discuss_pre_page/'+courseId;
+            formPost(url,0);
+        }
+        function formPost(url,params) {
+            var temp = document.createElement("form");
+            temp.action = url;
+            temp.method = "post";
+            temp.style.display = "none";
+            var hideInput = document.createElement("input");
+            hideInput.type="hidden";
+            //传入参数名,相当于get请求中的content=
+            hideInput.name= "content";
+            //传入数据，只传递了一个参数内容，实际可传递多个。
+            hideInput.value= params;
+            temp.appendChild(hideInput);
+            document.body.appendChild(temp);
+            temp.submit();
+            return temp;
+        }
+    </script>
     <meta name="viewprot"
           content="width=devive-width,initial-scale=1,user-scalable=no">
 </head>
 <body>
-<div class="header">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-6 col-xs-6 col-sm-6">
-                <div class="text-left">
-                    <img th:src="@{/image/logo.png}" height="50">
-                    <h4 style="display: inline;margin-left: 10px;">智能云班课</h4>
-                </div>
-            </div>
-            <div class="col-md-6 col-xs-6 col-sm-6">
-                <div class="text-right">
-                    <ul class="list-unstyle list-inline" style="margin-top: 4px;" th:object="${session.user}">
-                        <li><a th:href="@{/task_list}"><span class="glyphicon glyphicon-flag"></span><h4 style="display: inline;margin-left: 5px;">任务中心</h4></a></li>
-                        <li><a th:href="@{/course_package}"><span class="glyphicon glyphicon-folder-close"></span><h4 style="display: inline;margin-left: 5px;">课程包</h4></a></li>
-                        <li><a th:href="@{/exam_list}"><span class="glyphicon glyphicon-hdd"></span><h4 style="display: inline;margin-left: 5px;">库管理</h4></a></li>
-                        <li><a th:href="@{/exam_list}"><span class="glyphicon glyphicon-list-alt"></span><h4 style="display: inline;margin-left: 5px;">我的题库</h4></a></li>
-                        <li><img th:src="@{${session.user.getAvatar()}}" style="width:34px;height:34px" class="img-responsive img-thumbnail"></li>
-                        <li><a th:href="@{/my_infor}"><h4 th:text="*{userName}"></h4></a></li>
-                        <li><a onclick="loginOut()"><h4>退出</h4></a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div style="height:172px;width: 100%;background: url(/static/image/header_background.JPG) no-repeat;">
+    <div class="header">
         <div class="container">
             <div class="row">
-                <div class="col-md-2 col-xs-2 col-sm-2">
-                    <img src="images/3.jpg" class="img-responsive img-thumbnail">
+                <div class="col-md-6 col-xs-6 col-sm-6">
+                    <div class="text-left">
+                        <img th:src="@{/image/logo.png}" height="50">
+                        <h4 style="display: inline;margin-left: 10px;">智能云班课</h4>
+                    </div>
                 </div>
-                <div class="col-md-10 col-xs-10 col-sm-10">
-                    <h2>课程名</h2>
-                    <h3>任课老师</h3>
-                    <ul class="list-unstyle list-inline" style="margin-top: 4px;">
-                        <li><a class="btn" th:href="@{'/course_ware/'+${current_course_id}}"><h4>课件</h4></a></li>
-                        <li><a class="btn" th:href="@{'/homework/'+${current_course_id}}"><h4>作业</h4></a></li>
-                        <li><a class="btn" th:href="@{'/sign/'+${current_course_id}}"><h4>讨论</h4></a></li>
-                        <li><a class="btn" th:href="@{'/discuss/'+${current_course_id}}"><h4>消息</h4></a></li>
-                        <li><a class="btn" th:href="@{'/sign/'+${current_course_id}}"><h4>签到</h4></a></li>
-                    </ul>
+                <div class="col-md-6 col-xs-6 col-sm-6">
+                    <div class="text-right">
+                        <ul class="list-unstyle list-inline" style="margin-top: 4px;" th:object="${session.user}">
+                            <li><a th:href="@{/task_list}"><span class="glyphicon glyphicon-flag"></span><h4 style="display: inline;margin-left: 5px;">任务中心</h4></a></li>
+                            <li><a th:href="@{/course_package}"><span class="glyphicon glyphicon-folder-close"></span><h4 style="display: inline;margin-left: 5px;">课程包</h4></a></li>
+                            <li><a th:href="@{/exam_list}"><span class="glyphicon glyphicon-hdd"></span><h4 style="display: inline;margin-left: 5px;">库管理</h4></a></li>
+                            <li><a th:href="@{/exam_list}"><span class="glyphicon glyphicon-list-alt"></span><h4 style="display: inline;margin-left: 5px;">我的题库</h4></a></li>
+                            <li><img th:src="@{${session.user.getAvatar()}}" style="width:34px;height:34px" class="img-responsive img-thumbnail"></li>
+                            <li><a th:href="@{/my_infor}"><h4 th:text="*{userName}"></h4></a></li>
+                            <li><a onclick="loginOut()"><h4>退出</h4></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="height:172px;width: 100%;background: url(../image/header_background.jpg) no-repeat;">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-2 col-xs-2 col-sm-2">
+                        <img th:src="@{${current_course.getAvatar()}}" class="img-responsive img-thumbnail">
+                    </div>
+                    <div class="col-md-10 col-xs-10 col-sm-10">
+                        <h2 th:text="${current_course.getCourseName()}"></h2>
+                        <h3 th:text="${current_course.getUserName()}"></h3>
+                        <ul class="list-unstyle list-inline" style="margin-top: 4px;">
+                            <li><a class="btn" th:href="@{'/course_ware/'+${current_course.getCourseId()}}"><h4>课件</h4></a></li>
+                            <li><a class="btn" th:href="@{'/homework/'+${current_course.getCourseId()}}"><h4>作业</h4></a></li>
+                            <li><a class="btn" th:href="@{'/discuss/'+${current_course.getCourseId()}}"><h4>讨论/投票</h4></a></li>
+                            <li><a class="btn" th:href="@{'/message/'+${current_course.getCourseId()}}"><h4>消息</h4></a></li>
+                            <li><a class="btn" th:href="@{'/sign/'+${current_course.getCourseId()}}"><h4>签到</h4></a></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-<div id="discuss" class="container" style="width: 480px;height:177px;margin:20px auto">
-    <div class="btn btn-primary" style="margin-right: 20px;" data-toggle="modal" data-target="#discuss_release">发布讨论</div>
-    <div class="btn btn-primary" data-toggle="modal" data-target="#vote_release">发起投票</div>
-</div>
-<div class="modal fade" id="discuss_release" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="modalLabel">发布讨论</h4>
-            </div>
-            <div class="modal-body">
-                <form enctype="multipart/form-data" method="post" onsubmit="return check()" th:action="@{'/homework_release/'+${current_course.getCourseId()}}">
-                    <div class="form-group">
-                        <label for="discuss_title" class="control-label">讨论标题：</label>
-                        <input type="text" class="form-control" id="discuss_title" name="title">
-                    </div>
-                    <div class="form-group">
-                        <label for="discuss_describe" class="control-label">讨论描述：</label>
-                        <input type="text" class="form-control" id="discuss_describe" name="describe">
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                        <button type="submit" class="btn btn-primary">创建</button>
-                    </div>
-                </form>
+    <div id="discuss" class="container" style="width: 480px;height:177px;margin:20px auto">
+        <div class="btn btn-primary" style="margin-right: 20px;" data-toggle="modal" data-target="#discuss_release">发布讨论</div>
+        <div class="btn btn-primary" data-toggle="modal" data-target="#vote_release">发起投票</div>
+    </div>
+    <div class="modal fade" id="discuss_release" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="modalLabel">发布讨论</h4>
+                </div>
+                <div class="modal-body">
+                    <form enctype="multipart/form-data" method="post" onsubmit="return discussCheck()" th:action="@{'/discuss_insert/'+${current_course.getCourseId()}}">
+                        <div class="form-group">
+                            <label for="discuss_title" class="control-label">讨论标题：</label>
+                            <input type="text" class="form-control" id="discuss_title" name="title">
+                        </div>
+                        <div class="form-group">
+                            <label for="discuss_describe" class="control-label">讨论描述：</label>
+                            <input type="text" class="form-control" id="discuss_describe" name="describe">
+                        </div>
+                        <input type="text" class="form-control" style="display: none" id="discuss_vote_string" name="voteString" value="讨论">
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                            <button type="submit" class="btn btn-primary">创建</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<div class="modal fade" id="vote_release" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="modalLabel2">发起投票</h4>
-            </div>
-            <div class="modal-body">
-                <form enctype="multipart/form-data" method="post" onsubmit="return check()" th:action="@{'/homework_release/'+${current_course.getCourseId()}}">
-                    <div class="form-group">
-                        <label for="vote_title" class="control-label">投票标题：</label>
-                        <input type="text" class="form-control" id="vote_title" name="title">
-                    </div>
-                    <div class="form-group">
-                        <label for="vote_describe" class="control-label">投票描述：</label>
-                        <input type="text" class="form-control" id="vote_describe" name="describe">
-                    </div>
-                    <div class="form-group">
-                        <label for="choose1" class="control-label">选项一：</label>
-                        <input type="text" class="form-control" id="choose1" name="choose1">
-                    </div>
-                    <div class="form-group">
-                        <label for="choose2" class="control-label">选项二：</label>
-                        <input type="text" class="form-control" id="choose2" name="choose2">
-                    </div>
-                    <div class="form-group">
-                        <label for="choose3" class="control-label">选项三：</label>
-                        <input type="text" class="form-control" id="choose3" name="choose3">
-                    </div>
-                    <div class="form-group">
-                        <label for="choose4" class="control-label">选项四：</label>
-                        <input type="text" class="form-control" id="choose4" name="choose4">
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                        <button type="submit" class="btn btn-primary">创建</button>
-                    </div>
-                </form>
+    <div class="modal fade" id="vote_release" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="modalLabel2">发起投票</h4>
+                </div>
+                <div class="modal-body">
+                    <form enctype="multipart/form-data" method="post" onsubmit="return voteCheck()" th:action="@{'/discuss_insert/'+${current_course.getCourseId()}}">
+                        <div class="form-group">
+                            <label for="vote_title" class="control-label">投票标题：</label>
+                            <input type="text" class="form-control" id="vote_title" name="title">
+                        </div>
+                        <div class="form-group">
+                            <label for="vote_describe" class="control-label">投票描述：</label>
+                            <input type="text" class="form-control" id="vote_describe" name="describe">
+                        </div>
+                        <div class="form-group">
+                            <label for="choose1" class="control-label">选项一：</label>
+                            <input type="text" class="form-control" id="choose1" name="choose1">
+                        </div>
+                        <div class="form-group">
+                            <label for="choose2" class="control-label">选项二：</label>
+                            <input type="text" class="form-control" id="choose2" name="choose2">
+                        </div>
+                        <div class="form-group">
+                            <label for="choose3" class="control-label">选项三：</label>
+                            <input type="text" class="form-control" id="choose3" name="choose3">
+                        </div>
+                        <div class="form-group">
+                            <label for="choose4" class="control-label">选项四：</label>
+                            <input type="text" class="form-control" id="choose4" name="choose4">
+                        </div>
+                        <input type="text" class="form-control" style="display: none" id="vote_vote_string" name="voteString" value="投票">
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                            <button type="submit" class="btn btn-primary">创建</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<div class="discuss">
-    <p class="title">
-        所有讨论
-    </p>
-    <div id="messDivId">
-        <div class="discuss_main">
-            <div class="opbtn"></div>
-            <p class="discuss_title">标题</p>
-            <p class="discuss_time">2015/07/12 20:48</p>
-            <p class="discuss_desc">描述</p>
-            <p class="discuss_person">发起人</p>
+    <div class="discuss">
+        <p class="title">
+            所有讨论
+        </p>
+        <a id="messDivId" th:each="discuss:${discuss_list}">
+            <div class="discuss_main">
+                <div class="opbtn"></div>
+                <p th:text="${discuss.getTitle()}" class="discuss_title">标题</p>
+                <p th:text="${discuss.getLastPublishTimeString()}" class="discuss_time">2015/07/12 20:48</p>
+                <p th:text="${discuss.getDescribe()}" class="discuss_desc">描述</p>
+                <p th:text="${discuss.getUserName()}" class="discuss_person">发起人</p>
+                <p th:text="${discuss.getDiscussId()}" style="display: none"></p>
+            </div>
+        </a>
+    </div>
+    <div class="container">
+        <div style="text-align: right;margin-top:20px;">
+            <input type="button" id="pageDown" value="上一页" class="btn btn-xs" th:if="${session.discuss_page>0}" onclick="prePage()">
+            <span th:text="'第'+${session.discuss_page+1}+'页/共'+${total_page}+'页'"></span>
+            <input type="button" id="pageUp" value="下一页" class="btn btn-xs" th:if="${(session.discuss_page+1)<total_page}" onclick="nextPage()">
         </div>
     </div>
-</div>
-<div style="text-align: right;margin-top:20px;">
-    <input type="button" id="pageDown" value="上一页" class="btn btn-xs" th:if="${session.discuss_page>0}" onclick="prePage()">
-    <span th:text="'第'+${session.discuss_page+1}+'页'"></span>
-    <input type="button" id="pageUp" value="下一页" class="btn btn-xs" th:if="${(session.discuss_page+1)*4<session.chooseCourseCount}" onclick="nextPage()">
-</div>
 </body>
 </html>

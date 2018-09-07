@@ -33,7 +33,7 @@ public class CourseWareController {
     @GetMapping("/course_ware/{course_id}")
     public String courseWare(@PathVariable(name="course_id") Integer courseId, HttpSession session, Model model){
         User user= (User) session.getAttribute("user");
-        Course course=courseService.selecCoursetByCourseId(courseId);
+        Course course=courseService.selectCourseByCourseId(courseId);
         Boolean ownFlag=courseService.ownCourse(courseId,user.getUserId());
         course.setOwnFlag(ownFlag);
         model.addAttribute("current_course",course);

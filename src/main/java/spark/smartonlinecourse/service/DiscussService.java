@@ -16,4 +16,5 @@ public interface DiscussService {
     Boolean insertDiscuss(Discuss discuss);
     Boolean updateDiscuss(Integer discussId);
     Integer selectCountByCourseId(Integer courseId);
+    Discuss selectByDiscussId(Integer discussId);
 }

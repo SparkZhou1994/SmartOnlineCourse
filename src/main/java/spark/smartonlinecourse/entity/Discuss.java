@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 public class Discuss {
     private Integer discussId;
     private Integer courseId;
-    private Integer useId;
+    private Integer userId;
     private String userName;
     private String title;
     private String describe;
@@ -113,12 +113,12 @@ public class Discuss {
         this.voteString = voteString;
     }
 
-    public Integer getUseId() {
-        return useId;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setUseId(Integer useId) {
-        this.useId = useId;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public String getUserName() {

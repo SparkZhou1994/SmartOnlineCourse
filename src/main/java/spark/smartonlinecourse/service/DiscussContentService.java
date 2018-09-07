@@ -16,5 +16,5 @@ public interface DiscussContentService {
     List<DiscussContent> selectByDiscussIdAndPage(Integer discussId,Integer page);
     Boolean insertDiscussContent(DiscussContent discussContent);
     Integer selectAllCountByDiscussId(Integer discussId);
-    Integer selectChooseCountByDiscussIdAndChoose(Integer discussId,String choose);
+    Integer selectChooseCountByDiscussIdAndChoose(Integer discussId,Character choose);
 }

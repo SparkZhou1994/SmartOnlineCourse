@@ -16,7 +16,7 @@ public class DiscussContent {
     private String userName;
     private String content;
     private LocalDateTime publishTime;
-    private String choose;
+    private Character choose;
 
     public Integer getDiscussContentId() {
         return discussContentId;
@@ -58,11 +58,11 @@ public class DiscussContent {
         this.publishTime = publishTime;
     }
 
-    public String getChoose() {
+    public Character getChoose() {
         return choose;
     }
 
-    public void setChoose(String choose) {
+    public void setChoose(Character choose) {
         this.choose = choose;
     }
 

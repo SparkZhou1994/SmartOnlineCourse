@@ -17,4 +17,5 @@ public interface DiscussMapper {
     Integer insertDiscuss(Discuss discuss);
     Integer updateDiscuss(Discuss discuss);
     Integer selectCountByCourseId(Integer courseId);
+    Discuss selectByDiscussId(Integer discussId);
 }

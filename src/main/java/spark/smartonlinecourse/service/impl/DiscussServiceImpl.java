@@ -36,6 +36,9 @@ public class DiscussServiceImpl implements DiscussService {
             discuss.setLastPublishTimeString(discuss.getLastPublishTime().toString());
             if(discuss.getVote().equals('1')){
                 discuss.setVoteString("投票");
+                String title=discuss.getTitle();
+                title="[投票]"+title;
+                discuss.setTitle(title);
             }else{
                 discuss.setVoteString("讨论");
             }
@@ -75,6 +78,12 @@ public class DiscussServiceImpl implements DiscussService {
     @Override
     public Integer selectCountByCourseId(Integer courseId) {
         return discussMapper.selectCountByCourseId(courseId);
+    }
+
+    @Override
+    public Discuss selectByDiscussId(Integer discussId) {
+        Discuss discuss=discussMapper.selectByDiscussId(discussId);
+        return discuss;
     }
 
 }

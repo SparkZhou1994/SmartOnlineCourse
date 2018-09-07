@@ -8,13 +8,13 @@
         <result column="user_name" property="userName" jdbcType="VARCHAR"/>
         <result column="content" property="content" jdbcType="VARCHAR"/>
         <result column="publish_time" property="publishTime" jdbcType="TIMESTAMP"/>
-        <result column="choose" property="choose" jdbcType="VARCHAR"/>
+        <result column="choose" property="choose" jdbcType="CHAR"/>
     </resultMap>
     <sql id="Discuss_Content_Column_List" >
       discuss_content_id,discuss_id,discuss_content.user_id,user_name,content,publish_time,choose
     </sql>
 
-    <select id="selectByDiscussIdAndStart" parameterType="spark.smartonlinecourse.entity.Key" resultMap="Discuss_Content_Column_List">
+    <select id="selectByDiscussIdAndStart" parameterType="spark.smartonlinecourse.entity.Key" resultMap="DiscussContentResultMap">
       select
       <include refid="Discuss_Content_Column_List"/>
       from discuss_content
@@ -49,6 +49,6 @@
 
     <select id="selectChooseCountByDiscussIdAndChoose" parameterType="spark.smartonlinecourse.entity.DiscussContent" resultType="java.lang.Integer">
         select count(*) from discuss_content where discuss_id=#{discussId}
-        and choose=#{choose,javaType=java.lang.String,jdbcType=CHAR}
+        and choose=#{choose,javaType=java.lang.Character,jdbcType=CHAR}
     </select>
 </mapper>

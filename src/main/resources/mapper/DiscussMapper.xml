@@ -9,17 +9,17 @@
         <result column="title" property="title" jdbcType="VARCHAR"/>
         <result column="describe" property="describe" jdbcType="VARCHAR"/>
         <result column="last_publish_time" property="lastPublishTime" jdbcType="TIMESTAMP" />
-        <result column="vote" property="type" jdbcType="CHAR"/>
-        <result column="choose1" property="choose1" jdbcType="VARCHAR" />
-        <result column="choose2" property="choose2" jdbcType="VARCHAR"/>
-        <result column="choose3" property="choose3" jdbcType="VARCHAR"/>
-        <result column="choose4" property="choose4" jdbcType="VARCHAR"/>
+        <result column="vote" property="vote" jdbcType="CHAR"/>
+        <result column="choose_1" property="choose1" jdbcType="VARCHAR" />
+        <result column="choose_2" property="choose2" jdbcType="VARCHAR"/>
+        <result column="choose_3" property="choose3" jdbcType="VARCHAR"/>
+        <result column="choose_4" property="choose4" jdbcType="VARCHAR"/>
     </resultMap>
     <sql id="Discuss_Column_List" >
-    discuss_id,course_id,discuss.user_id,user_name,title,`describe`,last_publish_time,vote,choose1,choose2,choose3,choose4
+    discuss_id,course_id,discuss.user_id,user_name,title,`describe`,last_publish_time,vote,choose_1,choose_2,choose_3,choose_4
     </sql>
 
-    <select id="selectByCourseIdAndStart" parameterType="spark.smartonlinecourse.entity.Key" resultMap="Discuss_Column_List">
+    <select id="selectByCourseIdAndStart" parameterType="spark.smartonlinecourse.entity.Key" resultMap="DiscussResultMap">
         select
         <include refid="Discuss_Column_List"/>
         from discuss
@@ -30,22 +30,22 @@
     </select>
 
     <insert id="insertDiscuss" parameterType="spark.smartonlinecourse.entity.Discuss">
-        insert into discuss(course_id,user_id,title,vote
+        insert into discuss(course_id,user_id,title,`describe`,last_publish_time,vote
         <if test="vote =='1'">
             <if test="choose1 != null and choose1 !=''">
-                ,choose1
+                ,choose_1
             </if>
             <if test="choose2 != null and choose2 != ''">
-                ,choose2
+                ,choose_2
             </if>
             <if test="choose3 != null and choose3 !=''">
-                ,choose3
+                ,choose_3
             </if>
             <if test="choose4 !=null and choose4 != ''">
-                ,choose4
+                ,choose_4
             </if>
         </if>
-        ) values(#{courseId},#{userId},#{title},#{vote}
+        ) values(#{courseId},#{userId},#{title},#{describe},#{lastPublishTime,jdbcType=TIMESTAMP,javaType=java.time.LocalDateTime},#{vote}
         <if test="vote =='1'">
             <if test="choose1 != null and choose1 !=''">
                 ,#{choose1}
@@ -70,5 +70,13 @@
 
     <select id="selectCountByCourseId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
         select count(*) from discuss where course_id=#{courseId}
+    </select>
+
+    <select id="selectByDiscussId" parameterType="java.lang.Integer" resultMap="DiscussResultMap">
+        select
+        <include refid="Discuss_Column_List"/>
+        from discuss
+        join `user` on `user`.user_id=discuss.user_id
+        where discuss_id=#{discussId}
     </select>
 </mapper>

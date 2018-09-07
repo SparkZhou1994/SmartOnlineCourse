@@ -60,7 +60,7 @@ public class DiscussContentServiceImpl implements DiscussContentService {
     }
 
     @Override
-    public Integer selectChooseCountByDiscussIdAndChoose(Integer discussId, String choose) {
+    public Integer selectChooseCountByDiscussIdAndChoose(Integer discussId, Character choose) {
         DiscussContent discussContent=new DiscussContent();
         discussContent.setDiscussId(discussId);
         discussContent.setChoose(choose);
