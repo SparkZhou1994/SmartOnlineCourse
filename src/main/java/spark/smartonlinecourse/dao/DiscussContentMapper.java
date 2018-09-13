@@ -17,4 +17,5 @@ public interface DiscussContentMapper {
     Integer insertDiscussContent(DiscussContent discussContent);
     Integer selectAllCountByDiscussId(Integer discussId);
     Integer selectChooseCountByDiscussIdAndChoose(DiscussContent discussContent);
+    Integer selectCountByDiscussIdAndUserId(DiscussContent discussContent);
 }

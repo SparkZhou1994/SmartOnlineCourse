@@ -214,14 +214,13 @@
         <p class="title">
             所有讨论
         </p>
-        <a id="messDivId" th:each="discuss:${discuss_list}">
+        <a id="messDivId" th:each="discuss:${discuss_list}" th:href="@{'/discuss_content/'+${discuss.getDiscussId()}}">
             <div class="discuss_main">
                 <div class="opbtn"></div>
                 <p th:text="${discuss.getTitle()}" class="discuss_title">标题</p>
                 <p th:text="${discuss.getLastPublishTimeString()}" class="discuss_time">2015/07/12 20:48</p>
                 <p th:text="${discuss.getDescribe()}" class="discuss_desc">描述</p>
                 <p th:text="${discuss.getUserName()}" class="discuss_person">发起人</p>
-                <p th:text="${discuss.getDiscussId()}" style="display: none"></p>
             </div>
         </a>
     </div>

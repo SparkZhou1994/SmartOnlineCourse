@@ -16,6 +16,7 @@ public class DiscussContent {
     private String userName;
     private String content;
     private LocalDateTime publishTime;
+    private String publishTimeString;
     private Character choose;
 
     public Integer getDiscussContentId() {
@@ -72,5 +73,13 @@ public class DiscussContent {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public String getPublishTimeString() {
+        return publishTimeString;
+    }
+
+    public void setPublishTimeString(String publishTimeString) {
+        this.publishTimeString = publishTimeString;
     }
 }

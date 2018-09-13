@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import spark.smartonlinecourse.dao.DiscussContentMapper;
 import spark.smartonlinecourse.dao.DiscussMapper;
+import spark.smartonlinecourse.entity.Discuss;
 import spark.smartonlinecourse.entity.DiscussContent;
 import spark.smartonlinecourse.entity.Key;
 import spark.smartonlinecourse.service.DiscussContentService;
@@ -36,12 +37,24 @@ public class DiscussContentServiceImpl implements DiscussContentService {
         Integer start=page*10;
         key.setStart(start);
         List<DiscussContent> discussContentList=discussContentMapper.selectByDiscussIdAndStart(key);
+        for(DiscussContent discussContent : discussContentList){
+            if(discussContent.getPublishTime()!=null){
+                discussContent.setPublishTimeString(discussContent.getPublishTime().toString());
+            }
+        }
         return discussContentList;
     }
 
     @Override
     public Boolean insertDiscussContent(DiscussContent discussContent) {
         discussContent.setPublishTime(LocalDateTime.now());
+        Discuss discuss=discussService.selectByDiscussId(discussContent.getDiscussId());
+        if(discuss.getVote()=='1'){
+            Integer count=discussContentMapper.selectCountByDiscussIdAndUserId(discussContent);
+            if(count>=1){
+                throw new RuntimeException("重复投票");
+            }
+        }
         Integer status=discussContentMapper.insertDiscussContent(discussContent);
         Boolean updateStatus=discussService.updateDiscuss(discussContent.getDiscussId());
         if(status==1){
@@ -56,7 +69,8 @@ public class DiscussContentServiceImpl implements DiscussContentService {
 
     @Override
     public Integer selectAllCountByDiscussId(Integer discussId) {
-        return discussContentMapper.selectAllCountByDiscussId(discussId);
+        Integer count=discussContentMapper.selectAllCountByDiscussId(discussId);
+        return count;
     }
 
     @Override

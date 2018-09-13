@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="spark.smartonlinecourse.dao.DiscussMapper" >
+<mapper namespace="spark.smartonlinecourse.dao.DiscussContentMapper" >
     <resultMap id="DiscussContentResultMap" type="spark.smartonlinecourse.entity.DiscussContent" >
         <id column="discuss_content_id" property="discussContentId" jdbcType="INTEGER" />
         <result column="discuss_id" property="discussId" jdbcType="INTEGER" />
@@ -50,5 +50,10 @@
     <select id="selectChooseCountByDiscussIdAndChoose" parameterType="spark.smartonlinecourse.entity.DiscussContent" resultType="java.lang.Integer">
         select count(*) from discuss_content where discuss_id=#{discussId}
         and choose=#{choose,javaType=java.lang.Character,jdbcType=CHAR}
+    </select>
+
+    <select id="selectCountByDiscussIdAndUserId" parameterType="spark.smartonlinecourse.entity.DiscussContent" resultType="java.lang.Integer">
+        select count(*) from discuss_content where discuss_id=#{discussId}
+        and user_id=#{userId}
     </select>
 </mapper>
