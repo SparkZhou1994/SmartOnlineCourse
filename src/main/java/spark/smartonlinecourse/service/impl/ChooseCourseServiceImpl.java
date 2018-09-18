@@ -11,6 +11,7 @@ import spark.smartonlinecourse.service.ChooseCourseService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -45,5 +46,11 @@ public class ChooseCourseServiceImpl implements ChooseCourseService {
         }else{
             throw  new RuntimeException("添加课程失败!");
         }
+    }
+
+    @Override
+    public List<Integer> selectChooseCourseId(Key key) {
+        List<Integer> chooseCourseIdList=chooseCourseMapper.selectChooseCourseId(key);
+        return chooseCourseIdList;
     }
 }

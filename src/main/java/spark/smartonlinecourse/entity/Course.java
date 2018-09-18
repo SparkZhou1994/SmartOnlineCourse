@@ -15,6 +15,8 @@ public class Course {
 
     private Boolean ownFlag;
 
+    private Byte avgScore;
+
     public Integer getCourseId() {
         return courseId;
     }
@@ -69,5 +71,13 @@ public class Course {
 
     public void setOwnFlag(Boolean ownFlag) {
         this.ownFlag = ownFlag;
+    }
+
+    public Byte getAvgScore() {
+        return avgScore;
+    }
+
+    public void setAvgScore(Byte avgScore) {
+        this.avgScore = avgScore;
     }
 }

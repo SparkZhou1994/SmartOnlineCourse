@@ -14,7 +14,8 @@ import java.util.List;
  **/
 public interface CourseMapper {
     List<Course> selectTop(Integer start);
-    int insertCourse(Course course);
+    Integer insertCourse(Course course);
     Course selectCourseByCourseId(Integer courseId);
     Integer selectCoursIdByCourseNameAndUserId(Key key);
+    Integer updateScore(Course course);
 }

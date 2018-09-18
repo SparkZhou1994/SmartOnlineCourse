@@ -1,6 +1,7 @@
 package spark.smartonlinecourse.service;
 
 import org.springframework.web.multipart.MultipartFile;
+import spark.smartonlinecourse.entity.ChooseCourse;
 import spark.smartonlinecourse.entity.Course;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,4 +20,5 @@ public interface CourseService {
     Course insertCourse(Course course, MultipartFile file, HttpServletRequest request,Integer userId);
     Course selectCourseByCourseId(Integer courseId);
     Boolean ownCourse(Integer courseId,Integer userId);
+    Boolean updateScore(ChooseCourse chooseCourse);
 }

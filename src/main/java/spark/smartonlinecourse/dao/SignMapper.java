@@ -19,4 +19,5 @@ public interface SignMapper {
     Sign selectSignByChooseCourseIdAndBatch(Key key);
     List<Sign> selectSignByCourseIdAndUserIdAndStartAndRow(Key key);
     Integer selectCountByCourseIdAndUserId(Key key);
+    List<Key> selectChooseCourseIdAndCount();
 }

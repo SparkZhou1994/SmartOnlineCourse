@@ -35,7 +35,7 @@ public class DiscussController {
     DiscussContentService discussContentService;
 
     @Autowired
-    CourseService courserService;
+    CourseService courseService;
 
     @GetMapping("/discuss/{course_id}")
     public String discuss(@PathVariable(name="course_id") Integer courseId, HttpSession session,Model model){
@@ -46,7 +46,7 @@ public class DiscussController {
         if(totalPage ==0){
             totalPage=1;
         }
-        Course course=courserService.selectCourseByCourseId(courseId);
+        Course course=courseService.selectCourseByCourseId(courseId);
         model.addAttribute("current_course",course);
         model.addAttribute("discuss_list",discussList);
         model.addAttribute("total_page",totalPage);
@@ -76,7 +76,7 @@ public class DiscussController {
         if(totalPage ==0){
             totalPage=1;
         }
-        Course course=courserService.selectCourseByCourseId(courseId);
+        Course course=courseService.selectCourseByCourseId(courseId);
         model.addAttribute("current_course",course);
         model.addAttribute("discuss_list",discussList);
         model.addAttribute("total_page",totalPage);
@@ -94,7 +94,7 @@ public class DiscussController {
         if(totalPage ==0){
             totalPage=1;
         }
-        Course course=courserService.selectCourseByCourseId(courseId);
+        Course course=courseService.selectCourseByCourseId(courseId);
         model.addAttribute("current_course",course);
         model.addAttribute("discuss_list",discussList);
         model.addAttribute("total_page",totalPage);
@@ -129,7 +129,7 @@ public class DiscussController {
             model.addAttribute("discuss_content_list",discussContentList);
             model.addAttribute("vote",0);
         }
-        Course course=courserService.selectCourseByCourseId(discuss.getCourseId());
+        Course course=courseService.selectCourseByCourseId(discuss.getCourseId());
         model.addAttribute("current_course",course);
         return "DiscussContent";
     }
@@ -176,7 +176,7 @@ public class DiscussController {
             model.addAttribute("discuss_content_list",discussContentList);
             model.addAttribute("vote",0);
         }
-        Course course=courserService.selectCourseByCourseId(discuss.getCourseId());
+        Course course=courseService.selectCourseByCourseId(discuss.getCourseId());
         model.addAttribute("current_course",course);
         return "DiscussContent";
     }
@@ -210,7 +210,7 @@ public class DiscussController {
             model.addAttribute("discuss_content_list",discussContentList);
             model.addAttribute("vote",0);
         }
-        Course course=courserService.selectCourseByCourseId(discuss.getCourseId());
+        Course course=courseService.selectCourseByCourseId(discuss.getCourseId());
         model.addAttribute("current_course",course);
         return "DiscussContent";
     }

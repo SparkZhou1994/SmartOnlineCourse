@@ -41,4 +41,12 @@
             </if>
         </where>
     </select>
+
+    <select id="selectAvgScore" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select avg(score) as avgScore from choose_course where course_id=#{courseId}
+    </select>
+
+    <update id="updateScore" parameterType="spark.smartonlinecourse.entity.ChooseCourse">
+        update choose_course set score=#{score} where course_id=#{courseId} and user_id=#{userId}
+    </update>
 </mapper>

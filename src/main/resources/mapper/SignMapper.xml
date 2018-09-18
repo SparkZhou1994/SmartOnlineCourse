@@ -12,6 +12,10 @@
         <result column="range" property="range" jdbcType="CHAR"/>
     </resultMap>
 
+    <resultMap id="SignNotSubmitMap" type="spark.smartonlinecourse.entity.Key">
+        <id column="choose_course_id" property="chooseCourseId" jdbcType="INTEGER"/>
+        <result column="count_num" property="count" jdbcType="INTEGER"/>
+    </resultMap>
     <sql id="Sign_Column_List" >
         sign_id,sign.choose_course_id,user_name,batch,`code`,sign_time,end_time,`range`
     </sql>
@@ -72,5 +76,10 @@
                 and user_id=#{userId}
             </if>
         </where>
+    </select>
+    
+    <select id="selectChooseCourseIdAndCount" resultMap="SignNotSubmitMap">
+        select choose_course_id,count(*) as count_num from sign where sign_time is null
+        group by choose_course_id
     </select>
 </mapper>

@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import spark.smartonlinecourse.dao.ChooseCourseMapper;
 import spark.smartonlinecourse.dao.CourseMapper;
+import spark.smartonlinecourse.entity.ChooseCourse;
 import spark.smartonlinecourse.entity.Course;
 import spark.smartonlinecourse.entity.Key;
 import spark.smartonlinecourse.service.CourseService;
@@ -79,5 +80,23 @@ public class CourseServiceImpl implements CourseService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public Boolean updateScore(ChooseCourse chooseCourse) {
+        Integer status=chooseCourseMapper.updateScore(chooseCourse);
+        if(status==1){
+            Integer avgScoreInt=chooseCourseMapper.selectAvgScore(chooseCourse.getCourseId());
+            if(avgScoreInt!=null){
+                Course course = new Course();
+                course.setAvgScore((byte)avgScoreInt.intValue());
+                course.setCourseId(chooseCourse.getCourseId());
+                status=courseMapper.updateScore(course);
+                if(status==1){
+                    return Boolean.TRUE;
+                }
+            }
+        }
+        return Boolean.FALSE;
     }
 }

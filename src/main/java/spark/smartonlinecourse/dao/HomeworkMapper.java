@@ -17,4 +17,5 @@ public interface HomeworkMapper {
     List<Homework> selectHomework(Key key);
     Integer insertHomework(List homeworkList);
     Integer updateHomework(Homework homework);
+    List<Key> selectChooseCourseIdAndCount();
 }

@@ -20,4 +20,5 @@ public interface HomeworkService {
     Boolean homeworkUpload(Integer homeworkId,MultipartFile file,Integer courseId);
     Boolean homeworkEvaluate(Integer homeworkId,Integer score);
     String homeworkListToJson(Integer courseId,Integer userId,Integer page,Integer row);
+
 }

@@ -11,4 +11,6 @@ public interface ChooseCourseMapper {
     Integer selectCountByUserId(Integer userId);
     Integer insertChooseCourse(Key key);
     List<Integer> selectChooseCourseId(Key key);
+    Integer selectAvgScore(Integer courseId);
+    Integer updateScore(ChooseCourse chooseCourse);
 }

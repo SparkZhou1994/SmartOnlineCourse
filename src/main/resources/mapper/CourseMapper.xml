@@ -8,9 +8,10 @@
         <result column="user_name" property="userName" jdbcType="VARCHAR" />
         <result column="catalog" property="catalog" jdbcType="VARCHAR"/>
         <result column="avatar" property="avatar" jdbcType="VARCHAR" />
+        <result column="avg_score" property="avgScore" jdbcType="TINYINT" javaType="java.lang.Byte"/>
     </resultMap>
     <sql id="Course_Column_List" >
-    course.course_id as course_id, course_name, course.user_id,user_name, `catalog`, course.avatar
+    course.course_id as course_id, course_name, course.user_id,user_name, `catalog`, course.avatar,avg_score
     </sql>
     <select id="selectTop" resultMap="CourseResultMap" parameterType="java.lang.Integer">
         select
@@ -21,8 +22,8 @@
     <insert id="insertCourse" parameterType="spark.smartonlinecourse.entity.Course" useGeneratedKeys="true" keyProperty="courseId"
             keyColumn="course_id" >
         <if test="avatar !=null and avatar !=''">
-            insert into course(course_name,user_id,`catalog`,avatar)
-            values(#{courseName},#{userId},#{catalog},#{avatar})
+            insert into course(course_name,user_id,`catalog`,avatar,avg_score)
+            values(#{courseName},#{userId},#{catalog},#{avatar},80)
         </if>
         <if test="avatar ==null or avatar==''">
             insert into course(course_name,user_id,`catalog`)
@@ -43,4 +44,7 @@
     <select id="selectCoursIdByCourseNameAndUserId" parameterType="spark.smartonlinecourse.entity.Key" resultType="java.lang.Integer">
         select course_id from course where course_name=#{courseName} and user_id=#{userId}
     </select>
+    <update id="updateScore" parameterType="spark.smartonlinecourse.entity.Course">
+        update course set avg_score=#{avgScore} where course_id=#{courseId}
+    </update>
 </mapper>

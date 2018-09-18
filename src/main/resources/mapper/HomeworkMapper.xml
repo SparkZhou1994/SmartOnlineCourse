@@ -16,6 +16,10 @@
         <result column="score" property="score" jdbcType="INTEGER"/>
     </resultMap>
 
+    <resultMap id="HomeworkNotSubmitMap" type="spark.smartonlinecourse.entity.Key">
+        <id column="choose_course_id" property="chooseCourseId" jdbcType="INTEGER"/>
+        <result column="count_num" property="count" jdbcType="INTEGER"/>
+    </resultMap>
     <sql id="Homework_Column_List" >
         homework_id,homework.choose_course_id,user_id,course_id,title,`describe`,attachment,batch,end_time,submit_time,`range`,score
     </sql>
@@ -64,4 +68,9 @@
         </set>
         where homework_id=#{homeworkId}
     </update>
+
+    <select id="selectChooseCourseIdAndCount" resultMap="HomeworkNotSubmitMap">
+        select choose_course_id,count(*) as count_num from homework where submit_time is null
+        group by choose_course_id
+    </select>
 </mapper>
