@@ -8,4 +8,5 @@ import javax.servlet.http.HttpServletRequest;
 public interface UserService {
     User loginComfirm(User user);
     User updateUserInfo(User user, MultipartFile file, HttpServletRequest request);
+    User selectByEmail(String email);
 }

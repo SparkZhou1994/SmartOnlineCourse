@@ -2,10 +2,7 @@ package spark.smartonlinecourse.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import spark.smartonlinecourse.dao.ChooseCourseMapper;
-import spark.smartonlinecourse.dao.HomeworkMapper;
-import spark.smartonlinecourse.dao.MessageMapper;
-import spark.smartonlinecourse.dao.SignMapper;
+import spark.smartonlinecourse.dao.*;
 import spark.smartonlinecourse.entity.Key;
 import spark.smartonlinecourse.entity.Message;
 import spark.smartonlinecourse.service.MessageService;
@@ -29,6 +26,9 @@ public class MessageServiceImpl implements MessageService {
 
     @Autowired
     HomeworkMapper homeworkMapper;
+
+    @Autowired
+    CourseWareMapper courseWareMapper;
 
     @Autowired
     SignMapper signMapper;
@@ -93,5 +93,25 @@ public class MessageServiceImpl implements MessageService {
             messageListAll.addAll(messageList);
         }
         return messageListAll;
+    }
+
+    @Override
+    public Boolean courseWareMessage() {
+        List<Key> newCourseWareList=courseWareMapper.selectChooseCourseIdAndCount();
+        List<Message> messageList=new ArrayList<Message>();
+        for(Key newCourseWare : newCourseWareList){
+            Integer chooseCourseId=newCourseWare.getChooseCourseId();
+            Integer count=newCourseWare.getCount();
+            Message message=new Message();
+            message.setChooseCourseId(chooseCourseId);
+            message.setContent("您有"+count+"个的课件");
+            message.setPublishDate(LocalDate.now());
+            messageList.add(message);
+        }
+        Integer status=messageMapper.insertMessage(messageList);
+        if(messageList.size()==status){
+            return Boolean.TRUE;
+        }
+        return Boolean.FALSE;
     }
 }

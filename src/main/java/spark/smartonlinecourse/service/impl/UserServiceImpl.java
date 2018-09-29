@@ -52,4 +52,10 @@ public class UserServiceImpl implements UserService {
         }
         return null;
     }
+
+    @Override
+    public User selectByEmail(String email) {
+        User user = userMapper.selectByEmail(email);
+        return user;
+    }
 }

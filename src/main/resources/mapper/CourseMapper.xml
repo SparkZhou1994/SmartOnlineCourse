@@ -13,12 +13,14 @@
     <sql id="Course_Column_List" >
     course.course_id as course_id, course_name, course.user_id,user_name, `catalog`, course.avatar,avg_score
     </sql>
+
     <select id="selectTop" resultMap="CourseResultMap" parameterType="java.lang.Integer">
         select
         <include refid="Course_Column_List"/>
         from course,`user`
         where course.user_id=`user`.user_id limit #{start,jdbcType=INTEGER},4
     </select>
+
     <insert id="insertCourse" parameterType="spark.smartonlinecourse.entity.Course" useGeneratedKeys="true" keyProperty="courseId"
             keyColumn="course_id" >
         <if test="avatar !=null and avatar !=''">
@@ -30,6 +32,7 @@
             values(#{courseName},#{userId},#{catalog})
         </if>
     </insert>
+
     <select id="selectCourseByCourseId" parameterType="java.lang.Integer" resultMap="CourseResultMap">
         select
         <include refid="Course_Column_List"/>
@@ -37,13 +40,16 @@
         join `user` on course.user_id = `user`.user_id
         where course_id=#{courseId}
     </select>
+
     <select id="selectBatchByCourseId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
         select MAX(batch) from sign join choose_course on sign.choose_course_id=choose_course.choose_course_id
         where course_id=#{courseId,javaType=java.lang.Integer,jdbcType=INTEGER}
     </select>
+
     <select id="selectCoursIdByCourseNameAndUserId" parameterType="spark.smartonlinecourse.entity.Key" resultType="java.lang.Integer">
         select course_id from course where course_name=#{courseName} and user_id=#{userId}
     </select>
+
     <update id="updateScore" parameterType="spark.smartonlinecourse.entity.Course">
         update course set avg_score=#{avgScore} where course_id=#{courseId}
     </update>

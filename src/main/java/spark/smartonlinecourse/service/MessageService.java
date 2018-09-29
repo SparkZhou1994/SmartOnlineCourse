@@ -16,4 +16,5 @@ public interface MessageService {
     Boolean signMessage();
     List<Message> selectByChooseCouseId(Integer chooseCourseId);
     List<Message> selectByUserId(Integer userId);
+    Boolean courseWareMessage();
 }

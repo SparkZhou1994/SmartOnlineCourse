@@ -15,7 +15,10 @@ public class LoginAndRegisterController {
     private UserService userService;
 
     @GetMapping("/login_and_register")
-    public String loginAndRegister(){
+    public String loginAndRegister(@RequestParam(value = "error", required = false) String error,HttpSession session){
+        session.setAttribute("index_page",0);
+        session.setAttribute("discuss_page", 0);
+        session.setAttribute("discuss_content_page",0 );
         return "LoginAndRegister";
     }
 

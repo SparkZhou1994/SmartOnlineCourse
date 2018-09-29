@@ -17,4 +17,5 @@ public interface CourseWareMapper {
     Integer selectCountByCourseId(Integer courseId);
     Integer insertCourseWare(CourseWare courseWare);
     CourseWare selectByCourseWareId(Integer courseWareId);
+    List<Key> selectChooseCourseIdAndCount();
 }

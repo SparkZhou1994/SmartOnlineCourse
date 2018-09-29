@@ -38,4 +38,10 @@
         from course_ware
         where course_ware_id=#{courseWareId}
     </select>
+    
+    <select id="selectChooseCourseIdAndCount" resultType="java.lang.Integer">
+        select choose_course_id,count(*) as count from course_ware
+        join choose_course on course_ware.course_id=choose_course.course_id
+        group by course_ware.course_id
+    </select>
 </mapper>
