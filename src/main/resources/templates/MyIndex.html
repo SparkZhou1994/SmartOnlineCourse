@@ -104,13 +104,13 @@
 					</div>
 				</div>
 				<div class="col-sm-6 col-md-6 col-xs-6">
-					<div class="input-group">
+<!--					<div class="input-group">
 						<input type="search" name="search" id="search" class="form-control" placeholder="Search">
 						<div class="input-group-addon"><span class="glyphicon glyphicon-search"></span></div>
-					</div>
+					</div>-->
 				</div>
 				<div class="col-md-3 col-xs-3 col-sm-3">
-					<a href=""><h4 class="text-right" style="color: #00BBDD">帮助</h4></a>
+					<a th:href="@{/index}"><h4 class="text-right" style="color: #00BBDD">帮助</h4></a>
 				</div>
 			</div>
 			<h4 class="page-header">进行中的班课<small th:text="${session.chooseCourseCount}+'个进行中的班课'"></small></h4>

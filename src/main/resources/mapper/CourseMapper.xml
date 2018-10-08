@@ -53,4 +53,11 @@
     <update id="updateScore" parameterType="spark.smartonlinecourse.entity.Course">
         update course set avg_score=#{avgScore} where course_id=#{courseId}
     </update>
+
+    <select id="selectCourseByCourseName" parameterType="java.lang.String" resultMap="CourseResultMap">
+        select
+        <include refid="Course_Column_List"/>
+        from course
+        where course_name like CONCAT('%',#{courseName},'%')
+    </select>
 </mapper>

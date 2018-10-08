@@ -21,4 +21,5 @@ public interface CourseService {
     Course selectCourseByCourseId(Integer courseId);
     Boolean ownCourse(Integer courseId,Integer userId);
     Boolean updateScore(ChooseCourse chooseCourse);
+    List<Course> selectCourseByCourseName(String courseName);
 }

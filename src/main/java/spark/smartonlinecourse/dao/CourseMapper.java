@@ -18,4 +18,5 @@ public interface CourseMapper {
     Course selectCourseByCourseId(Integer courseId);
     Integer selectCoursIdByCourseNameAndUserId(Key key);
     Integer updateScore(Course course);
+    List<Course> selectCourseByCourseName(String courseName);
 }

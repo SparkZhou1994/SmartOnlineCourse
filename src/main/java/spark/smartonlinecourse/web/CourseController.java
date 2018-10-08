@@ -21,6 +21,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -62,7 +63,7 @@ public class CourseController {
     public String joinCourseDeal(HttpSession session, @RequestParam("course_id") Integer courseId){
         User user=(User)session.getAttribute("user");
         chooseCourseService.joinCourse(courseId,user.getUserId());
-        return "redirect:/my_index";
+        return "redirect:/my_index_return";
     }
 
     @PostMapping("/course_score")
@@ -73,6 +74,17 @@ public class CourseController {
         chooseCourse.setCourseId(courseId);
         chooseCourse.setScore((byte)score.intValue());
         Boolean status=courseService.updateScore(chooseCourse);
+        try {
+            response.getWriter().write("123");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @PostMapping("/course_search")
+    public void courseSearch(String courseName,HttpSession session,HttpServletResponse response,HttpServletRequest request){
+        List<Course> courseList=courseService.selectCourseByCourseName(courseName);
+        request.setAttribute("courseList",courseList);
         try {
             response.getWriter().write("123");
         } catch (IOException e) {

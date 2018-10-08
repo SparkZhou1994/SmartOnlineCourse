@@ -99,4 +99,9 @@ public class CourseServiceImpl implements CourseService {
         }
         return Boolean.FALSE;
     }
+
+    @Override
+    public List<Course> selectCourseByCourseName(String courseName) {
+        return courseMapper.selectCourseByCourseName(courseName);
+    }
 }

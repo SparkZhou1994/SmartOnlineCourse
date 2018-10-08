@@ -16,6 +16,20 @@
             $(location).prop('href', 'index');
             $.session.clear();
         }
+        function courseSearch() {
+			var courseName=$("#search").val();
+            $.ajax({
+                url:"/SmartOnlineCourse/course_search",  // 后台地址
+                type:"POST",
+                dataType:"json",
+                data:{"courseName":courseName},  //自己需要传递的数据 {}
+                success: function(data){//成功
+                    window.location.reload();
+                },
+                error:function(){//出错
+                }
+            });
+        }
 	</script>
 	<meta name="viewprot"
 		content="width=devive-width,initial-scale=1,user-scalable=no">
@@ -50,7 +64,7 @@
 				<div class="col-sm-9 col-md-9 col-xs-9">
 					<div class="input-group">
 						<input type="search" name="search" id="search" class="form-control" placeholder="Search">
-						<div class="input-group-addon"><span class="glyphicon glyphicon-search"></span></div>
+						<div class="input-group-addon"><a onclick="courseSearch()"><span class="glyphicon glyphicon-search"></span></a></div>
 					</div>
 				</div>
 				<div class="col-md-3 col-xs-3 col-sm-3">
