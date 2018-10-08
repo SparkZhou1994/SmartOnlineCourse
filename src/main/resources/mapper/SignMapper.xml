@@ -82,4 +82,5 @@
         select choose_course_id,count(*) as count_num from sign where sign_time is null
         group by choose_course_id
     </select>
+
 </mapper>

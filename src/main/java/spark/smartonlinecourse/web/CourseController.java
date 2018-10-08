@@ -20,6 +20,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @ClassName CourseController
@@ -45,7 +47,7 @@ public class CourseController {
         course.setCourseName(courseName);
         course.setCatalog(catalog);
         course=courseService.insertCourse(course,file,request,user.getUserId());
-        return "MyIndex";
+        return "redirect:/my_index_return";
     }
 
     @GetMapping("/course_package")

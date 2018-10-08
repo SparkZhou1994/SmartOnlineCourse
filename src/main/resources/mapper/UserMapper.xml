@@ -29,4 +29,7 @@
     </set>
     where user_id=#{userId}
   </update>
+  <insert id="insertUser" parameterType="spark.smartonlinecourse.entity.User">
+        insert into user(user_name,password,email) values(#{userName},#{password},#{email})
+    </insert>
 </mapper>

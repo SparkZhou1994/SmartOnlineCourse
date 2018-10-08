@@ -38,4 +38,15 @@ public class ScheduleService {
                 .build();
         scheduler.scheduleJob(jobDetail,cronTrigger);
     }
+
+    public void courseWareMessageSchedule() throws Exception{
+        JobDetail jobDetail=JobBuilder.newJob(CourseWareMessageSchedule.class).build();
+        CronScheduleBuilder scheduleBuilder= CronScheduleBuilder.cronSchedule("0 0 1 * * ?")
+                .withMisfireHandlingInstructionDoNothing();
+        CronTrigger cronTrigger=TriggerBuilder.newTrigger()
+                .withSchedule(scheduleBuilder)
+                .startNow()
+                .build();
+        scheduler.scheduleJob(jobDetail,cronTrigger);
+    }
 }

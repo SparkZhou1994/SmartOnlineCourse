@@ -24,6 +24,7 @@ public class ScheduleListener implements ApplicationListener<ApplicationReadyEve
         try {
             scheduleService.homeworkMessageSchedule();
             scheduleService.signMessageSchedule();
+            scheduleService.courseWareMessageSchedule();
         } catch (Exception e) {
             e.printStackTrace();
         }

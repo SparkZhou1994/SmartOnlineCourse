@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import spark.smartonlinecourse.entity.User;
 import spark.smartonlinecourse.service.UserService;
+import spark.smartonlinecourse.util.PasswordEncord;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -14,7 +15,7 @@ public class LoginAndRegisterController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/login_and_register")
+    @RequestMapping(value="/login_and_register",method ={RequestMethod.POST,RequestMethod.GET})
     public String loginAndRegister(@RequestParam(value = "error", required = false) String error,HttpSession session){
         session.setAttribute("index_page",0);
         session.setAttribute("discuss_page", 0);
@@ -31,5 +32,17 @@ public class LoginAndRegisterController {
         session.setAttribute("discuss_page", 0);
         session.setAttribute("discuss_content_page",0 );
         return "redirect:/my_index";
+    }
+
+    @PostMapping("/sign_up")
+    public String signIn(User user){
+        String passwordEncord=PasswordEncord.passwordEncord(user.getPassword());
+        user.setPassword(passwordEncord);
+        Boolean status=userService.signUp(user);
+        if(status){
+            return "redirect:/my_index";
+        }else{
+            return "LoginAndRegister";
+        }
     }
 }

@@ -84,10 +84,10 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-6 col-xs-6 col-sm-6">
-                    <div class="text-left">
+                    <a class="text-left" th:href="@{/my_index_return}">
                         <img th:src="@{/image/logo.png}" height="50">
                         <h4 style="display: inline;margin-left: 10px;">智能云班课</h4>
-                    </div>
+                    </a>
                 </div>
                 <div class="col-md-6 col-xs-6 col-sm-6">
                     <div class="text-right">
@@ -117,7 +117,7 @@
                             <li><a class="btn" th:href="@{'/discuss/'+${current_course.getCourseId()}}"><h4>讨论/投票</h4></a></li>
                             <li><a class="btn" th:href="@{'/message/'+${current_course.getCourseId()}}"><h4>消息</h4></a></li>
                             <li><a class="btn" th:href="@{'/sign/'+${current_course.getCourseId()}}"><h4>签到</h4></a></li>
-                            <li><a class="btn" data-toggle="modal" data-target="#course_score"><h4>评分</h4></a></li>
+                            <li><a class="btn" data-toggle="modal" data-target="#course_score" th:if="${not current_course.getOwnFlag()}"><h4>评分</h4></a></li>
                         </ul>
                     </div>
                     <div class="col-md-2 col-xs-2 col-sm-2">

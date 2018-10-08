@@ -46,7 +46,10 @@ public class DiscussController {
         if(totalPage ==0){
             totalPage=1;
         }
+        User user= (User) session.getAttribute("user");
         Course course=courseService.selectCourseByCourseId(courseId);
+        Boolean ownFlag=courseService.ownCourse(courseId,user.getUserId());
+        course.setOwnFlag(ownFlag);
         model.addAttribute("current_course",course);
         model.addAttribute("discuss_list",discussList);
         model.addAttribute("total_page",totalPage);

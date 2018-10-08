@@ -58,4 +58,12 @@ public class UserServiceImpl implements UserService {
         User user = userMapper.selectByEmail(email);
         return user;
     }
+
+    @Override
+    public Boolean signUp(User user) {
+        Integer status=userMapper.insertUser(user);
+        if(status==1)
+            return Boolean.TRUE;
+        return Boolean.FALSE;
+    }
 }

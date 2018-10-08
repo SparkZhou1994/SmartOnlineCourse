@@ -45,6 +45,8 @@ public class MessageController {
         List<Message> messageList=messageService.selectByChooseCouseId(chooseCourseIdList.get(0));
         model.addAttribute("message_list",messageList);
         Course course=courseService.selectCourseByCourseId(courseId);
+        Boolean ownFlag=courseService.ownCourse(courseId,user.getUserId());
+        course.setOwnFlag(ownFlag);
         model.addAttribute("current_course",course);
         return "Message";
     }
