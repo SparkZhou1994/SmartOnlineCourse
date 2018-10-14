@@ -43,6 +43,7 @@ public class SignController {
         Boolean ownFlag=courseService.ownCourse(courseId,user.getUserId());
         course.setOwnFlag(ownFlag);
         model.addAttribute("current_course",course);
+        session.setAttribute("user",user);
         return "Sign";
     }
 

@@ -57,7 +57,7 @@
     <select id="selectCourseByCourseName" parameterType="java.lang.String" resultMap="CourseResultMap">
         select
         <include refid="Course_Column_List"/>
-        from course
-        where course_name like CONCAT('%',#{courseName},'%')
+        from course,`user`
+        where course_name like CONCAT('%',#{courseName},'%') and course.user_id=`user`.user_id
     </select>
 </mapper>

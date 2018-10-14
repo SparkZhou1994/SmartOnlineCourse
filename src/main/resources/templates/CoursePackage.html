@@ -18,13 +18,55 @@
         }
         function courseSearch() {
 			var courseName=$("#search").val();
+			var url="/SmartOnlineCourse/course_search/"+courseName;
             $.ajax({
-                url:"/SmartOnlineCourse/course_search",  // 后台地址
-                type:"POST",
+                url:url,  // 后台地址
+                type:"GET",
                 dataType:"json",
-                data:{"courseName":courseName},  //自己需要传递的数据 {}
+                data:{},  //自己需要传递的数据 {}
                 success: function(data){//成功
-                    window.location.reload();
+                    console.log(data);
+                    $("#course_title").text("查询结果");
+                    $(".course_list_content").remove();
+                    $("#course_list").empty();
+                    var obj=eval(data);
+                    if(obj.error==1){
+                        $messageNode=$("<h3></h3>")
+                        $messageNode.text(data.message);
+                        $("#course_list").append($messageNode);
+                    }else{
+                        var jsonMessage=obj.message;
+                        for(var i=0;i<jsonMessage.length;i++){
+                            $courseFramework=$("<div class='col-md-3'></div>");
+
+                            $courseImage=$("<img>");
+                            var imageSrc=jsonMessage[i].avatar;
+                            if(imageSrc.search(/default/)>=0){
+                                var imageHref="/SmartOnlineCourse"+imageSrc;
+							}else{
+                                var imageHref=imageSrc;
+							}
+                            $courseImage.attr("src",imageHref);
+                            $courseImage.attr("class","img-responsive img-thumbnail");
+
+                            $courseName=$("<h3></h3>");
+                            $courseName.attr("class","page-header");
+                            $courseName.text(jsonMessage[i].courseName);
+
+                            $courseOwner=$("<p></p>");
+                            $courseOwner.text(jsonMessage[i].userName);
+
+                            $courseFramework.append($courseImage,$courseName,$courseOwner);
+
+                            $courseLink=$("<a></a>");
+                            var courseId=jsonMessage[i].courseId;
+                            var href="/SmartOnlineCourse/join_course_deal_get/"+courseId.toString();
+                            $courseLink.attr("href",href);
+                            $courseLink.append($courseFramework);
+
+                            $("#course_list").append($courseLink);
+                        }
+                    }
                 },
                 error:function(){//出错
                 }
@@ -72,12 +114,15 @@
 				</div>
 			</div>
 			<img class="img-responsive" style="margin-top: 20px" th:src="@{/image/course_package_logo.jpg}" alt="course_package_logo">
-			<h4 style="border-left: #00BBDD 4px solid;margin-top: 20px;padding-left: 20px">优选课程包</h4>
-			<div class="row" style="margin-top: 40px;">
-				<div class="col-md-3" th:each="course:${#httpServletRequest.getAttribute('courseList')}">
-					<img th:src="@{${course.getAvatar()}}" class="img-responsive img-thumbnail">
-					<h3 class="page-header" th:text="${course.getCourseName()}">课程名</h3>
-					<p th:text="${course.getUserName()}">任课老师</p>
+			<h4 id="course_title" style="border-left: #00BBDD 4px solid;margin-top: 20px;padding-left: 20px">优选课程包</h4>
+			<div id="course_list" class="row" style="margin-top: 40px;">
+				<div class="col-md-3 course_list_content" th:each="course:${#httpServletRequest.getAttribute('courseList')}">
+					<a th:href="@{'/join_course_deal_get/'+${course.getCourseId()}}">
+						<img th:src="@{${course.getAvatar()}}" class="img-responsive img-thumbnail">
+						<h3 class="page-header" th:text="${course.getCourseName()}">课程名</h3>
+						<p th:text="${course.getUserName()}">任课老师</p>
+						<span th:text="${course.getCourseId()}" style="display:none"></span>
+					</a>
 				</div>
 			</div>
 		</div>

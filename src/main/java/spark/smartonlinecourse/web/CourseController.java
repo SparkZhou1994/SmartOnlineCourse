@@ -1,5 +1,7 @@
 package spark.smartonlinecourse.web;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -8,9 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import spark.smartonlinecourse.entity.ChooseCourse;
-import spark.smartonlinecourse.entity.Course;
-import spark.smartonlinecourse.entity.User;
+import spark.smartonlinecourse.entity.*;
 import spark.smartonlinecourse.service.ChooseCourseService;
 import spark.smartonlinecourse.service.CourseService;
 
@@ -66,6 +66,21 @@ public class CourseController {
         return "redirect:/my_index_return";
     }
 
+    @GetMapping("/join_course_deal_get/{course_id}")
+    public String joinCourseDealGet(@PathVariable("course_id") Integer courseId,HttpSession session){
+        User user=(User)session.getAttribute("user");
+        Key key=new Key();
+        key.setUserId(user.getUserId());
+        key.setCourseId(courseId);
+        List<Integer> chooseCourseIdList=chooseCourseService.selectChooseCourseId(key);
+        if(chooseCourseIdList.size()>0){
+            return "redirect:/my_index_return";
+        }else {
+            chooseCourseService.joinCourse(courseId, user.getUserId());
+            return "redirect:/my_index_return";
+        }
+    }
+
     @PostMapping("/course_score")
     public void courseScore(Integer score,Integer courseId,HttpServletResponse response,HttpSession session){
         User user=(User)session.getAttribute("user");
@@ -81,12 +96,23 @@ public class CourseController {
         }
     }
 
-    @PostMapping("/course_search")
-    public void courseSearch(String courseName,HttpSession session,HttpServletResponse response,HttpServletRequest request){
+    @GetMapping("/course_search/{course_name}")
+    public void courseSearch(@PathVariable("course_name") String courseName,HttpSession session,HttpServletResponse response){
         List<Course> courseList=courseService.selectCourseByCourseName(courseName);
-        request.setAttribute("courseList",courseList);
+        Json jsonObject=new Json();
+        response.addHeader("content-type", "text/plain;charset=utf-8");
         try {
-            response.getWriter().write("123");
+            if(courseList.size()==0){
+                jsonObject.setError(1);
+                jsonObject.setMessage("查无此课程");
+                String jsonString = new Gson().toJson(jsonObject);
+                response.getWriter().write(jsonString);
+            }else{
+                jsonObject.setError(0);
+                jsonObject.setMessage(courseList);
+                String jsonString=new Gson().toJson(jsonObject);
+                response.getWriter().write(jsonString);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
