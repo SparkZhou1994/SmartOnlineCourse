@@ -10,10 +10,19 @@
     <script type="text/javascript" th:src="@{/js/jquery-3.3.1.min.js}"></script>
     <script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
     <script type="text/javascript">
+        $(function () {
+            var userAvatar=$("#user_avatar_text").text();
+            var userAvatarUrl="http://localhost:8080/SmartOnlineCourse"+userAvatar;
+            $("#user_avatar").attr("src",userAvatarUrl);
+            var courseAvatar=$("#course_avatar_text").text();
+            var courseAvatarUrl="http://localhost:8080/SmartOnlineCourse"+courseAvatar;
+            $("#course_avatar").attr("src",courseAvatarUrl);
+        });
+
         function loginOut(){
             //$(location).attr('href', 'index');
             //$(window).attr('location','index');
-            $(location).prop('href', 'index');
+            $(location).prop('href', 'http://localhost:8080/SmartOnlineCourse/index');
             $.session.clear();
         }
     </script>
@@ -35,7 +44,7 @@
                     <ul class="list-unstyle list-inline" style="margin-top: 4px;" th:object="${session.user}">
                         <li><a th:href="@{/course_package}"><span class="glyphicon glyphicon-folder-close"></span><h4 style="display: inline;margin-left: 5px;">课程包</h4></a></li>
                         <li><a th:href="@{/my_index_return}"><span class="glyphicon glyphicon-list-alt"></span><h4 style="display: inline;margin-left: 5px;">我的课程</h4></a></li>
-                        <li><img th:src="@{${session.user.getAvatar()}}" style="width:34px;height:34px" class="img-responsive img-thumbnail"></li>
+                        <li><img id="user_avatar" style="width:34px;height:34px" class="img-responsive img-thumbnail"></li>
                         <li><a th:href="@{/my_infor}"><h4 th:text="*{userName}"></h4></a></li>
                         <li><a onclick="loginOut()"><h4>退出</h4></a></li>
                     </ul>
@@ -47,7 +56,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-2 col-xs-2 col-sm-2">
-                    <img th:src="@{${current_course.getAvatar()}}" class="img-responsive img-thumbnail">
+                    <img id="course_avatar" class="img-responsive img-thumbnail">
                 </div>
                 <div class="col-md-6 col-xs-6 col-sm-6">
                     <h2 th:text="${current_course.getCourseName()}"></h2>
@@ -75,6 +84,8 @@
     </ul>
     <h4 th:if="${message_list.size() == 0}">暂无消息</h4>
 </div>
+<h3 id="user_avatar_text" th:text="${session.user.getAvatar()}" style="display: none"></h3>
+<h3 id="course_avatar_text" th:text="${current_course.getAvatar()}" style="display: none"></h3>
 <div class="modal fade" id="course_score" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
     <div class="modal-dialog">
         <div class="modal-content">

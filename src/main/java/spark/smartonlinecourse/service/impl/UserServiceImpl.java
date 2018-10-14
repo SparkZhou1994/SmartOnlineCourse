@@ -33,11 +33,11 @@ public class UserServiceImpl implements UserService {
         if(!file.isEmpty()) {
             String fileName = null;
             if ("/image/user/default.png".equals(user.getAvatar())) {
-                fileName = user.getUserName() + "_" + UUID.randomUUID() + "_" + file.getOriginalFilename();
+                fileName = "/"+user.getUserName() + "_" + UUID.randomUUID() + "_" + file.getOriginalFilename();
             } else {
                 fileName = user.getAvatar();
             }
-            String filePath="E:/SmartOnlineCourse/user/";
+            String filePath="E:/SmartOnlineCourse/user";
             try{
             FileUtil.uploadFile(file, filePath, fileName);
             user.setAvatar(fileName);
