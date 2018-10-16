@@ -1,6 +1,9 @@
 package spark.smartonlinecourse.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import spark.smartonlinecourse.entity.ChooseCourse;
@@ -95,9 +98,19 @@ public class MyIndexController {
     }
     @GetMapping(value={"/index","/index.html"})
     public String index(HttpSession session) {
+        session.removeAttribute("user");
         session.setAttribute("index_page",0);
         session.setAttribute("discuss_page", 0);
         session.setAttribute("discuss_content_page",0 );
         return "Index";
+    }
+
+    @GetMapping("logout")
+    public String logout(HttpSession session,HttpServletResponse response,HttpServletRequest request){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null) {
+            new SecurityContextLogoutHandler().logout(request, response, auth);
+        }
+        return "redirect:/index";
     }
 }

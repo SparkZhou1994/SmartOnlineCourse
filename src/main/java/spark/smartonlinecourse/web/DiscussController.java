@@ -132,7 +132,10 @@ public class DiscussController {
             model.addAttribute("discuss_content_list",discussContentList);
             model.addAttribute("vote",0);
         }
+        User user= (User) session.getAttribute("user");
         Course course=courseService.selectCourseByCourseId(discuss.getCourseId());
+        Boolean ownFlag=courseService.ownCourse(course.getCourseId(),user.getUserId());
+        course.setOwnFlag(ownFlag);
         model.addAttribute("current_course",course);
         return "DiscussContent";
     }
@@ -179,7 +182,10 @@ public class DiscussController {
             model.addAttribute("discuss_content_list",discussContentList);
             model.addAttribute("vote",0);
         }
+        User user= (User) session.getAttribute("user");
         Course course=courseService.selectCourseByCourseId(discuss.getCourseId());
+        Boolean ownFlag=courseService.ownCourse(course.getCourseId(),user.getUserId());
+        course.setOwnFlag(ownFlag);
         model.addAttribute("current_course",course);
         return "DiscussContent";
     }
@@ -213,7 +219,10 @@ public class DiscussController {
             model.addAttribute("discuss_content_list",discussContentList);
             model.addAttribute("vote",0);
         }
+        User user= (User) session.getAttribute("user");
         Course course=courseService.selectCourseByCourseId(discuss.getCourseId());
+        Boolean ownFlag=courseService.ownCourse(course.getCourseId(),user.getUserId());
+        course.setOwnFlag(ownFlag);
         model.addAttribute("current_course",course);
         return "DiscussContent";
     }

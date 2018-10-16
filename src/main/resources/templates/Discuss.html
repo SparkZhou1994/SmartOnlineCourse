@@ -65,7 +65,7 @@
         function loginOut(){
             //$(location).attr('href', 'index');
             //$(window).attr('location','index');
-            $(location).prop('href', 'http://localhost:8080/SmartOnlineCourse/index');
+            $(location).prop('href', 'http://localhost:8080/SmartOnlineCourse/logout');
             $.session.clear();
         }
         function nextPage(){
@@ -147,10 +147,33 @@
             </div>
         </div>
     </div>
-    <div id="discuss" class="container" style="width: 480px;height:177px;margin:20px auto">
+    <div id="discuss" class="container" style="width: 480px;height:50px;margin:200px auto 0px auto">
         <div class="btn btn-primary" style="margin-right: 20px;" data-toggle="modal" data-target="#discuss_release">发布讨论</div>
         <div class="btn btn-primary" data-toggle="modal" data-target="#vote_release">发起投票</div>
     </div>
+    <div class="discuss">
+        <p class="title">
+            所有讨论
+        </p>
+        <a id="messDivId" th:each="discuss:${discuss_list}" th:href="@{'/discuss_content/'+${discuss.getDiscussId()}}">
+            <div class="discuss_main">
+                <div class="opbtn"></div>
+                <p th:text="${discuss.getTitle()}" class="discuss_title">标题</p>
+                <p th:text="${discuss.getLastPublishTimeString()}" class="discuss_time">2015/07/12 20:48</p>
+                <p th:text="${discuss.getDescribe()}" class="discuss_desc">描述</p>
+                <p th:text="${discuss.getUserName()}" class="discuss_person">发起人</p>
+            </div>
+        </a>
+    </div>
+    <div class="container">
+        <div style="text-align: right;margin-top:20px;">
+            <input type="button" id="pageDown" value="上一页" class="btn btn-xs" th:if="${session.discuss_page>0}" onclick="prePage()">
+            <span th:text="'第'+${session.discuss_page+1}+'页/共'+${total_page}+'页'"></span>
+            <input type="button" id="pageUp" value="下一页" class="btn btn-xs" th:if="${(session.discuss_page+1)<total_page}" onclick="nextPage()">
+        </div>
+    </div>
+    <h3 id="user_avatar_text" th:text="${session.user.getAvatar()}" style="display: none"></h3>
+    <h3 id="course_avatar_text" th:text="${current_course.getAvatar()}" style="display: none"></h3>
     <div class="modal fade" id="discuss_release" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -221,29 +244,6 @@
             </div>
         </div>
     </div>
-    <div class="discuss">
-        <p class="title">
-            所有讨论
-        </p>
-        <a id="messDivId" th:each="discuss:${discuss_list}" th:href="@{'/discuss_content/'+${discuss.getDiscussId()}}">
-            <div class="discuss_main">
-                <div class="opbtn"></div>
-                <p th:text="${discuss.getTitle()}" class="discuss_title">标题</p>
-                <p th:text="${discuss.getLastPublishTimeString()}" class="discuss_time">2015/07/12 20:48</p>
-                <p th:text="${discuss.getDescribe()}" class="discuss_desc">描述</p>
-                <p th:text="${discuss.getUserName()}" class="discuss_person">发起人</p>
-            </div>
-        </a>
-    </div>
-    <div class="container">
-        <div style="text-align: right;margin-top:20px;">
-            <input type="button" id="pageDown" value="上一页" class="btn btn-xs" th:if="${session.discuss_page>0}" onclick="prePage()">
-            <span th:text="'第'+${session.discuss_page+1}+'页/共'+${total_page}+'页'"></span>
-            <input type="button" id="pageUp" value="下一页" class="btn btn-xs" th:if="${(session.discuss_page+1)<total_page}" onclick="nextPage()">
-        </div>
-    </div>
-    <h3 id="user_avatar_text" th:text="${session.user.getAvatar()}" style="display: none"></h3>
-    <h3 id="course_avatar_text" th:text="${current_course.getAvatar()}" style="display: none"></h3>
     <div class="modal fade" id="course_score" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -276,6 +276,7 @@
                 data:{"score":score,"courseId":courseId},  //自己需要传递的数据 {}
                 success: function(data){//成功
                     $("#course_score").modal("hide");
+                    window.location.reload();
                 },
                 error:function(){//出错
                 }

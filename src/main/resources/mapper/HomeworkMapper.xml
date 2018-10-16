@@ -21,7 +21,7 @@
         <result column="count_num" property="count" jdbcType="INTEGER"/>
     </resultMap>
     <sql id="Homework_Column_List" >
-        homework_id,homework.choose_course_id,user_id,course_id,title,`describe`,attachment,batch,end_time,submit_time,`range`,score
+        homework_id,homework.choose_course_id,user_id,course_id,title,`describe`,attachment,batch,end_time,submit_time,`range`,homework.score
     </sql>
 
     <select id="selectHomework" parameterType="spark.smartonlinecourse.entity.Key" resultMap="HomeworkResultMap">

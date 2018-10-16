@@ -27,7 +27,7 @@
             var ownFlag=[[${current_course.getOwnFlag()}]];
             var urlTemp='/SmartOnlineCourse/sign_list/'+courseId+'/'+ownFlag;
             jQuery("#sign_list").jqGrid({
-				url:urlTemp,
+                url:urlTemp,
                 datatype:"json",
                 mtype:"POST",
                 colNames:['学生姓名','签到批次','结束时间','签到时间','签到状态'],
@@ -57,6 +57,7 @@
             var code=$("#sign_code").val();
             var ownFlag=[[${current_course.getOwnFlag()}]];
             var urlTemp='/SmartOnlineCourse/sign_list/'+courseId+'/'+ownFlag;
+            $.ajaxSettings.async=false;
             $.ajax({
                 url:"/SmartOnlineCourse/sign_in",
                 type:"POST",
@@ -81,15 +82,16 @@
             var effectiveMinute=$("#effective_minute").val();
             var ownFlag=[[${current_course.getOwnFlag()}]];
             var urlTemp='/SmartOnlineCourse/sign_list/'+courseId+'/'+ownFlag;
+            $.ajaxSettings.async=false;
             $.ajax({
                 url:"/SmartOnlineCourse/sign_release",
                 type:"POST",
                 dataType:"json",
                 data:{
-                    "courseId":courseId,"code":code,"effectiveMinute":effectiveMinute
+                    "courseId":courseId,"code":code,"effectiveMinute":effectiveMinute,
                 },
                 success: function(data){
-                    alter(date);
+
                 },
                 error:function(){
                 }
@@ -103,7 +105,7 @@
         function loginOut(){
             //$(location).attr('href', 'index');
             //$(window).attr('location','index');
-            $(location).prop('href', 'http://localhost:8080/SmartOnlineCourse/index');
+            $(location).prop('href', 'http://localhost:8080/SmartOnlineCourse/logout');
             $.session.clear();
         }
 	</script>
@@ -229,6 +231,7 @@
                 data:{"score":score,"courseId":courseId},  //自己需要传递的数据 {}
                 success: function(data){//成功
                     $("#course_score").modal("hide");
+                    window.location.reload();
                 },
                 error:function(){//出错
                 }

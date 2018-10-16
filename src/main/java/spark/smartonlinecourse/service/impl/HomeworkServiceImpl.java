@@ -47,12 +47,23 @@ public class HomeworkServiceImpl implements HomeworkService {
 
     @Override
     public Boolean homeworkRelease(String title, String describe, MultipartFile file,
-                                   Integer courseId,String endTimeString,Integer batch) {
+                                   Integer courseId,String endTimeString,Integer batch,Integer userId) {
         List<Homework> homeworkList=new ArrayList<Homework>();
         Key key=new Key();
         key.setCourseId(courseId);
         Course course =courseMapper.selectCourseByCourseId(courseId);
-        List<Integer> chooseCourseIdList=chooseCourseMapper.selectChooseCourseId(key);
+        List<Integer> chooseCourseIdList=new ArrayList<Integer>();
+        List<Integer> chooseCourseIdListTemp=chooseCourseMapper.selectChooseCourseId(key);
+        key.setUserId(userId);
+        List<Integer> chooseCourseIdListOwn=chooseCourseMapper.selectChooseCourseId(key);
+        Integer chooseCourseIdOwn=chooseCourseIdListOwn.get(0);
+        for(Integer chooseCourseId:chooseCourseIdListTemp){
+            if(chooseCourseId==chooseCourseIdOwn){
+                continue;
+            }else{
+                chooseCourseIdList.add(chooseCourseId);
+            }
+        }
         Integer count=chooseCourseIdList.size();
         String fileName=null;
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");

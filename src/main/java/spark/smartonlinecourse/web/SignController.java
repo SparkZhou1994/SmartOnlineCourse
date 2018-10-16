@@ -63,7 +63,8 @@ public class SignController {
 
     @ResponseBody
     @PostMapping("/sign_release")
-    public String signRelease(Integer courseId,String code,Integer effectiveMinute,HttpSession session){
+    public String signRelease(@RequestParam("courseId") Integer courseId,@RequestParam("code") String code,
+                              @RequestParam("effectiveMinute") Integer effectiveMinute,HttpSession session){
         User user=(User)session.getAttribute("user");
         Boolean flag=signService.releaseSign(courseId,code,effectiveMinute*60,user.getUserId());
         String status=null;

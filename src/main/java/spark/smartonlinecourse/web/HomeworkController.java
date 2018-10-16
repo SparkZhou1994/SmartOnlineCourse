@@ -59,7 +59,9 @@ public class HomeworkController {
     @PostMapping("/homework_release/{course_id}")
     public String homeworkRelease(@PathVariable("course_id") Integer courseId, HttpSession session, Model model,
                                   String title, String describe, MultipartFile file, @RequestParam("end_time") String endTime,Integer batch){
-            Boolean status=homeworkService.homeworkRelease(title,describe,file,courseId,endTime,batch);
+        User user=(User)session.getAttribute("user");
+        Integer userId=user.getUserId();
+        Boolean status=homeworkService.homeworkRelease(title,describe,file,courseId,endTime,batch,userId);
         if(status){
             return homework(courseId,session,model);
         }else{

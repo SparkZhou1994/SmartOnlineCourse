@@ -146,7 +146,7 @@
         function loginOut(){
             //$(location).attr('href', 'index');
             //$(window).attr('location','index');
-            $(location).prop('href', 'http://localhost:8080/SmartOnlineCourse/index');
+            $(location).prop('href', 'http://localhost:8080/SmartOnlineCourse/logout');
             $.session.clear();
         }
     </script>
@@ -337,6 +337,7 @@
                 data:{"score":score,"courseId":courseId},  //自己需要传递的数据 {}
                 success: function(data){//成功
                     $("#course_score").modal("hide");
+                    window.location.reload();
                 },
                 error:function(){//出错
                 }

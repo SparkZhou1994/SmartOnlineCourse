@@ -75,16 +75,20 @@ public class SignServiceImpl implements SignService {
             Integer batch=signMapper.selectBatchByCourseId(courseId);
             key.setBatch(batch);
             Sign sign=signMapper.selectSignByChooseCourseIdAndBatch(key);
-            if(sign.getCode().equals(code)){
-                LocalDateTime signTime=LocalDateTime.now();
-                sign.setSignTime(signTime);
-                sign.setRange(sign.getEndTime().isAfter(signTime)?'1':'0');
-                Integer status=signMapper.updateSign(sign);
-                if(status != 1){
-                    throw new RuntimeException("签到失败，数据库异常");
-                }
+            if(sign.getSignTime()!=null){
+                throw new RuntimeException("已签到");
             }else{
-                return Boolean.FALSE;
+                if(sign.getCode().equals(code)){
+                    LocalDateTime signTime=LocalDateTime.now();
+                    sign.setSignTime(signTime);
+                    sign.setRange(sign.getEndTime().isAfter(signTime)?'1':'0');
+                    Integer status=signMapper.updateSign(sign);
+                    if(status != 1){
+                        throw new RuntimeException("签到失败，数据库异常");
+                    }
+                }else{
+                    return Boolean.FALSE;
+                }
             }
         }
         return Boolean.TRUE;

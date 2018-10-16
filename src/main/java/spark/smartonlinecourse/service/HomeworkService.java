@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
  * @Version 1.0
  **/
 public interface HomeworkService {
-    Boolean homeworkRelease(String title, String describe, MultipartFile file, Integer courseId, String endTime,Integer batch);
+    Boolean homeworkRelease(String title, String describe, MultipartFile file, Integer courseId, String endTime,Integer batch,Integer userId);
     ResponseEntity<byte[]> homeworkDownload(HttpServletRequest request, Integer homeworkId);
     Boolean homeworkUpload(Integer homeworkId,MultipartFile file,Integer courseId);
     Boolean homeworkEvaluate(Integer homeworkId,Integer score);

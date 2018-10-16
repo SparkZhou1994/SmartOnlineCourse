@@ -40,5 +40,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/my_index").access("hasRole('ROLE_USER')")
                 .and()
                 .formLogin().loginPage("/login_and_register").failureForwardUrl("/login_and_register?error").successForwardUrl("/my_index");
+        http.csrf().disable();
     }
 }

@@ -52,7 +52,7 @@
         function loginOut(){
             //$(location).attr('href', 'index');
             //$(window).attr('location','index');
-            $(location).prop('href', 'http://localhost:8080/SmartOnlineCourse/index');
+            $(location).prop('href', 'http://localhost:8080/SmartOnlineCourse/logout');
             $.session.clear();
         }
         function nextPage(){
@@ -145,7 +145,7 @@
         </div>
     </div>
 </div>
-<div id="discuss" class="container" style="width: 480px;height:177px;margin:20px auto">
+<div id="discuss" class="container" style="width: 480px;height:50px;margin:200px auto 0px auto">
     <div class="btn btn-primary" style="margin-right: 20px;" data-toggle="modal" data-target="#discuss_release" th:if="${vote eq 0}">发布讨论</div>
     <div class="btn btn-primary" data-toggle="modal" data-target="#vote_release" th:if="${vote eq 1}">投票</div>
 </div>
@@ -274,6 +274,7 @@
             data:{"score":score,"courseId":courseId},  //自己需要传递的数据 {}
             success: function(data){//成功
                 $("#course_score").modal("hide");
+                window.location.reload();
             },
             error:function(){//出错
             }
