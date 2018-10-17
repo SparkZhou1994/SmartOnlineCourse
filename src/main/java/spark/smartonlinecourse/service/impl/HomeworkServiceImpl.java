@@ -134,6 +134,7 @@ public class HomeworkServiceImpl implements HomeworkService {
                 return false;
             }
             homework.get(0).setSubmitTime(LocalDateTime.now());
+            homework.get(0).setRange(homework.get(0).getEndTime().isAfter(homework.get(0).getSubmitTime())?'1':'0');
             Integer result=homeworkMapper.updateHomework(homework.get(0));
             if(result==1){
                 return true;

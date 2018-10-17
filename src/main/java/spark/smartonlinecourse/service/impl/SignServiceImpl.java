@@ -1,7 +1,6 @@
 package spark.smartonlinecourse.service.impl;
 
 import com.google.gson.Gson;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

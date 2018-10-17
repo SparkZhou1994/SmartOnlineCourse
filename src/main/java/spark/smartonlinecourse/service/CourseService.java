@@ -5,7 +5,6 @@ import spark.smartonlinecourse.entity.ChooseCourse;
 import spark.smartonlinecourse.entity.Course;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.List;
 
 /**

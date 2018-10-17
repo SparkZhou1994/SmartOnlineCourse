@@ -3,7 +3,6 @@ package spark.smartonlinecourse.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import spark.smartonlinecourse.dao.DiscussContentMapper;
-import spark.smartonlinecourse.dao.DiscussMapper;
 import spark.smartonlinecourse.entity.Discuss;
 import spark.smartonlinecourse.entity.DiscussContent;
 import spark.smartonlinecourse.entity.Key;
@@ -12,7 +11,6 @@ import spark.smartonlinecourse.service.DiscussService;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.function.BiPredicate;
 
 /**
  * @ClassName DiscussContentServiceImpl

@@ -2,10 +2,8 @@ package spark.smartonlinecourse.service;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
-import spark.smartonlinecourse.entity.Homework;
 
 import javax.servlet.http.HttpServletRequest;
-import java.time.LocalDateTime;
 
 /**
  * @ClassName HomeworkService

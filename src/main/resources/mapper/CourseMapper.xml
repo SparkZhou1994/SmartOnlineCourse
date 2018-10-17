@@ -24,8 +24,8 @@
     <insert id="insertCourse" parameterType="spark.smartonlinecourse.entity.Course" useGeneratedKeys="true" keyProperty="courseId"
             keyColumn="course_id" >
         <if test="avatar !=null and avatar !=''">
-            insert into course(course_name,user_id,`catalog`,avatar,avg_score)
-            values(#{courseName},#{userId},#{catalog},#{avatar},80)
+            insert into course(course_name,user_id,`catalog`,avatar)
+            values(#{courseName},#{userId},#{catalog},#{avatar})
         </if>
         <if test="avatar ==null or avatar==''">
             insert into course(course_name,user_id,`catalog`)

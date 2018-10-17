@@ -1,6 +1,5 @@
 package spark.smartonlinecourse.dao;
 
-import spark.smartonlinecourse.entity.Course;
 import spark.smartonlinecourse.entity.Homework;
 import spark.smartonlinecourse.entity.Key;
 

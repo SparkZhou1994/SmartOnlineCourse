@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import spark.smartonlinecourse.dao.ChooseCourseMapper;
 import spark.smartonlinecourse.dao.CourseMapper;
 import spark.smartonlinecourse.entity.ChooseCourse;
-import spark.smartonlinecourse.entity.Course;
 import spark.smartonlinecourse.entity.Key;
 import spark.smartonlinecourse.service.ChooseCourseService;
 

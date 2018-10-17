@@ -62,6 +62,9 @@
             <if test="submitTime != null">
                 submit_time=#{submitTime,jdbcType=TIMESTAMP,javaType=java.time.LocalDateTime},
             </if>
+            <if test="range != null">
+                `range`=#{range,jdbcType=CHAR,javaType=java.lang.Character},
+            </if>
             <if test="score != null and score != ''">
                 score=#{score}
             </if>

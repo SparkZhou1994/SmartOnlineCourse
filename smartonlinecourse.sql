@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50560
 File Encoding         : 65001
 
-Date: 2018-10-08 15:27:43
+Date: 2018-10-17 09:18:57
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -44,7 +44,7 @@ CREATE TABLE `course` (
   `course_name` varchar(15) DEFAULT NULL,
   `user_id` int(11) DEFAULT NULL,
   `catalog` varchar(10) DEFAULT NULL,
-  `avatar` varchar(50) DEFAULT '/image/course/default.png',
+  `avatar` varchar(500) DEFAULT '/image/course/default.png',
   `avg_score` tinyint(255) DEFAULT NULL,
   PRIMARY KEY (`course_id`),
   KEY `user_id` (`user_id`),
@@ -63,12 +63,12 @@ CREATE TABLE `course_ware` (
   `course_ware_id` int(11) NOT NULL AUTO_INCREMENT,
   `course_id` int(11) DEFAULT NULL,
   `title` varchar(20) DEFAULT NULL,
-  `attachment` varchar(100) DEFAULT NULL,
+  `attachment` varchar(500) DEFAULT NULL,
   `batch` int(11) DEFAULT NULL,
   PRIMARY KEY (`course_ware_id`),
   KEY `course_id` (`course_id`),
   CONSTRAINT `course_ware_ibfk_1` FOREIGN KEY (`course_id`) REFERENCES `course` (`course_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of course_ware
@@ -129,7 +129,7 @@ CREATE TABLE `homework` (
   `choose_course_id` int(11) DEFAULT NULL,
   `describe` varchar(50) DEFAULT NULL,
   `title` varchar(20) DEFAULT NULL,
-  `attachment` varchar(100) DEFAULT NULL,
+  `attachment` varchar(500) DEFAULT NULL,
   `batch` int(11) DEFAULT NULL,
   `end_time` datetime DEFAULT NULL,
   `submit_time` datetime DEFAULT NULL,

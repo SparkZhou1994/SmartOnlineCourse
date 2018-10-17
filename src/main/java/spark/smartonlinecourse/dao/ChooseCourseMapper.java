@@ -2,7 +2,6 @@ package spark.smartonlinecourse.dao;
 
 import spark.smartonlinecourse.entity.ChooseCourse;
 import spark.smartonlinecourse.entity.Key;
-import spark.smartonlinecourse.entity.Sign;
 
 import java.util.List;
 
