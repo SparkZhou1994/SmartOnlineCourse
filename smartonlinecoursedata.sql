@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50560
 File Encoding         : 65001
 
-Date: 2018-10-17 11:08:09
+Date: 2018-10-17 12:16:23
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -218,8 +218,8 @@ CREATE TABLE `sign` (
 -- ----------------------------
 -- Records of sign
 -- ----------------------------
-INSERT INTO `sign` VALUES ('1', '6', '0', '123456', '2018-10-17 10:30:09', '2018-10-17 10:31:47', '1');
-INSERT INTO `sign` VALUES ('2', '13', '0', '123456', '2018-10-17 10:32:57', '2018-10-17 10:31:47', '0');
+INSERT INTO `sign` VALUES ('1', '6', '1', '123456', '2018-10-17 10:30:09', '2018-10-17 10:31:47', '1');
+INSERT INTO `sign` VALUES ('2', '13', '1', '123456', '2018-10-17 10:32:57', '2018-10-17 10:31:47', '0');
 
 -- ----------------------------
 -- Table structure for `user`

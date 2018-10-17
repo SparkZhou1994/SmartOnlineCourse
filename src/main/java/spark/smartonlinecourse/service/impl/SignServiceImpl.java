@@ -39,7 +39,7 @@ public class SignServiceImpl implements SignService {
         List<Integer> chooseCoursIdOwner=chooseCourseMapper.selectChooseCourseId(key);
         Integer batch=signMapper.selectBatchByCourseId(courseId);
         if(batch==null){
-            batch=0;
+            batch=1;
         }else{
             batch+=1;
         }

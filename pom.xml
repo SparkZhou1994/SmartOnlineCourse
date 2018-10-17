@@ -6,7 +6,7 @@
     <groupId>spark</groupId>
     <artifactId>smartonlinecourse</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
 
     <name>smartonlinecourse</name>
     <description>A Online Course System</description>
