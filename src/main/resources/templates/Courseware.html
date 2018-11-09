@@ -36,6 +36,8 @@
                     {name:'batch',index:'batch',align:'center'},
                 ],
                 viewrecords:true,
+                multiselect:true,
+                multiboxonly:true,
                 rowNum:10,
                 rowList:[10,20,30],
                 pager:'#course_ware_page',
@@ -66,14 +68,17 @@
             }
         }
         function download(){
-            var rowId=$("#course_ware_list").jqGrid("getGridParam","selrow");
-            if (!rowId) {
+            var rowIds=$("#course_ware_list").jqGrid("getGridParam","selarrrow");
+            if (!rowIds) {
                 alert("请选择一条记录");
                 return;
             } else {
-                var data = $("#course_ware_list").jqGrid("getRowData", rowId);
-                var courseWareId=data.courseWareId;
-                window.location.href="/SmartOnlineCourse/course_ware_download/"+courseWareId;
+                $(rowIds).each(function (index,id){
+                    var data = $("#course_ware_list").jqGrid("getRowData", id);
+                    var courseWareId=data.courseWareId;
+                    window.location.href="/SmartOnlineCourse/course_ware_download/"+courseWareId;
+                    console.log("1");
+                });
             }
         }
         function loginOut(){
@@ -93,7 +98,7 @@
                 <div class="col-md-6 col-xs-6 col-sm-6">
                     <a class="text-left" th:href="@{/my_index_return}">
                         <img th:src="@{/image/logo.png}" height="50">
-                        <h4 style="display: inline;margin-left: 10px;">智能云班课</h4>
+                        <h4 style="display: inline;margin-left: 10px;">智能班课</h4>
                     </a>
                 </div>
                 <div class="col-md-6 col-xs-6 col-sm-6">

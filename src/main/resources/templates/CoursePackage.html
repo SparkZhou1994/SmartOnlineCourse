@@ -18,59 +18,63 @@
         }
         function courseSearch() {
 			var courseName=$("#search").val();
-			var url="/SmartOnlineCourse/course_search/"+courseName;
-            $.ajax({
-                url:url,  // 后台地址
-                type:"GET",
-                dataType:"json",
-                data:{},  //自己需要传递的数据 {}
-                success: function(data){//成功
-                    console.log(data);
-                    $("#course_title").text("查询结果");
-                    $(".course_list_content").remove();
-                    $("#course_list").empty();
-                    var obj=eval(data);
-                    if(obj.error==1){
-                        $messageNode=$("<h3></h3>")
-                        $messageNode.text(data.message);
-                        $("#course_list").append($messageNode);
-                    }else{
-                        var jsonMessage=obj.message;
-                        for(var i=0;i<jsonMessage.length;i++){
-                            $courseFramework=$("<div class='col-md-3'></div>");
+			if (courseName != "") {
+                var url = "/SmartOnlineCourse/course_search/" + courseName;
+                $.ajax({
+                    url: url,  // 后台地址
+                    type: "GET",
+                    dataType: "json",
+                    data: {},  //自己需要传递的数据 {}
+                    success: function (data) {//成功
+                        console.log(data);
+                        $("#course_title").text("查询结果");
+                        $(".course_list_content").remove();
+                        $("#course_list").empty();
+                        var obj = eval(data);
+                        if (obj.error == 1) {
+                            $messageNode = $("<h3></h3>")
+                            $messageNode.text(data.message);
+                            $("#course_list").append($messageNode);
+                        } else {
+                            var jsonMessage = obj.message;
+                            for (var i = 0; i < jsonMessage.length; i++) {
+                                $courseFramework = $("<div class='col-md-3'></div>");
 
-                            $courseImage=$("<img>");
-                            var imageSrc=jsonMessage[i].avatar;
-                            if(imageSrc.search(/default/)>=0){
-                                var imageHref="/SmartOnlineCourse"+imageSrc;
-							}else{
-                                var imageHref=imageSrc;
-							}
-                            $courseImage.attr("src",imageHref);
-                            $courseImage.attr("class","img-responsive img-thumbnail");
+                                $courseImage = $("<img>");
+                                var imageSrc = jsonMessage[i].avatar;
+                                if (imageSrc.search(/default/) >= 0) {
+                                    var imageHref = imageSrc;
+                                } else {
+                                    var imageHref = "/SmartOnlineCourse" + imageSrc;
+                                }
+                                $courseImage.attr("src", imageHref);
+                                $courseImage.attr("class", "img-responsive img-thumbnail");
 
-                            $courseName=$("<h3></h3>");
-                            $courseName.attr("class","page-header");
-                            $courseName.text(jsonMessage[i].courseName);
+                                $courseName = $("<h3></h3>");
+                                $courseName.attr("class", "page-header");
+                                $courseName.text(jsonMessage[i].courseName);
 
-                            $courseOwner=$("<p></p>");
-                            $courseOwner.text(jsonMessage[i].userName);
+                                $courseOwner = $("<p></p>");
+                                $courseOwner.text(jsonMessage[i].userName);
 
-                            $courseFramework.append($courseImage,$courseName,$courseOwner);
+                                $courseFramework.append($courseImage, $courseName, $courseOwner);
 
-                            $courseLink=$("<a></a>");
-                            var courseId=jsonMessage[i].courseId;
-                            var href="/SmartOnlineCourse/join_course_deal_get/"+courseId.toString();
-                            $courseLink.attr("href",href);
-                            $courseLink.append($courseFramework);
+                                $courseLink = $("<a></a>");
+                                var courseId = jsonMessage[i].courseId;
+                                var href = "/SmartOnlineCourse/join_course_deal_get/" + courseId.toString();
+                                $courseLink.attr("href", href);
+                                $courseLink.append($courseFramework);
 
-                            $("#course_list").append($courseLink);
+                                $("#course_list").append($courseLink);
+                            }
                         }
+                    },
+                    error: function () {//出错
                     }
-                },
-                error:function(){//出错
-                }
-            });
+                });
+            }else{
+                window.location.reload();
+			}
         }
 	</script>
 	<meta name="viewprot"
@@ -83,7 +87,7 @@
 			<div class="col-md-6 col-xs-6 col-sm-6">
 				<a class="text-left" th:href="@{/my_index_return}">
 					<img th:src="@{/image/logo.png}" height="50">
-					<h4 style="display: inline;margin-left: 10px;">智能云班课</h4>
+					<h4 style="display: inline;margin-left: 10px;">智能班课</h4>
 				</a>
 			</div>
 			<div class="col-md-6 col-xs-6 col-sm-6">
