@@ -39,6 +39,7 @@ public class CourseMapperTest {
     @Autowired
     private ChooseCourseMapper chooseCourseMapper;
 
+    @Ignore
     @Test
     public void courseTest(){
         Integer avgScoreInt=chooseCourseMapper.selectAvgScore(1);

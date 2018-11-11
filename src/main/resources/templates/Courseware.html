@@ -76,8 +76,9 @@
                 $(rowIds).each(function (index,id){
                     var data = $("#course_ware_list").jqGrid("getRowData", id);
                     var courseWareId=data.courseWareId;
-                    window.location.href="/SmartOnlineCourse/course_ware_download/"+courseWareId;
-                    console.log("1");
+                    var url="/SmartOnlineCourse/course_ware_download/"+courseWareId;
+                    /*window.location.href="/SmartOnlineCourse/course_ware_download/"+courseWareId;*/
+                    window.open(url);
                 });
             }
         }
