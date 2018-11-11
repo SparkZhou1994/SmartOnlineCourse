@@ -80,7 +80,7 @@
 </div>
 <div id="message" class="container" style="width:500px;height:30px;margin:200px auto 0 auto">
     <ul class="list-group" th:each="message:${message_list}" th:if="${message_list.size()>0}">
-        <li class="list-group-item" th:text="${message.getContent()}"></li>
+        <li class="list-group-item" th:text="${message.getContent()}+'，发布时间：'+${message.getPublishDate()}"></li>
     </ul>
     <h4 th:if="${message_list.size() == 0}">暂无消息</h4>
 </div>

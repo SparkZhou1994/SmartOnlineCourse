@@ -4,13 +4,13 @@
     <resultMap id="MessageResultMap" type="spark.smartonlinecourse.entity.Message">
         <id column="message_id" property="messageId" jdbcType="INTEGER"/>
         <result column="choose_course_id" property="chooseCourseId" jdbcType="INTEGER"/>
-        <result column="content" jdbcType="VARCHAR"/>
+        <result column="content" property="content" jdbcType="VARCHAR"/>
         <result column="publish_date" property="publishDate" jdbcType="DATE"/>
     </resultMap>
     <sql id="Message_Column_List">
         message_id,choose_course_id,content,publish_date
     </sql>
-    
+
     <insert id="insertMessage" parameterType="java.util.List">
         insert into message(choose_course_id, content, publish_date) values
         <foreach collection="list" item="message" separator=",">

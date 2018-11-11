@@ -39,6 +39,9 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public Boolean homeworkMessage() {
         List<Key> homeworkNotSubmitList=homeworkMapper.selectChooseCourseIdAndCount();
+        if(homeworkNotSubmitList.isEmpty()){
+            return Boolean.TRUE;
+        }
         List<Message> messageList=new ArrayList<Message>();
         for(Key homeworkNotSubmit : homeworkNotSubmitList){
             Integer chooseCourseId=homeworkNotSubmit.getChooseCourseId();
@@ -59,6 +62,9 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public Boolean signMessage() {
         List<Key> signNotSubmitList=signMapper.selectChooseCourseIdAndCount();
+        if(signNotSubmitList.isEmpty()){
+            return Boolean.TRUE;
+        }
         List<Message> messageList=new ArrayList<Message>();
         for(Key signNotSubmit : signNotSubmitList){
             Integer chooseCourseId=signNotSubmit.getChooseCourseId();

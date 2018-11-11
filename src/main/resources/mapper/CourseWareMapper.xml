@@ -23,23 +23,23 @@
         order by batch desc
         limit #{start},#{row}
     </select>
-    
+
     <select id="selectCountByCourseId" resultType="java.lang.Integer" parameterType="java.lang.Integer">
         select count(*) from course_ware where course_id=#{courseId}
     </select>
-    
+
     <insert id="insertCourseWare" parameterType="spark.smartonlinecourse.entity.CourseWare">
         insert into course_ware(course_id,title,attachment,batch) values(#{courseId},#{title},#{attachment},#{batch})
     </insert>
-    
+
     <select id="selectByCourseWareId" parameterType="java.lang.Integer" resultMap="CourseWareResultMap">
         select 
         course_ware_id,course_id,title,attachment,batch
         from course_ware
         where course_ware_id=#{courseWareId}
     </select>
-    
-    <select id="selectChooseCourseIdAndCount" resultType="java.lang.Integer">
+
+    <select id="selectChooseCourseIdAndCount" resultType="spark.smartonlinecourse.entity.Key">
         select choose_course_id,count(*) as count from course_ware
         join choose_course on course_ware.course_id=choose_course.course_id
         group by course_ware.course_id
