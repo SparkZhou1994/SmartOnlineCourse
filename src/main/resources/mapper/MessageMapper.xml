@@ -10,7 +10,7 @@
     <sql id="Message_Column_List">
         message_id,choose_course_id,content,publish_date
     </sql>
-
+    
     <insert id="insertMessage" parameterType="java.util.List">
         insert into message(choose_course_id, content, publish_date) values
         <foreach collection="list" item="message" separator=",">
