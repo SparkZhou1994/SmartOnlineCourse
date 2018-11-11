@@ -97,11 +97,15 @@ public class MyIndexController {
         }
     }
     @GetMapping(value={"/index","/index.html"})
-    public String index(HttpSession session) {
+    public String index(HttpSession session,HttpServletResponse response,HttpServletRequest request) {
         session.removeAttribute("user");
         session.setAttribute("index_page",0);
         session.setAttribute("discuss_page", 0);
         session.setAttribute("discuss_content_page",0 );
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null) {
+            new SecurityContextLogoutHandler().logout(request, response, auth);
+        }
         return "Index";
     }
 
