@@ -112,6 +112,6 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <modules>
-        <module>singleapplication</module>
+        <module>single-application</module>
     </modules>
 </project>
