@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="spark.smartonlinecourse.dao.CourseWareMapper" >
+    <resultMap id="CourseWareResultMap" type="spark.smartonlinecourse.entity.CourseWare" >
+        <id column="course_ware_id" property="courseWareId" jdbcType="INTEGER" />
+        <result column="course_id" property="courseId" jdbcType="INTEGER" />
+        <result column="course_name" property="courseName" jdbcType="VARCHAR"/>
+        <result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="attachment" property="attachment" jdbcType="VARCHAR"/>
+        <result column="batch" property="batch" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Course_Ware_Column_List" >
+        course_ware_id,course_ware.course_id,course_name,title,attachment,batch
+    </sql>
+
+    <select id="selectByCourseIdAndStartAndRow" resultMap="CourseWareResultMap" parameterType="spark.smartonlinecourse.entity.Key">
+        select
+        <include refid="Course_Ware_Column_List"></include>
+        from course_ware
+        join course on course.course_id=course_ware.course_id
+        where course_ware.course_id=#{courseId}
+        order by batch desc
+        limit #{start},#{row}
+    </select>
+    
+    <select id="selectCountByCourseId" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+        select count(*) from course_ware where course_id=#{courseId}
+    </select>
+    
+    <insert id="insertCourseWare" parameterType="spark.smartonlinecourse.entity.CourseWare">
+        insert into course_ware(course_id,title,attachment,batch) values(#{courseId},#{title},#{attachment},#{batch})
+    </insert>
+    
+    <select id="selectByCourseWareId" parameterType="java.lang.Integer" resultMap="CourseWareResultMap">
+        select 
+        course_ware_id,course_id,title,attachment,batch
+        from course_ware
+        where course_ware_id=#{courseWareId}
+    </select>
+    
+    <select id="selectChooseCourseIdAndCount" resultType="spark.smartonlinecourse.entity.Key">
+        select choose_course_id,count(*) as count from course_ware
+        join choose_course on course_ware.course_id=choose_course.course_id
+        group by course_ware.course_id
+    </select>
+</mapper>

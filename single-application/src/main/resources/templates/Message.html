@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-cn" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/bootstrap-theme.css}">
+    <link rel="stylesheet" th:href="@{/css/index.css}">
+    <link rel="icon" type="image/x-icon" th:href="@{/favicon.ico}">
+    <script type="text/javascript" th:src="@{/js/jquery-3.3.1.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+    <script type="text/javascript">
+        $(function () {
+            var userAvatar=$("#user_avatar_text").text();
+            var userAvatarUrl="http://localhost:8080/SmartOnlineCourse"+userAvatar;
+            $("#user_avatar").attr("src",userAvatarUrl);
+            var courseAvatar=$("#course_avatar_text").text();
+            var courseAvatarUrl="http://localhost:8080/SmartOnlineCourse"+courseAvatar;
+            $("#course_avatar").attr("src",courseAvatarUrl);
+        });
+
+        function loginOut(){
+            //$(location).attr('href', 'index');
+            //$(window).attr('location','index');
+            $(location).prop('href', 'http://localhost:8080/SmartOnlineCourse/logout');
+            $.session.clear();
+        }
+    </script>
+    <meta name="viewprot"
+          content="width=devive-width,initial-scale=1,user-scalable=no">
+</head>
+<body>
+<div class="header">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-xs-6 col-sm-6">
+                <a class="text-left" th:href="@{/my_index_return}">
+                    <img th:src="@{/image/logo.png}" height="50">
+                    <h4 style="display: inline;margin-left: 10px;">智能班课</h4>
+                </a>
+            </div>
+            <div class="col-md-6 col-xs-6 col-sm-6">
+                <div class="text-right">
+                    <ul class="list-unstyle list-inline" style="margin-top: 4px;" th:object="${session.user}">
+                        <li><a th:href="@{/course_package}"><span class="glyphicon glyphicon-folder-close"></span><h4 style="display: inline;margin-left: 5px;">课程包</h4></a></li>
+                        <li><a th:href="@{/my_index_return}"><span class="glyphicon glyphicon-list-alt"></span><h4 style="display: inline;margin-left: 5px;">我的课程</h4></a></li>
+                        <li><img id="user_avatar" style="width:34px;height:34px" class="img-responsive img-thumbnail"></li>
+                        <li><a th:href="@{/my_infor}"><h4 th:text="*{userName}"></h4></a></li>
+                        <li><a onclick="loginOut()"><h4>退出</h4></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="height:172px;width: 100%;background: url(../image/header_background.jpg) no-repeat;">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-2 col-xs-2 col-sm-2">
+                    <img id="course_avatar" class="img-responsive img-thumbnail">
+                </div>
+                <div class="col-md-6 col-xs-6 col-sm-6">
+                    <h2 th:text="${current_course.getCourseName()}"></h2>
+                    <h3 th:text="${current_course.getUserName()}"></h3>
+                    <ul class="list-unstyle list-inline" style="margin-top: 4px;">
+                        <li><a class="btn" th:href="@{'/course_ware/'+${current_course.getCourseId()}}"><h4>课件</h4></a></li>
+                        <li><a class="btn" th:href="@{'/homework/'+${current_course.getCourseId()}}"><h4>作业</h4></a></li>
+                        <li><a class="btn" th:href="@{'/discuss/'+${current_course.getCourseId()}}"><h4>讨论/投票</h4></a></li>
+                        <li><a class="btn" th:href="@{'/message/'+${current_course.getCourseId()}}"><h4>消息</h4></a></li>
+                        <li><a class="btn" th:href="@{'/sign/'+${current_course.getCourseId()}}"><h4>签到</h4></a></li>
+                        <li><a class="btn" data-toggle="modal" data-target="#course_score" th:if="${not current_course.getOwnFlag()}"><h4>评分</h4></a></li>
+                    </ul>
+                </div>
+                <div class="col-md-2 col-xs-2 col-sm-2">
+                    <h1>评分：</h1>
+                    <h1 style="font-size: 80px" th:text="${current_course.getAvgScore()}"></h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="message" class="container" style="width:500px;height:30px;margin:200px auto 0 auto">
+    <ul class="list-group" th:each="message:${message_list}" th:if="${message_list.size()>0}">
+        <li class="list-group-item" th:text="${message.getContent()}+'，发布时间：'+${message.getPublishDate()}"></li>
+    </ul>
+    <h4 th:if="${message_list.size() == 0}">暂无消息</h4>
+</div>
+<h3 id="user_avatar_text" th:text="${session.user.getAvatar()}" style="display: none"></h3>
+<h3 id="course_avatar_text" th:text="${current_course.getAvatar()}" style="display: none"></h3>
+<div class="modal fade" id="course_score" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="modalLabel3">评分</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="score" class="control-label">对本课程的评分：</label>
+                    <input type="text" class="form-control" id="score" name="score">
+                </div>
+                <div class="modal-footer">
+                    <button id="course_score_close" type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button id="course_score_submit" type="button" class="btn btn-primary">评分</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function courseScore(){
+        var score=$("#score").val();
+        var courseId=[[${current_course.getCourseId()}]];
+        $.ajaxSettings.async=false;
+        $.ajax({
+            url:"/SmartOnlineCourse/course_score",  // 后台地址
+            type:"POST",
+            dataType:"json",
+            data:{"score":score,"courseId":courseId},  //自己需要传递的数据 {}
+            success: function(data){//成功
+                $("#course_score").modal("hide");
+                window.location.reload();
+            },
+            error:function(){//出错
+            }
+        });
+    }
+    $("#course_score_submit").click(function(){
+        courseScore();
+    });
+</script>
+</body>
+</html>

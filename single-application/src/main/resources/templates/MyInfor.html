@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-cn" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/bootstrap-theme.css}">
+    <link rel="stylesheet" th:href="@{/css/index.css}">
+    <link rel="icon" type="image/x-icon" th:href="@{/favicon.ico}">
+    <script type="text/javascript" th:src="@{/js/jquery-3.3.1.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+    <script type="text/javascript">
+        function check(){
+            var username=$("#username").val();
+            if(username.length==0||username==""){
+                alert("用户名不能为空");
+                return false;
+            }
+            var tel=$("#tel").val();
+            if(tel.length==0||tel==""){
+                alert("手机号不能为空");
+                return false;
+            }
+            var email=$("#email").val();
+            if(email.length==0||email=="") {
+                alert("邮箱不能为空");
+                return false;
+            }
+            return true;
+        }
+        function loginOut(){
+            //$(location).attr('href', 'index');
+            //$(window).attr('location','index');
+            $(location).prop('href', 'logout');
+            $.session.clear();
+        }
+    </script>
+    <meta name="viewprot"
+          content="width=devive-width,initial-scale=1,user-scalable=no">
+</head>
+<body>
+<div class="header">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-xs-6 col-sm-6">
+                <a class="text-left" th:href="@{/my_index_return}">
+                    <img th:src="@{/image/logo.png}" height="50">
+                    <h4 style="display: inline;margin-left: 10px;">智能班课</h4>
+                </a>
+            </div>
+            <div class="col-md-6 col-xs-6 col-sm-6">
+                <div class="text-right">
+                    <ul class="list-unstyle list-inline" style="margin-top: 4px;" th:object="${session.user}">
+                        <li><a th:href="@{/course_package}"><span class="glyphicon glyphicon-folder-close"></span><h4 style="display: inline;margin-left: 5px;">课程包</h4></a></li>
+                        <li><a th:href="@{/my_index_return}"><span class="glyphicon glyphicon-list-alt"></span><h4 style="display: inline;margin-left: 5px;">我的课程</h4></a></li>
+                        <li><img th:src="@{${session.user.getAvatar()}}" style="width:34px;height:34px" class="img-responsive img-thumbnail"></li>
+                        <li><a th:href="@{/my_infor}"><h4 th:text="*{userName}"></h4></a></li>
+                        <li><a onclick="loginOut()"><h4>退出</h4></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="myIndexMain">
+    <div class="container">
+        <form th:object="${session.user}" enctype="multipart/form-data" method="post" onsubmit="return check()" th:action="@{/user_update}">
+            <div class="form-group" style="padding:0px 20px;margin:50px auto 0 auto;width:700px">
+                <div class="input-group">
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+                    <input name="username" id="username" class="form-control" th:value="${session.user.getUserName()}">
+                </div>
+                <div class="input-group" style="margin-top: 20px">
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-earphone"></span></span>
+                    <input name="tel" id="tel" class="form-control" th:value="*{tel}">
+                </div>
+                <div class="input-group" style="margin-top: 20px">
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></span>
+                    <input name="email" id="email" class="form-control" th:value="*{email}">
+                </div>
+                <div class="row" style="margin-top: 20px">
+                    <div class="col-xs-3 col-sm-3 col-md-3"></div>
+                    <div class="col-xs-6 col-sm-6 col-md-6">
+                        <img th:src="@{${session.user.getAvatar()}}" class="img-responsive img-thumbnail">
+                    </div>
+                    <div class="col-xs-3 col-sm-6 col-md-3">
+                        <input type="file" id="file" name="file" style="margin-top: 60%"/>
+                    </div>
+                </div>
+                <div class="row" style="margin-top: 20px">
+                    <div class="col-md-4 col-xs-4 col-sm-4"></div>
+                    <div class="col-md-1 col-xs-1 col-sm-1"><button class="btn" type="submit">保存</button></div>
+                    <div class="col-md-2 col-xs-2 col-sm-2"></div>
+                    <div class="col-md-1 col-xs-1 col-sm-1"><button class="btn">取消</button></div>
+                    <div class="col-md-4 col-xs-4 col-sm-4"></div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div id="footer">
+    <h5 class="text-center">©2018 上海建桥学院</h5>
+    <h5 class="text-center">地址：上海市浦东新区康桥路1500号    联系电话：13127945312    电子邮件：2637666515@qq.com </h5>
+</div>
+</body>
+</html>

@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="zh-cn" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/bootstrap-theme.css}">
+    <link rel="stylesheet" th:href="@{/css/index.css}">
+    <link rel="icon" type="image/x-icon" th:href="@{/favicon.ico}">
+    <script type="text/javascript" th:src="@{/js/jquery-3.3.1.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+    <style type="text/css">
+        *{
+            margin:0;padding:0;
+            -webkit-touch-callout: none; /* prevent callout to copy image, etc when tap to hold */
+            -webkit-text-size-adjust: none; /* prevent webkit from resizing text to fit */
+            -webkit-tap-highlight-color: rgba(210,210,210,0.35); /* make transparent link selection, adjust last value opacity 0 to 1.0 */
+            -webkit-user-select: none; /* prevent copy paste, to allow, change 'none' to 'text' */
+        }
+        body{font-family:"微软雅黑";font-size:12px;}
+        ul,li{list-style:none;}
+        .discuss{width:100%;min-width:320px;}
+        .title{height:26px;line-height:26px;padding:0px 15px;position:relative;font-size:15px;color:#aaa;border-bottom:1px solid rgba(0, 0, 0, 0.15);}
+
+        .discuss_main{border-bottom:1px dashed #cecece;padding:0 15px 3px;position:relative;}
+        .discuss_title{font-size:1.2em;color:rgba(0,0,0,1);padding-top:5px;padding-bottom:2px;}
+        .discuss_desc{color:rgba(110,110,110,1);line-height:21px;word-break:break-all;word-wrap:break-word;overflow:hidden;font-size:1.2em;padding:2px 0;}
+        .discuss_time{color:rgba(154,154,154,1);padding:2px 0;}
+        .discuss_person{background:rgb(245,245,245);font-size:1.2em;border:1px solid rgba(204,204,204,0.2);border-radius:2px;color:rgba(110,110,110,1);padding:4px;margin-bottom:5px;}
+        .opbtn{position:absolute;top: 0;right: 0;}
+    </style>
+    <script type="text/javascript">
+        $(function(){
+            var userAvatar=$("#user_avatar_text").text();
+            var userAvatarUrl="http://localhost:8080/SmartOnlineCourse"+userAvatar;
+            $("#user_avatar").attr("src",userAvatarUrl);
+            var courseAvatar=$("#course_avatar_text").text();
+            var courseAvatarUrl="http://localhost:8080/SmartOnlineCourse"+courseAvatar;
+            $("#course_avatar").attr("src",courseAvatarUrl);
+        });
+        function discussCheck(){
+            var discussContent=$("#discuss_content").val();
+            if(discussContent.length==0||discussContent==""){
+                alert("讨论内容不能为空");
+                return false;
+            }
+        }
+        function voteCheck(){
+            var flag=radioCheck();
+            return flag;
+        }
+        function loginOut(){
+            //$(location).attr('href', 'index');
+            //$(window).attr('location','index');
+            $(location).prop('href', 'http://localhost:8080/SmartOnlineCourse/logout');
+            $.session.clear();
+        }
+        function nextPage(){
+            var discussId=[[${discuss.getDiscussId()}]];
+            var url='/SmartOnlineCourse/discuss_content_next_page/'+discussId;
+            formPost(url,0);
+        }
+        function prePage(){
+            var discussId=[[${discuss.getDiscussId()}]];
+            var url='/SmartOnlineCourse/discuss_content_pre_page/'+discussId;
+            formPost(url,0);
+        }
+        function formPost(url,params) {
+            var temp = document.createElement("form");
+            temp.action = url;
+            temp.method = "post";
+            temp.style.display = "none";
+            var hideInput = document.createElement("input");
+            hideInput.type="hidden";
+            //传入参数名,相当于get请求中的content=
+            hideInput.name= "content";
+            //传入数据，只传递了一个参数内容，实际可传递多个。
+            hideInput.value= params;
+            temp.appendChild(hideInput);
+            document.body.appendChild(temp);
+            temp.submit();
+            return temp;
+        }
+        function radioCheck() {
+            var flag=false;
+            var chooseList=document.getElementsByName("choose");
+            for(var i=0;i<chooseList.length;i++){
+                if(chooseList[i].checked){
+                    flag=true;
+                    break;
+                }
+            }
+            return flag;
+        }
+    </script>
+    <meta name="viewprot"
+          content="width=devive-width,initial-scale=1,user-scalable=no">
+</head>
+<body>
+<div class="header">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-xs-6 col-sm-6">
+                <a class="text-left" th:href="@{/my_index_return}">
+                    <img th:src="@{/image/logo.png}" height="50">
+                    <h4 style="display: inline;margin-left: 10px;">智能班课</h4>
+                </a>
+            </div>
+            <div class="col-md-6 col-xs-6 col-sm-6">
+                <div class="text-right">
+                    <ul class="list-unstyle list-inline" style="margin-top: 4px;" th:object="${session.user}">
+                        <li><a th:href="@{/course_package}"><span class="glyphicon glyphicon-folder-close"></span><h4 style="display: inline;margin-left: 5px;">课程包</h4></a></li>
+                        <li><a th:href="@{/my_index_return}"><span class="glyphicon glyphicon-list-alt"></span><h4 style="display: inline;margin-left: 5px;">我的课程</h4></a></li>
+                        <li><img id="user_avatar" style="width:34px;height:34px" class="img-responsive img-thumbnail"></li>
+                        <li><a th:href="@{/my_infor}"><h4 th:text="*{userName}"></h4></a></li>
+                        <li><a onclick="loginOut()"><h4>退出</h4></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="height:172px;width: 100%;background: url(../image/header_background.jpg) no-repeat;">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-2 col-xs-2 col-sm-2">
+                    <img id="course_avatar" class="img-responsive img-thumbnail">
+                </div>
+                <div class="col-md-6 col-xs-6 col-sm-6">
+                    <h2 th:text="${current_course.getCourseName()}"></h2>
+                    <h3 th:text="${current_course.getUserName()}"></h3>
+                    <ul class="list-unstyle list-inline" style="margin-top: 4px;">
+                        <li><a class="btn" th:href="@{'/course_ware/'+${current_course.getCourseId()}}"><h4>课件</h4></a></li>
+                        <li><a class="btn" th:href="@{'/homework/'+${current_course.getCourseId()}}"><h4>作业</h4></a></li>
+                        <li><a class="btn" th:href="@{'/discuss/'+${current_course.getCourseId()}}"><h4>讨论/投票</h4></a></li>
+                        <li><a class="btn" th:href="@{'/message/'+${current_course.getCourseId()}}"><h4>消息</h4></a></li>
+                        <li><a class="btn" th:href="@{'/sign/'+${current_course.getCourseId()}}"><h4>签到</h4></a></li>
+                        <li><a class="btn" data-toggle="modal" data-target="#course_score" th:if="${not current_course.getOwnFlag()}"<h4>评分</h4></a></li>
+                    </ul>
+                </div>
+                <div class="col-md-2 col-xs-2 col-sm-2">
+                    <h1>评分：</h1>
+                    <h1 style="font-size: 80px" th:text="${current_course.getAvgScore()}"></h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="discuss" class="container" style="width: 480px;height:50px;margin:200px auto 0px auto">
+    <div class="btn btn-primary" style="margin-right: 20px;" data-toggle="modal" data-target="#discuss_release" th:if="${vote eq 0}">发布讨论</div>
+    <div class="btn btn-primary" data-toggle="modal" data-target="#vote_release" th:if="${vote eq 1}">投票</div>
+</div>
+<h3 id="user_avatar_text" th:text="${session.user.getAvatar()}" style="display: none"></h3>
+<h3 id="course_avatar_text" th:text="${current_course.getAvatar()}" style="display: none"></h3>
+<div class="modal fade" id="discuss_release" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="modalLabel">发布讨论</h4>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <label for="vote_title" class="control-label">讨论标题：</label>
+                    <span th:text="${discuss.getTitle()}" class="form-control" id="discuss_title" name="title"/>
+                </div>
+                <div>
+                    <label for="vote_describe" class="control-label">讨论描述：</label>
+                    <span th:text="${discuss.getDescribe()}" class="form-control" id="discuss_describe" name="describe"/>
+                </div>
+                <form enctype="multipart/form-data" method="post" onsubmit="return discussCheck()" th:action="@{'/discuss_content_insert/'+${discuss.getDiscussId()}}">
+                    <div class="form-group">
+                        <label for="discuss_content" class="control-label">讨论内容：</label>
+                        <input type="text" class="form-control" id="discuss_content" name="content">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <button type="submit" class="btn btn-primary">发布</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="vote_release" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="modalLabel2">投票</h4>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <label for="vote_title" class="control-label">投票标题：</label>
+                    <span th:text="${discuss.getTitle()}" class="form-control" id="vote_title" name="title"/>
+                </div>
+                <div>
+                    <label for="vote_describe" class="control-label">投票描述：</label>
+                    <span th:text="${discuss.getDescribe()}" class="form-control" id="vote_describe" name="describe"/>
+                </div>
+                <form enctype="multipart/form-data" method="post" onsubmit="return voteCheck()" th:action="@{'/discuss_content_insert/'+${discuss.getDiscussId()}}">
+                    <div class="form-group">
+                        <label class="radio-inline"><input type="radio" name="choose" value="1" th:text="${discuss.getChoose1()}" th:if="${discuss.getChoose1() != null}"></label>
+                        <label class="radio-inline"><input type="radio" name="choose" value="2" th:text="${discuss.getChoose2()}" th:if="${discuss.getChoose2() != null}"></label>
+                        <label class="radio-inline"><input type="radio" name="choose" value="3" th:text="${discuss.getChoose3()}" th:if="${discuss.getChoose3() != null}"></label>
+                        <label class="radio-inline"><input type="radio" name="choose" value="4" th:text="${discuss.getChoose4()}" th:if="${discuss.getChoose4() != null}"></label>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <button type="submit" class="btn btn-primary">投票</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="discuss" th:if="${vote} eq 0">
+    <p class="title">
+        所有讨论
+    </p>
+    <a id="messDivId" th:each="discussContent:${discuss_content_list}">
+        <div class="discuss_main">
+            <div class="opbtn"></div>
+            <p th:text="${discussContent.getPublishTimeString()}" class="discuss_time">2015/07/12 20:48</p>
+            <p th:text="${discussContent.getContent()}" class="discuss_desc">描述</p>
+            <p th:text="${discussContent.getUserName()}" class="discuss_person">发起人</p>
+        </div>
+    </a>
+</div>
+<div class="container">
+    <div th:if="${vote eq 1}">
+        <h4 th:text="'共'+${discuss_content_count}+'参与投票'"></h4>
+        <h5 th:if="${discuss.getChoose1() != null}" th:text="'共'+${choose1_count}+'人投了第一项'"></h5>
+        <h5 th:if="${discuss.getChoose2() != null}" th:text="'共'+${choose2_count}+'人投了第二项'"></h5>
+        <h5 th:if="${discuss.getChoose3() != null}" th:text="'共'+${choose3_count}+'人投了第三项'"></h5>
+        <h5 th:if="${discuss.getChoose4() != null}" th:text="'共'+${choose4_count}+'人投了第四项'"></h5>
+    </div>
+</div>
+<div class="container">
+    <div style="text-align: right;margin-top:20px;" th:if="${vote eq 0}">
+        <input type="button" id="pageDown" value="上一页" class="btn btn-xs" th:if="${session.discuss_page>0}" onclick="prePage()">
+        <span th:text="'第'+${session.discuss_page+1}+'页/共'+${total_page}+'页'"></span>
+        <input type="button" id="pageUp" value="下一页" class="btn btn-xs" th:if="${(session.discuss_page+1)<total_page}" onclick="nextPage()">
+    </div>
+</div>
+<div class="modal fade" id="course_score" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="modalLabel3">评分</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="score" class="control-label">对本课程的评分：</label>
+                    <input type="text" class="form-control" id="score" name="score">
+                </div>
+                <div class="modal-footer">
+                    <button id="course_score_close" type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button id="course_score_submit" type="button" class="btn btn-primary">评分</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function courseScore(){
+        var score=$("#score").val();
+        var courseId=[[${current_course.getCourseId()}]];
+        $.ajax({
+            url:"/SmartOnlineCourse/course_score",  // 后台地址
+            type:"POST",
+            dataType:"json",
+            data:{"score":score,"courseId":courseId},  //自己需要传递的数据 {}
+            success: function(data){//成功
+                $("#course_score").modal("hide");
+                window.location.reload();
+            },
+            error:function(){//出错
+            }
+        });
+    }
+    $("#course_score_submit").click(function(){
+        courseScore();
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="spark.smartonlinecourse.dao.ChooseCourseMapper" >
+    <resultMap id="ChooseCourseResultMap" type="spark.smartonlinecourse.entity.ChooseCourse" >
+        <id column="course_id" property="courseId" jdbcType="INTEGER" />
+        <result column="course_name" property="courseName" jdbcType="VARCHAR" />
+        <result column="user_name" property="userName" jdbcType="VARCHAR" />
+        <result column="avatar" property="avatar" jdbcType="VARCHAR" />
+    </resultMap>
+    <sql id="Choose_Course_Column_List" >
+    choose_course.course_id as course_id, course_name, user_name, course.avatar
+    </sql>
+    <select id="selectByUserId" resultMap="ChooseCourseResultMap" parameterType="spark.smartonlinecourse.entity.Key">
+        select 
+        <include refid="Choose_Course_Column_List"/>
+        from choose_course,course,`user`
+        where choose_course.course_id=course.course_id
+        and course.user_id=`user`.user_id
+        and choose_course.user_id=#{userId} limit #{start},4
+    </select>
+    
+    <select id="selectCountByUserId" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+        select count(*) as countNum
+        from choose_course,course
+        where choose_course.course_id=course.course_id
+        and choose_course.user_id=#{userId,jdbcType=INTEGER}
+    </select>
+
+    <insert id="insertChooseCourse" parameterType="spark.smartonlinecourse.entity.Key">
+        insert into choose_course(course_id,user_id) values (#{courseId},#{userId})
+    </insert>
+
+    <select id="selectChooseCourseId" parameterType="spark.smartonlinecourse.entity.Key" resultType="java.lang.Integer">
+        select choose_course_id from choose_course
+        <where>
+            <if test="userId != null and userId != ''">
+                and user_id=#{userId}
+            </if>
+            <if test="courseId != null and courseId != ''">
+                and course_id=#{courseId}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectAvgScore" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select avg(score) as avgScore from choose_course where course_id=#{courseId}
+    </select>
+
+    <update id="updateScore" parameterType="spark.smartonlinecourse.entity.ChooseCourse">
+        update choose_course set score=#{score} where course_id=#{courseId} and user_id=#{userId}
+    </update>
+</mapper>

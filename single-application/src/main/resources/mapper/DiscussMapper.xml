@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="spark.smartonlinecourse.dao.DiscussMapper" >
+    <resultMap id="DiscussResultMap" type="spark.smartonlinecourse.entity.Discuss" >
+        <id column="discuss_id" property="discussId" jdbcType="INTEGER" />
+        <result column="course_id" property="courseId" jdbcType="INTEGER" />
+        <result column="user_id" property="userId" jdbcType="INTEGER"/>
+        <result column="user_name" property="userName" jdbcType="VARCHAR"/>
+        <result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="describe" property="describe" jdbcType="VARCHAR"/>
+        <result column="last_publish_time" property="lastPublishTime" jdbcType="TIMESTAMP" />
+        <result column="vote" property="vote" jdbcType="CHAR"/>
+        <result column="choose_1" property="choose1" jdbcType="VARCHAR" />
+        <result column="choose_2" property="choose2" jdbcType="VARCHAR"/>
+        <result column="choose_3" property="choose3" jdbcType="VARCHAR"/>
+        <result column="choose_4" property="choose4" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Discuss_Column_List" >
+    discuss_id,choose_course.course_id,choose_course.user_id,user_name,title,`describe`,last_publish_time,vote,choose_1,choose_2,choose_3,choose_4
+    </sql>
+
+    <select id="selectByCourseIdAndStart" parameterType="spark.smartonlinecourse.entity.Key" resultMap="DiscussResultMap">
+        select
+        <include refid="Discuss_Column_List"/>
+        from discuss
+        join choose_course on discuss.choose_course_id=choose_course.choose_course_id
+        join course on choose_course.course_id=course.course_id
+        join `user` on `user`.user_id=choose_course.user_id
+        where choose_course.course_id=#{courseId}
+        order by last_publish_time desc
+        limit #{start},10
+    </select>
+
+    <insert id="insertDiscuss" parameterType="spark.smartonlinecourse.entity.Discuss">
+        insert into discuss(choose_course_id,title,`describe`,last_publish_time,vote
+        <if test="vote =='1'">
+            <if test="choose1 != null and choose1 !=''">
+                ,choose_1
+            </if>
+            <if test="choose2 != null and choose2 != ''">
+                ,choose_2
+            </if>
+            <if test="choose3 != null and choose3 !=''">
+                ,choose_3
+            </if>
+            <if test="choose4 !=null and choose4 != ''">
+                ,choose_4
+            </if>
+        </if>
+        ) values(
+        (select choose_course_id from choose_course where user_id=#{userId} and course_id=#{courseId}),#{title},#{describe},#{lastPublishTime,jdbcType=TIMESTAMP,javaType=java.time.LocalDateTime},#{vote}
+        <if test="vote =='1'">
+            <if test="choose1 != null and choose1 !=''">
+                ,#{choose1}
+            </if>
+            <if test="choose2 != null and choose2 != ''">
+                ,#{choose2}
+            </if>
+            <if test="choose3 != null and choose3 !=''">
+                ,#{choose3}
+            </if>
+            <if test="choose4 !=null and choose4 != ''">
+                ,#{choose4}
+            </if>
+        </if>
+        )
+    </insert>
+
+    <update id="updateDiscuss" parameterType="spark.smartonlinecourse.entity.Discuss">
+        update discuss set last_publish_time=#{lastPublishTime,jdbcType=TIMESTAMP,javaType=java.time.LocalDateTime}
+        where discuss_id=#{discussId}
+    </update>
+
+    <select id="selectCountByCourseId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select count(*) from discuss
+        join choose_course c3 on discuss.choose_course_id = c3.choose_course_id
+        where c3.course_id=#{courseId}
+    </select>
+
+    <select id="selectByDiscussId" parameterType="java.lang.Integer" resultMap="DiscussResultMap">
+        select
+        <include refid="Discuss_Column_List"/>
+        from discuss
+        join choose_course on discuss.choose_course_id = choose_course.choose_course_id
+        join `user` on `user`.user_id=choose_course.user_id
+        join course c2 on choose_course.course_id = c2.course_id
+        where discuss_id=#{discussId}
+    </select>
+</mapper>

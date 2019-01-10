@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh-cn" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+  <head> 
+    <title>My JSP 'index.jsp' starting page</title>
+	<meta charset="UTF-8">
+	<meta http-equiv="pragma" content="no-cache">
+	<meta http-equiv="cache-control" content="no-cache">
+	<meta http-equiv="expires" content="0">    
+	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+	<meta http-equiv="description" content="This is my page">
+	<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+	<link rel="stylesheet" th:href="@{/css/bootstrap-theme.css}">
+	<link rel="stylesheet" th:href="@{/css/index.css}">
+    <link rel="icon" type="image/x-icon" th:href="@{/favicon.ico}">
+	<script type="text/javascript" th:src="@{/js/jquery-3.3.1.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+	<meta name="viewprot"
+		content="width=devive-width,initial-scale=1,user-scalable=no">
+  </head>
+  
+  <body>
+    	<nav class="navbar navbar-default navbar-fixed-top navbar-inverse">
+		<div class="container">
+			<div class="navbar-header">
+				<a href="#"><img th:src="@{/image/logo.png}" height="50"></a>
+			</div>
+			<div class="collapse navbar-collapse" style="margin-left:55px">
+				<ul class="nav navbar-nav">
+					<li class="active"><a href="#">首页</a></li>
+					<li><a href="#main_char">关键特征</a></li>
+					<li><a href="#how_to_use">如何使用</a></li>
+					<li><a href="#school_server">学校服务</a></li>
+					<li><a href="#user_report">用户反馈</a></li>
+					<li><a th:href="@{/my_index}">登录</a></li>
+				</ul>
+			</div>
+		</div>
+		</nav>
+		<div id="indexMain">
+			<div class="row" style="position: relative;top: 20%">
+				<div class="col-xd-6 col-sm-6 col-md-6"></div>
+				<div class="col-xd-5 col-sm-5 col-md-5">
+					<div id="myCarousel" class="carousel slide">
+					    <ol class="carousel-indicators">
+					        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+					        <li data-target="#myCarousel" data-slide-to="1"></li>
+					        <li data-target="#myCarousel" data-slide-to="2"></li>
+					    </ol>   
+					    <div class="carousel-inner">
+					        <div class="item active">
+					            <img class="img-responsive" th:src="@{/image/index_ad_01.jpg}" alt="First slide">
+					        </div>
+					        <div class="item">
+					            <img class="img-responsive" th:src="@{/image/index_ad_02.jpg}" alt="Second slide">
+					        </div>
+					        <div class="item">
+					            <img class="img-responsive" th:src="@{/image/index_ad_03.jpg}" alt="Third slide">
+					        </div>
+					    </div>
+					    <a class="carousel-control left" href="#myCarousel" 
+					       data-slide="prev"> <span _ngcontent-c3="" aria-hidden="true" class="glyphicon glyphicon-chevron-right"></span></a>
+					    <a class="carousel-control right" href="#myCarousel" 
+					       data-slide="next"> <span _ngcontent-c3="" aria-hidden="true" class="glyphicon glyphicon-chevron-left"></span></a>
+					</div>
+				</div>
+			</div>
+			<div id="content">
+				<div class="container">
+					<div id="main_char">
+					<h3>关键特征</h3>
+					<div class="row">
+						<div class="col-md-4 col-xs-4 col-sm-4">
+							<img th:src="@{/image/index_intro_1.png}" class="img-responsive img-thumbnail introImg">
+							<p class="intro">您都可以轻松管理自己的班课，管理学生、发送通知、分享资源、布置批改作业、组织讨论答疑、开展教学互动。</p>
+						</div>
+						<div class="col-md-4 col-xs-4 col-sm-4">
+							<img th:src="@{/image/index_intro_2.png}" class="img-responsive img-thumbnail introImg">
+							<p class="intro">任何普通教室的课堂现场或课外，您都可以随即开展投票问卷、头脑风暴、作品分享、计时答题等互动教学活动。即刻反馈，即刻点评。</p>
+						</div>
+						<div class="col-md-4 col-xs-4 col-sm-4">
+							<img th:src="@{/image/index_intro_3.png}" class="img-responsive img-thumbnail introImg">
+							<p class="intro">您发布的所有课程信息、学习要求、课件、微视频等学习资源都可以即时传递到学生设备上，从而让学生设备从此变成学习工具，不再只是社交、游戏…</p>
+						</div>
+					</div>
+					</div>
+					<div class="row" style="margin-top: 10px;">
+						<div class="col-md-6 col-xs-6 col-sm-6">
+							<img th:src="@{/image/index_intro_4.png}" class="img-responsive img-thumbnail introImg">
+							<p class="intro">配套交互式数字教材,可以实现对每位学生学习进度跟踪和学习成效评价，学期末教师可以得到每位学生的数字教材学习评估报告。</p>
+						</div>
+						<div class="col-md-6 col-xs-6 col-sm-6">
+							<img th:src="@{/image/index_intro_5.png}" class="img-responsive img-thumbnail introImg">
+							<p class="intro">对教师和学生全部免费。</p>
+						</div>
+					</div>
+					<div class="row" style="margin-top: 20px;" id="how_to_use">
+						<div class="col-md-6 col-xs-6 col-sm-6">
+							<h3>如何使用</h3>
+							<p>老师，同学们，我们已经跨入互联网时代，电脑已经在我们身边普及。我们还用苦恼教室没有开展课堂互动反馈的设施吗？我们是否想实现即时的沟通分享，但又不愿受到非教学的干扰呢？我们是否想让我们的教、学更轻松、自由、有趣呢？智能班课，专门为PC环境下的教、学而设计。打开PC，开启您的全新教学体验吧！</p>
+						</div>
+						<div class="col-md-6 col-xs-6 col-sm-6">
+							<video width="320" height="240" controls="controls" th:src="@{/intro.mp4}"></video>
+						</div>
+					</div>
+					<div class="row" style="margin-top: 20px;">
+						<div class="col-md-6 col-xs-6 col-sm-6" id="school_server">
+							<img th:src="@{/image/index_server_1.png}" class="img-responsive img-thumbnail">
+							<h3><img th:src="@{/image/index_server_3.png}"></h3>
+							<p>为学校提供学习中心定制服务。</p>
+						</div>
+						<div class="col-md-6 col-xs-6 col-sm-6" id="user_report">
+							<img th:src="@{/image/index_server_2.png}" class="img-responsive img-thumbnail">
+							<h3><img th:src="@{/image/index_server_4.png}"></h3>
+							<p>欢迎您对我们的应用提供改进意见和建议，
+请发送邮件至<a href="mailto:2637666515@qq.com">2637666515@qq.com</a></p>
+						</div>
+					</div>
+				</div>
+				<div id="footer">
+					<h5 class="text-center">©2018 上海建桥学院</h5>
+					<h5 class="text-center">地址：上海市浦东新区康桥路1500号    联系电话：13127945312    电子邮件：2637666515@qq.com </h5>
+				</div>
+			</div>
+		</div>
+  </body>
+</html>

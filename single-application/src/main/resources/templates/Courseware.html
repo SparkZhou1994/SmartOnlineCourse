@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="zh-cn" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/bootstrap-theme.css}">
+    <link rel="stylesheet" th:href="@{/css/index.css}">
+    <link rel="stylesheet" th:href="@{/css/ui.jqgrid.css}">
+    <link rel="stylesheet" th:href="@{/css/jquery-ui-1.8.16.custom.css}">
+    <link rel="icon" type="image/x-icon" th:href="@{/favicon.ico}">
+    <script type="text/javascript" th:src="@{/js/jquery-3.3.1.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/jquery.jqGrid.src.js}"></script>
+    <script type="text/javascript" th:src="@{/js/grid.locale-cn.js}"></script>
+    <script type="text/javascript">
+        $(function(){
+            var userAvatar=$("#user_avatar_text").text();
+            var userAvatarUrl="http://localhost:8080/SmartOnlineCourse"+userAvatar;
+            $("#user_avatar").attr("src",userAvatarUrl);
+            var courseAvatar=$("#course_avatar_text").text();
+            var courseAvatarUrl="http://localhost:8080/SmartOnlineCourse"+courseAvatar;
+            $("#course_avatar").attr("src",courseAvatarUrl);
+
+            var courseId=[[${current_course.getCourseId()}]];
+            var urlTemp='/SmartOnlineCourse/course_ware_list/'+courseId;
+            jQuery("#course_ware_list").jqGrid({
+                url:urlTemp,
+                datatype:"json",
+                mtype:"POST",
+                colNames:['课件编号','课程名','文件名','批次'],
+                colModel:[
+                    {name:'courseWareId',index:'courseWareId',align:'center'},
+                    {name:'courseName',index:'courseName',align:'center'},
+                    {name:'title',index:'title',align:'center'},
+                    {name:'batch',index:'batch',align:'center'},
+                ],
+                viewrecords:true,
+                multiselect:true,
+                multiboxonly:true,
+                rowNum:10,
+                rowList:[10,20,30],
+                pager:'#course_ware_page',
+                jsonReader:{
+                    root:"data",
+                    page:"page",
+                    total:"total",
+                    records:"records",
+                    repeatitems:false
+                }
+            });
+        });
+        function check() {
+            var title=$("#title").val();
+            if(title.length==0||title==""){
+                alert("课件名不能为空");
+                return false;
+            }
+            var batch=$("#batch").val();
+            if(batch.length==0||batch==""){
+                alert("课件批次不能为空");
+                return false;
+            }
+            var file=$("#file").val();
+            if(file.length==0||file==""){
+                alert("上传文件不能为空");
+                return false;
+            }
+        }
+        function download(){
+            var rowIds=$("#course_ware_list").jqGrid("getGridParam","selarrrow");
+            if (!rowIds) {
+                alert("请选择一条记录");
+                return;
+            } else {
+                $(rowIds).each(function (index,id){
+                    var data = $("#course_ware_list").jqGrid("getRowData", id);
+                    var courseWareId=data.courseWareId;
+                    var url="/SmartOnlineCourse/course_ware_download/"+courseWareId;
+                    /*window.location.href="/SmartOnlineCourse/course_ware_download/"+courseWareId;*/
+                    window.open(url);
+                });
+            }
+        }
+        function loginOut(){
+            //$(location).attr('href', 'index');
+            //$(window).attr('location','index');
+            $(location).prop('href', 'http://localhost:8080/SmartOnlineCourse/logout');
+            $.session.clear();
+        }
+    </script>
+    <meta name="viewprot"
+          content="width=devive-width,initial-scale=1,user-scalable=no">
+</head>
+<body>
+    <div class="header">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-xs-6 col-sm-6">
+                    <a class="text-left" th:href="@{/my_index_return}">
+                        <img th:src="@{/image/logo.png}" height="50">
+                        <h4 style="display: inline;margin-left: 10px;">智能班课</h4>
+                    </a>
+                </div>
+                <div class="col-md-6 col-xs-6 col-sm-6">
+                    <div class="text-right">
+                        <ul class="list-unstyle list-inline" style="margin-top: 4px;" th:object="${session.user}">
+                            <li><a th:href="@{/course_package}"><span class="glyphicon glyphicon-folder-close"></span><h4 style="display: inline;margin-left: 5px;">课程包</h4></a></li>
+                            <li><a th:href="@{/my_index_return}"><span class="glyphicon glyphicon-list-alt"></span><h4 style="display: inline;margin-left: 5px;">我的课程</h4></a></li>
+                            <li><img id="user_avatar" style="width:34px;height:34px" class="img-responsive img-thumbnail"></li>
+                            <li><a th:href="@{/my_infor}"><h4 th:text="*{userName}"></h4></a></li>
+                            <li><a onclick="loginOut()"><h4>退出</h4></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="height:172px;width: 100%;background: url(../image/header_background.jpg) no-repeat;">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-2 col-xs-2 col-sm-2">
+                        <img id="course_avatar" class="img-responsive img-thumbnail">
+                    </div>
+                    <div class="col-md-6 col-xs-6 col-sm-6">
+                        <h2 th:text="${current_course.getCourseName()}"></h2>
+                        <h3 th:text="${current_course.getUserName()}"></h3>
+                        <ul class="list-unstyle list-inline" style="margin-top: 4px;">
+                            <li><a class="btn" th:href="@{'/course_ware/'+${current_course.getCourseId()}}"><h4>课件</h4></a></li>
+                            <li><a class="btn" th:href="@{'/homework/'+${current_course.getCourseId()}}"><h4>作业</h4></a></li>
+                            <li><a class="btn" th:href="@{'/discuss/'+${current_course.getCourseId()}}"><h4>讨论/投票</h4></a></li>
+                            <li><a class="btn" th:href="@{'/message/'+${current_course.getCourseId()}}"><h4>消息</h4></a></li>
+                            <li><a class="btn" th:href="@{'/sign/'+${current_course.getCourseId()}}"><h4>签到</h4></a></li>
+                            <li><a class="btn" data-toggle="modal" data-target="#course_score" th:if="${not current_course.getOwnFlag()}"><h4>评分</h4></a></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-2 col-xs-2 col-sm-2">
+                        <h1>评分：</h1>
+                        <h1 style="font-size: 80px" th:text="${current_course.getAvgScore()}"></h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="width: 235px;height:30px;margin:200px auto 0 auto" id="course_ware" class="container">
+        <div type="button" class="btn btn-primary" th:if="${current_course.getOwnFlag()}" data-toggle="modal" data-target="#course_ware_create">上传课件</div>
+        <div class="btn btn-primary" onclick="download()">下载课件</div>
+    </div>
+    <div class="container" style="margin-top: 5%">
+        <table id="course_ware_list"></table>
+        <div id="course_ware_page"></div>
+    </div>
+    <h3 id="user_avatar_text" th:text="${session.user.getAvatar()}" style="display: none"></h3>
+    <h3 id="course_avatar_text" th:text="${current_course.getAvatar()}" style="display: none"></h3>
+    <div class="modal fade" id="course_ware_create" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="modalLabel">上传课件</h4>
+                </div>
+                <div class="modal-body">
+                    <form enctype="multipart/form-data" method="post" onsubmit="return check()" th:action="@{'/course_ware_upload/'+${current_course.getCourseId()}}">
+                        <div class="form-group">
+                            <label for="title" class="control-label">课件名：</label>
+                            <input type="text" class="form-control" id="title" name="title">
+                        </div>
+                        <div class="form-group">
+                            <label for="batch" class="control-label">课件批次：</label>
+                            <input type="text" class="form-control" id="batch" name="batch">
+                        </div>
+                        <input id="file" name="file" type="file" class="file" data-show-preview="false">
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                            <button type="submit" class="btn btn-primary">上传</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="course_score" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="modalLabel3">评分</h4>
+                </div>
+                <div class="modal-body">
+                        <div class="form-group">
+                            <label for="score" class="control-label">对本课程的评分：</label>
+                            <input type="text" class="form-control" id="score" name="score">
+                        </div>
+                        <div class="modal-footer">
+                            <button id="course_score_close" type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                            <button id="course_score_submit" type="button" class="btn btn-primary">评分</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript">
+    function courseScore(){
+        var score=$("#score").val();
+        var courseId=[[${current_course.getCourseId()}]];
+        $.ajax({
+            url:"/SmartOnlineCourse/course_score",  // 后台地址
+            type:"POST",
+            dataType:"json",
+            data:{"score":score,"courseId":courseId},  //自己需要传递的数据 {}
+            success: function(data){//成功
+                $("#course_score").modal("hide");
+                window.location.reload();
+            },
+            error:function(){//出错
+            }
+        });
+    }
+    $("#course_score_submit").click(function(){
+        courseScore();
+    });
+</script>
+</body>
+</html>
