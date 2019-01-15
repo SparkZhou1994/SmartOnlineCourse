@@ -7,10 +7,11 @@ spring:
     config:
       server:
         git:
-          uri: https://github.com/SparkZhou1994/SpringCloudDemo
+          uri: https://github.com/SparkZhou1994/SmartOnlineCourse
           search-paths: config-repo
           username: 
           password:
+        prefix: /config
 eureka:
   client:
     service-url:
