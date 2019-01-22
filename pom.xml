@@ -7,7 +7,7 @@
     <artifactId>smart-online-course</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>smartonlinecourse</name>
+    <name>smart-online-course</name>
     <description>A Online Course System</description>
 
     <properties>
@@ -119,5 +119,8 @@
         <module>common</module>
         <module>eureka-config-center</module>
         <module>gateway</module>
+        <module>web-invoker</module>
+        <module>user-api</module>
+        <module>user-server</module>
     </modules>
 </project>
