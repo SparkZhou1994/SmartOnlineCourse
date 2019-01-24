@@ -1,13 +1,28 @@
-server:
-  port: 8101
 mybatis:
   mapperLocations: classpath:mapping/*.xml
-
 spring:
+  application:
+    name: user-server
+  profiles:
+    active: leader
   datasource:
-    name: shopping
+    name: user-server
     url: jdbc:mysql://127.0.0.1:3306/smart_online_course
     username: root
     password: root
     type: com.alibaba.druid.pool.DruidDataSource
     driverClassName: com.mysql.jdbc.Driver
+  cloud:
+    loadbalancer:
+      retry: false
+eureka:
+  instance:
+    prefer-ip-address: true
+    leaseRenewalIntervalInSeconds: 5
+    lease-expiration-duration-in-seconds: 10
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:8888/eureka/,http://127.0.0.1:8761/eureka/
+logging:
+  level:
+    com.netflix: debug

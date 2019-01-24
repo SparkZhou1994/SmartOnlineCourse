@@ -13,8 +13,13 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-feign</artifactId>
+            <version>1.3.1.RELEASE</version>
+        </dependency>
+        <dependency>
             <groupId>spark.smartonlinecourse</groupId>
-            <artifactId>common</artifactId>
+            <artifactId>user-api</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>

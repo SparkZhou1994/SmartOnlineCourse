@@ -1,5 +1,10 @@
 package spark.course.entity.bo;
 
+import org.hibernate.validator.constraints.NotBlank;
+
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+
 /**
  * @ClassName UserBO
  * @Description TODO
@@ -8,12 +13,37 @@ package spark.course.entity.bo;
  * @Version 1.0
  **/
 public class UserBO {
+    private Long version;
+    private Long versionPassword;
     private Integer userId;
+    @NotBlank(message = "用户名不能为空")
     private String username;
+    @Min(value = 0, message = "年龄必须大于0岁")
+    @Max(value = 150, message = "年龄必须小于150岁")
+    private Integer age;
+    @NotBlank(message = "手机号不能为空")
     private String telphone;
+    @NotBlank(message = "邮箱不能为空")
     private String email;
     private String avatar;
+    @NotBlank(message = "密码不能为空")
     private String encryptPassword;
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
+    }
+
+    public Long getVersionPassword() {
+        return versionPassword;
+    }
+
+    public void setVersionPassword(Long versionPassword) {
+        this.versionPassword = versionPassword;
+    }
 
     public Integer getUserId() {
         return userId;
@@ -29,6 +59,14 @@ public class UserBO {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
     }
 
     public String getTelphone() {

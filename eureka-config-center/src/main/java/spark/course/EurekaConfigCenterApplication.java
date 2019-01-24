@@ -12,9 +12,10 @@ import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
  * @Date 1/15/2019 1:56 PM
  * @Version 1.0
  **/
-@EnableEurekaServer
-@EnableConfigServer
+
 @SpringBootApplication
+@EnableConfigServer
+@EnableEurekaServer
 public class EurekaConfigCenterApplication {
     public static void main(String[] args) {
         SpringApplication.run(EurekaConfigCenterApplication.class, args);

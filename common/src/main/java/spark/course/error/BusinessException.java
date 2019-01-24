@@ -37,7 +37,7 @@ public class BusinessException extends Exception implements CommonError {
     }
 
     @Override
-    public int getErrCode() {
+    public Integer getErrCode() {
         return this.commonError.getErrCode();
     }
 

@@ -1,6 +1,7 @@
 package spark.course.service;
 
 import spark.course.entity.bo.UserBO;
+import spark.course.error.BusinessException;
 
 /**
  * @ClassName UserService
@@ -12,6 +13,7 @@ import spark.course.entity.bo.UserBO;
 public interface UserService {
     UserBO selectByUserId(Integer userId);
     UserBO insert(UserBO userBO);
-    UserBO deleteByUserId(Integer userId);
-    UserBO updateByUserId(Integer userId);
+    void deleteByUserId(Integer userId);
+    UserBO updateUserByUserId(UserBO userBO) throws BusinessException;
+    UserBO updatePasswordByUserId(UserBO userBO) throws BusinessException;
 }

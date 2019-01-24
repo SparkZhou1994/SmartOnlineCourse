@@ -8,10 +8,10 @@ management:
     enabled: false
 eureka:
   instance:
-    hostname: localhost
+    prefer-ip-address: true
   client:
     service-url:
-      defaultZone: http://eureka:8761/eureka/,http://eureka:8888/eureka/
+      defaultZone: http://127.0.0.1:8761/eureka/,http://127.0.0.1:8888/eureka/
     registry-fetch-interval-seconds: 30
 logging:
   level:

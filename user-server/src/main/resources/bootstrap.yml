@@ -1,0 +1,7 @@
+spring:
+  cloud:
+    config:
+      name: user-server
+      profile: leader
+      uri: http://localhost:8888,http://localhost:8761
+      label: master

@@ -15,12 +15,10 @@ spring:
           password:
         prefix: /config
 eureka:
+  client:
+    register-with-eureka: false
   instance:
     prefer-ip-address: true
-  client:
-    service-url:
-      defaultZone: http://127.0.0.1:8888/eureka/,http://127.0.0.1:8761/eureka/
-    register-with-eureka: true
   server:
     enable-self-preservation: false
     eviction-interval-timer-in-ms: 5000
