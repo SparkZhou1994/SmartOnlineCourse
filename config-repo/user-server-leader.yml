@@ -9,7 +9,7 @@ spring:
     name: user-server
     url: jdbc:mysql://127.0.0.1:3306/smart_online_course
     username: root
-    password: root
+    password: '{cipher}c7743e07913bda0d7cedb88fec5f13cd44947a79be95224ba1c4aa9a751e8eef'
     type: com.alibaba.druid.pool.DruidDataSource
     driverClassName: com.mysql.jdbc.Driver
   cloud:

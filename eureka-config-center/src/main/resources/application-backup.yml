@@ -1,26 +1,2 @@
 server:
   port: 8761
-encrypt:
-  key: Spark
-spring:
-  application:
-    name: eureka-config-center
-  cloud:
-    config:
-      server:
-        git:
-          uri: https://github.com/SparkZhou1994/SmartOnlineCourse
-          search-paths: config-repo
-          username:
-          password:
-        prefix: /config
-eureka:
-  instance:
-    prefer-ip-address: true
-  client:
-    service-url:
-      defaultZone: http://127.0.0.1:8888/eureka/,http://127.0.0.1:8761/eureka/
-    register-with-eureka: true
-  server:
-    enable-self-preservation: false
-    eviction-interval-timer-in-ms: 5000
