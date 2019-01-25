@@ -1,17 +1,15 @@
 spring:
   application:
     name: eureka-config-center
-  profiles:
-    active: leader
   cloud:
     config:
+      discovery:
+        enabled: true
       server:
         prefix: /config
         git:
           uri: https://github.com/SparkZhou1994/SmartOnlineCourse
           search-paths: config-repo
-          username: 
-          password:
 management:
   security:
     enabled: false
