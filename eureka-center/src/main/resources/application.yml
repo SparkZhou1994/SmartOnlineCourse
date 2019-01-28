@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: eureka-center
+  profiles:
+    active: leader
+management:
+  security:
+    enabled: false
+logging:
+  level:
+    com.netflix: debug

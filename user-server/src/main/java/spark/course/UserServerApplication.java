@@ -3,7 +3,7 @@ package spark.course;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
 /**
  * @ClassName UserServerApplication
@@ -14,7 +14,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
  **/
 
 @SpringBootApplication(scanBasePackages = {"spark.course"})
-@EnableDiscoveryClient
+@EnableEurekaClient
 @MapperScan("spark.course.dao")
 public class UserServerApplication {
     public static void main(String[] args) {

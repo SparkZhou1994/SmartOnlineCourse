@@ -7,7 +7,7 @@ spring:
     name: user-server
     url: jdbc:mysql://127.0.0.1:3306/smart_online_course
     username: root
-    password: '{cipher}c7743e07913bda0d7cedb88fec5f13cd44947a79be95224ba1c4aa9a751e8eef'
+    password: root
     type: com.alibaba.druid.pool.DruidDataSource
     driverClassName: com.mysql.jdbc.Driver
   cloud:
@@ -20,7 +20,7 @@ eureka:
     lease-expiration-duration-in-seconds: 10
   client:
     service-url:
-      defaultZone: http://localhost:8888/eureka/,http://localhost:8761/eureka/
+      defaultZone: http://localhost:8761/eureka/,http://localhost:8762/eureka/
 mybatis:
   mapperLocations: classpath:mapping/*.xml
 logging:

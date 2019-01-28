@@ -1,10 +1,10 @@
 spring:
   application:
     name: eureka-config-center
+  profiles:
+    active: leader
   cloud:
     config:
-      discovery:
-        enabled: true
       server:
         prefix: /config
         git:

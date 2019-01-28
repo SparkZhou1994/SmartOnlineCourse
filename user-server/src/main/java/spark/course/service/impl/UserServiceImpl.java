@@ -38,6 +38,13 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserBO insert(UserBO userBO) {
+        Integer userId = userDTOMapper.selectMaxUserId();
+        if(userId == null){
+            userId = 1;
+        }else {
+            userId +=1;
+        }
+        userBO.setUserId(userId);
         userDTOMapper.insertSelective(convertToUserDTO(userBO));
         userPasswordDTOMapper.insertSelective(convertToUserPasswordDTO(userBO));
         return userBO;
@@ -52,7 +59,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserBO updateUserByUserId(UserBO userBO) throws BusinessException {
-        Integer result = userDTOMapper.updateByPrimaryKeySelectiveAndVersion(convertToUserDTO(userBO));
+        Integer result = userDTOMapper.updateByPrimaryKeyAndVersionSelective(convertToUserDTO(userBO));
         if (result != 1 ) {
             throw new BusinessException(EmBusinessError.SERVER_BUSY);
         }
@@ -61,7 +68,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserBO updatePasswordByUserId(UserBO userBO) throws BusinessException {
-        Integer result = userPasswordDTOMapper.updateByPrimaryKeySelective(convertToUserPasswordDTO(userBO));
+        Integer result = userPasswordDTOMapper.updateByPrimaryKeyAndVersionSelective(convertToUserPasswordDTO(userBO));
         if(result != 1 ) {
             throw new BusinessException(EmBusinessError.SERVER_BUSY);
         }

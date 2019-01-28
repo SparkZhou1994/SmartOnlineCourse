@@ -121,5 +121,6 @@
         <module>web-invoker</module>
         <module>user-api</module>
         <module>user-server</module>
+        <module>eureka-center</module>
     </modules>
 </project>

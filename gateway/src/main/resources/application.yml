@@ -11,8 +11,12 @@ eureka:
     hostname: localhost
   client:
     service-url:
-      defaultZone: http://localhost:8888/eureka/,http://localhost:8761/eureka/
+      defaultZone: http://localhost:8761/eureka/,http://localhost:8762/eureka/
     registry-fetch-interval-seconds: 30
+zuul:
+  routes:
+    portal:
+      url: http://localhost:8090
 logging:
   level:
     com.netflix: debug

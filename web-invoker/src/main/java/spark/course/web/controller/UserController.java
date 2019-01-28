@@ -15,32 +15,33 @@ import spark.course.error.BusinessException;
  * @Date 1/24/2019 1:56 PM
  * @Version 1.0
  **/
-@RestController("/user")
+@RestController
+@RequestMapping("/user")
 public class UserController extends BaseController {
     @Autowired
     FeignUserApi userService;
 
-    @GetMapping(value = "/{userId:\\d+}", consumes = CommonConstants.BaseController.CONTENT_TYPE_FORMED)
+    @GetMapping(value = "/{userId:\\d+}", consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
     public String selectByUserId(@PathVariable("userId") Integer userId) {
         return userService.selectByUserId(userId);
     }
 
-    @PostMapping(consumes = CommonConstants.BaseController.CONTENT_TYPE_FORMED)
+    @PostMapping(consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
     public String insertUser(@RequestBody UserBO user) throws BusinessException {
         return userService.insertUser(user);
     }
 
-    @PutMapping(consumes = CommonConstants.BaseController.CONTENT_TYPE_FORMED)
+    @PutMapping(consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
     public String updataUser(@RequestBody UserBO user) throws BusinessException {
         return userService.updataUser(user);
     }
 
-    @PutMapping(value = "/password", consumes = CommonConstants.BaseController.CONTENT_TYPE_FORMED)
+    @PutMapping(value = "/password", consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
     public String updataUserPassword(UserBO user) throws BusinessException {
         return userService.updataUserPassword(user);
     }
 
-    @DeleteMapping(value = "/{userId:\\d+}", consumes = CommonConstants.BaseController.CONTENT_TYPE_FORMED)
+    @DeleteMapping(value = "/{userId:\\d+}", consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
     public void deleteUser(@PathVariable("userId") Integer userId) throws BusinessException {
         userService.deleteUser(userId);
     }

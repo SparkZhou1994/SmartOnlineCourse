@@ -11,6 +11,7 @@ public final class CommonConstants {
     private CommonConstants() {}
     public final class BaseController {
         public static final String CONTENT_TYPE_FORMED = "application/x-www-form-urlencoded";
+        public static final String CONTENT_TYPE_JSON = "application/json";
         private BaseController() {}
     }
     public final class Pagination {

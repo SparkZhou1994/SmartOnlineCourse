@@ -23,8 +23,8 @@ public interface IUserApi {
     * @Param [userId]
     * @return spark.course.entity.bo.UserBO(JSON)
     **/
-    @GetMapping(value = "/{userId:\\d+}", consumes = CommonConstants.BaseController.CONTENT_TYPE_FORMED)
-    String selectByUserId(@PathVariable Integer userId);
+    @GetMapping(value = "/{userId}", consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
+    String selectByUserId(@PathVariable(value = "userId") Integer userId);
 
     /**
     * @author Spark
@@ -33,7 +33,7 @@ public interface IUserApi {
     * @Param [user]
     * @return spark.course.entity.bo.UserBO(JSON)
     **/
-    @PostMapping(consumes = CommonConstants.BaseController.CONTENT_TYPE_FORMED)
+    @PostMapping(consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
     String insertUser(@RequestBody UserBO user) throws BusinessException;
 
     /**
@@ -43,7 +43,7 @@ public interface IUserApi {
     * @Param [user]
     * @return spark.course.entity.bo.UserBO(JSON)
     **/
-    @PutMapping(consumes = CommonConstants.BaseController.CONTENT_TYPE_FORMED)
+    @PutMapping(consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
     String updataUser(@RequestBody UserBO user) throws BusinessException;
 
     /**
@@ -53,7 +53,7 @@ public interface IUserApi {
     * @Param [user]
     * @return java.lang.String
     **/
-    @PutMapping(value = "/password", consumes = CommonConstants.BaseController.CONTENT_TYPE_FORMED)
+    @PutMapping(value = "/password", consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
     String updataUserPassword(@RequestBody UserBO user) throws BusinessException;
 
     /**
@@ -63,6 +63,6 @@ public interface IUserApi {
     * @Param [userId]
     * @return void
     **/
-    @DeleteMapping(value = "/{userId:\\d+}", consumes = CommonConstants.BaseController.CONTENT_TYPE_FORMED)
-    void deleteUser(@PathVariable Integer userId) throws BusinessException;
+    @DeleteMapping(value = "/{userId}", consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
+    void deleteUser(@PathVariable(value = "userId") Integer userId) throws BusinessException;
 }
