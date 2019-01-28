@@ -81,6 +81,7 @@ public class UserServiceImpl implements UserService {
         }
         UserBO userBO = new UserBO();
         BeanUtils.copyProperties(userDTO, userBO);
+        userBO.setAge(Byte.toUnsignedInt(userDTO.getAge()));
         if (userPasswordDTO != null) {
             userBO.setEncryptPassword(userPasswordDTO.getEncryptPassword());
             userBO.setVersionPassword(userPasswordDTO.getVersion());
@@ -94,6 +95,7 @@ public class UserServiceImpl implements UserService {
         }
         UserDTO userDTO = new UserDTO();
         BeanUtils.copyProperties(userBO, userDTO);
+        userDTO.setAge(userBO.getAge().byteValue());
         return userDTO;
     }
 

@@ -122,5 +122,7 @@
         <module>user-api</module>
         <module>user-server</module>
         <module>eureka-center</module>
+        <module>course-api</module>
+        <module>course-server</module>
     </modules>
 </project>

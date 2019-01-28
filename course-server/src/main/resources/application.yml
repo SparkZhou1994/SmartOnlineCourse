@@ -1,6 +1,6 @@
 spring:
   application:
-    name: user-server
+    name: course-server
   profiles:
     active: leader
   datasource:

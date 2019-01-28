@@ -35,7 +35,7 @@ public class UserDTO {
      *
      * @mbg.generated Thu Jan 24 13:00:39 CST 2019
      */
-    private Integer age;
+    private Byte age;
 
     /**
      *
@@ -144,7 +144,7 @@ public class UserDTO {
      *
      * @mbg.generated Thu Jan 24 13:00:39 CST 2019
      */
-    public Integer getAge() {
+    public Byte getAge() {
         return age;
     }
 
@@ -156,7 +156,7 @@ public class UserDTO {
      *
      * @mbg.generated Thu Jan 24 13:00:39 CST 2019
      */
-    public void setAge(Integer age) {
+    public void setAge(Byte age) {
         this.age = age;
     }
 
