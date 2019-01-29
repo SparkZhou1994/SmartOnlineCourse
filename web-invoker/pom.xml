@@ -22,6 +22,11 @@
             <artifactId>user-api</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>spark.smartonlinecourse</groupId>
+            <artifactId>course-api</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
     <parent>

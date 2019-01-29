@@ -1,12 +1,15 @@
 package spark.course.web.controller;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import spark.course.api.FeignUserApi;
 import spark.course.constants.CommonConstants;
 import spark.course.controller.BaseController;
 import spark.course.entity.bo.UserBO;
+import spark.course.entity.vo.UserVO;
 import spark.course.error.BusinessException;
+import spark.course.util.JsonUtil;
 
 /**
  * @ClassName UserController
@@ -23,26 +26,48 @@ public class UserController extends BaseController {
 
     @GetMapping(value = "/{userId:\\d+}", consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
     public String selectByUserId(@PathVariable("userId") Integer userId) {
-        return userService.selectByUserId(userId);
+        return JsonUtil.convertToJson(convertFromBO(
+                JsonUtil.json2Bean(userService.selectByUserId(userId), UserBO.class)));
     }
 
     @PostMapping(consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
     public String insertUser(@RequestBody UserBO user) throws BusinessException {
-        return userService.insertUser(user);
+        return JsonUtil.convertToJson(convertFromBO(
+                JsonUtil.json2Bean(userService.insertUser(user), UserBO.class)));
     }
 
     @PutMapping(consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
-    public String updataUser(@RequestBody UserBO user) throws BusinessException {
-        return userService.updataUser(user);
+    public String updataUser(@RequestBody UserVO user) throws BusinessException {
+        return JsonUtil.convertToJson(convertFromBO(
+                JsonUtil.json2Bean(userService.updataUser(convertToBO(user)), UserBO.class)));
     }
 
     @PutMapping(value = "/password", consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
-    public String updataUserPassword(UserBO user) throws BusinessException {
-        return userService.updataUserPassword(user);
+    public String updataUserPassword(@RequestBody UserBO user) throws BusinessException {
+        return JsonUtil.convertToJson(convertFromBO(
+                JsonUtil.json2Bean(userService.updataUserPassword(user), UserBO.class)));
     }
 
     @DeleteMapping(value = "/{userId:\\d+}", consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
     public void deleteUser(@PathVariable("userId") Integer userId) throws BusinessException {
         userService.deleteUser(userId);
+    }
+
+    private UserVO convertFromBO(UserBO userBO) {
+        if (userBO == null) {
+            return null;
+        }
+        UserVO userVO = new UserVO();
+        BeanUtils.copyProperties(userBO, userVO);
+        return userVO;
+    }
+
+    private UserBO convertToBO(UserVO userVO) {
+        if (userVO == null) {
+            return null;
+        }
+        UserBO userBO = new UserBO();
+        BeanUtils.copyProperties(userVO, userBO);
+        return userBO;
     }
 }

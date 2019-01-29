@@ -63,6 +63,7 @@ public interface IUserApi {
     * @Param [userId]
     * @return void
     **/
-    @DeleteMapping(value = "/{userId}", consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
+    @DeleteMapping(value = "/{userId}",
+            consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
     void deleteUser(@PathVariable(value = "userId") Integer userId) throws BusinessException;
 }

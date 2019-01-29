@@ -1,7 +1,9 @@
 package spark.course.api;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import spark.course.constants.CommonConstants;
+import spark.course.entity.bo.CourseBO;
+import spark.course.error.BusinessException;
 
 /**
  * @ClassName ICourseApi
@@ -13,4 +15,25 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/courseServer")
 @CrossOrigin(allowCredentials = "true", allowedHeaders = "*")
 public interface ICourseApi {
+    @GetMapping(value = "/{courseId}", consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
+    String selectByCourseId(@PathVariable(value = "courseId") Integer courseId);
+
+    @GetMapping(value = "/{courseName}/{start}/{size}",
+            consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
+    String selectByCourseName(@PathVariable(value = "courseName") String courseName,
+                              @PathVariable(value = "start") Integer start,
+                              @PathVariable(value = "size") Integer size);
+
+    @GetMapping(value = "/{start}/{size}")
+    String selectSortByScore(@PathVariable(value = "start") Integer start,
+                             @PathVariable(value = "size") Integer size);
+
+    @PostMapping(consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
+    String insert(@RequestBody CourseBO courseBO);
+
+    @DeleteMapping(value = "/{courseId}")
+    void deleteCourse(@PathVariable(value = "courseId") Integer courseId);
+
+    @PutMapping(consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
+    String updataCourseByCourseId(@RequestBody CourseBO courseBO) throws BusinessException;
 }

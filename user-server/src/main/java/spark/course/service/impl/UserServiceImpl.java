@@ -59,7 +59,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserBO updateUserByUserId(UserBO userBO) throws BusinessException {
-        Integer result = userDTOMapper.updateByPrimaryKeyAndVersionSelective(convertToUserDTO(userBO));
+        Integer result = userDTOMapper.
+                updateByPrimaryKeyAndVersionSelective(convertToUserDTO(userBO));
         if (result != 1 ) {
             throw new BusinessException(EmBusinessError.SERVER_BUSY);
         }
@@ -68,7 +69,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserBO updatePasswordByUserId(UserBO userBO) throws BusinessException {
-        Integer result = userPasswordDTOMapper.updateByPrimaryKeyAndVersionSelective(convertToUserPasswordDTO(userBO));
+        Integer result = userPasswordDTOMapper.
+                updateByPrimaryKeyAndVersionSelective(convertToUserPasswordDTO(userBO));
         if(result != 1 ) {
             throw new BusinessException(EmBusinessError.SERVER_BUSY);
         }
