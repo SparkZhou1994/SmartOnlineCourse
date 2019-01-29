@@ -11,6 +11,8 @@ import org.hibernate.validator.constraints.NotBlank;
  **/
 public class CourseBO {
     private Long version;
+    private Long versionChooseCourse;
+    private Integer chooseCourseId;
     private Integer courseId;
     @NotBlank(message = "课程名不能为空")
     private String courseName;
@@ -19,6 +21,7 @@ public class CourseBO {
     private String catalog;
     private String avatar;
     private Integer avgScore;
+    private Integer score;
     private Integer start;
     private Integer size;
 
@@ -28,6 +31,22 @@ public class CourseBO {
 
     public void setVersion(Long version) {
         this.version = version;
+    }
+
+    public Long getVersionChooseCourse() {
+        return versionChooseCourse;
+    }
+
+    public void setVersionChooseCourse(Long versionChooseCourse) {
+        this.versionChooseCourse = versionChooseCourse;
+    }
+
+    public Integer getChooseCourseId() {
+        return chooseCourseId;
+    }
+
+    public void setChooseCourseId(Integer chooseCourseId) {
+        this.chooseCourseId = chooseCourseId;
     }
 
     public Integer getCourseId() {
@@ -76,6 +95,14 @@ public class CourseBO {
 
     public void setAvgScore(Integer avgScore) {
         this.avgScore = avgScore;
+    }
+
+    public Integer getScore() {
+        return score;
+    }
+
+    public void setScore(Integer score) {
+        this.score = score;
     }
 
     public Integer getStart() {

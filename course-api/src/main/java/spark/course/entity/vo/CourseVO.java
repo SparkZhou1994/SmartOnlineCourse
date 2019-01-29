@@ -9,13 +9,17 @@ package spark.course.entity.vo;
  **/
 public class CourseVO {
     private Long version;
+    private Long versionChooseCourse;
+    private Integer chooseCourseId;
     private Integer courseId;
     private String courseName;
+    private Integer userId;
     private Integer OwnerUserId;
     private String OwnerUsername;
     private String catalog;
     private String avatar;
     private Integer avgScore;
+    private Integer score;
     private Integer start;
     private Integer size;
 
@@ -25,6 +29,22 @@ public class CourseVO {
 
     public void setVersion(Long version) {
         this.version = version;
+    }
+
+    public Long getVersionChooseCourse() {
+        return versionChooseCourse;
+    }
+
+    public void setVersionChooseCourse(Long versionChooseCourse) {
+        this.versionChooseCourse = versionChooseCourse;
+    }
+
+    public Integer getChooseCourseId() {
+        return chooseCourseId;
+    }
+
+    public void setChooseCourseId(Integer chooseCourseId) {
+        this.chooseCourseId = chooseCourseId;
     }
 
     public Integer getCourseId() {
@@ -41,6 +61,14 @@ public class CourseVO {
 
     public void setCourseName(String courseName) {
         this.courseName = courseName;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public Integer getOwnerUserId() {
@@ -81,6 +109,14 @@ public class CourseVO {
 
     public void setAvgScore(Integer avgScore) {
         this.avgScore = avgScore;
+    }
+
+    public Integer getScore() {
+        return score;
+    }
+
+    public void setScore(Integer score) {
+        this.score = score;
     }
 
     public Integer getStart() {
