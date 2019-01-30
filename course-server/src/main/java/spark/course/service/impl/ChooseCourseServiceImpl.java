@@ -33,8 +33,10 @@ public class ChooseCourseServiceImpl implements ChooseCourseService {
 
     @Override
     public CourseBO insert(CourseBO courseBO) {
-        chooseCourseDTOMapper.insertSelective(convertToChooseCourseDTO(courseBO));
+        Integer chooseCourseId = chooseCourseDTOMapper.selectMaxChooseCourseId();
+        courseBO.setChooseCourseId(chooseCourseId);
         courseBO.setVersionChooseCourse(Long.parseLong(Integer.toString(0)));
+        chooseCourseDTOMapper.insertSelective(convertToChooseCourseDTO(courseBO));
         return courseBO;
     }
 
@@ -58,7 +60,9 @@ public class ChooseCourseServiceImpl implements ChooseCourseService {
         courseBO.setVersionChooseCourse(chooseCourseDTO.getVersion());
         chooseCourseDTO.setVersion(null);
         BeanUtils.copyProperties(chooseCourseDTO, courseBO);
-        courseBO.setScore(Byte.toUnsignedInt(chooseCourseDTO.getScore()));
+        if (chooseCourseDTO.getScore() != null) {
+            courseBO.setScore(Byte.toUnsignedInt(chooseCourseDTO.getScore()));
+        }
         return courseBO;
     }
 
@@ -69,7 +73,9 @@ public class ChooseCourseServiceImpl implements ChooseCourseService {
         ChooseCourseDTO chooseCourseDTO = new ChooseCourseDTO();
         BeanUtils.copyProperties(courseBO, chooseCourseDTO);
         chooseCourseDTO.setVersion(courseBO.getVersionChooseCourse());
-        chooseCourseDTO.setScore(courseBO.getScore().byteValue());
+        if (courseBO.getScore() != null) {
+            chooseCourseDTO.setScore(courseBO.getScore().byteValue());
+        }
         return chooseCourseDTO;
     }
 }

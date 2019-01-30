@@ -135,4 +135,7 @@
     from t_choose_course
     where course_id = #{courseId,jdbcType=INTEGER} and user_id = #{userId,jdbcType=INTEGER}
   </select>
+  <select id="selectMaxChooseCourseId" resultType="java.lang.Integer">
+    select max(choose_course_id) from t_choose_course;
+  </select>
 </mapper>

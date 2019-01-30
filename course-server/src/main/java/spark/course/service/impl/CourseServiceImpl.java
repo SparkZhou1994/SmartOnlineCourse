@@ -54,8 +54,10 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public CourseBO insert(CourseBO courseBO) {
-        courseDTOMapper.insertSelective(convertToCourseDTO(courseBO));
+        Integer courseId = courseDTOMapper.selectMaxCourseId();
+        courseBO.setCourseId(courseId);
         courseBO.setVersion(Long.parseLong(Integer.toString(0)));
+        courseDTOMapper.insertSelective(convertToCourseDTO(courseBO));
         return courseBO;
     }
 
@@ -72,7 +74,7 @@ public class CourseServiceImpl implements CourseService {
             throw new BusinessException(EmBusinessError.SERVER_BUSY);
         }
         courseBO.setVersion(courseBO.getVersion()+1);
-        return null;
+        return courseBO;
     }
 
     private CourseBO convertFromDataObject(CourseDTO courseDTO) {

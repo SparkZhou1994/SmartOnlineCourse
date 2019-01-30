@@ -61,7 +61,8 @@ public class CourseController extends BaseController {
 
     @PostMapping(consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
     String insert(@RequestBody CourseVO courseVO) {
-        courseService.insert(convertToBO(courseVO));
+        courseVO = convertFromBO(JsonUtil.json2Bean(courseService.
+                insert(convertToBO(courseVO)),CourseBO.class));
         courseVO.setOwnerUsername(JsonUtil.json2Bean(userService.
                 selectByUserId(courseVO.getOwnerUserId()), UserBO.class).getUsername());
         return JsonUtil.convertToJson(courseVO);
@@ -74,7 +75,8 @@ public class CourseController extends BaseController {
 
     @PutMapping(consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
     String updataCourseByCourseId(@RequestBody CourseVO courseVO) throws BusinessException {
-        courseService.updataCourseByCourseId(convertToBO(courseVO));
+        courseVO = convertFromBO(JsonUtil.json2Bean(courseService.
+                updataCourseByCourseId(convertToBO(courseVO)),CourseBO.class));
         courseVO.setOwnerUsername(JsonUtil.json2Bean(userService.
                 selectByUserId(courseVO.getOwnerUserId()), UserBO.class).getUsername());
         return JsonUtil.convertToJson(courseVO);
@@ -88,6 +90,7 @@ public class CourseController extends BaseController {
         BeanUtils.copyProperties(courseBO, courseVO);
         if (courseBO.getUserId() != null) {
             courseVO.setOwnerUserId(courseBO.getUserId());
+            courseVO.setUserId(null);
         }
         return courseVO;
     }

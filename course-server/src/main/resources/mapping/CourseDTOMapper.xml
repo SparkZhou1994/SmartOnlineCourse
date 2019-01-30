@@ -172,4 +172,7 @@
     order by avg_score
     limit #{start,jdbcType=INTEGER},#{size,jdbcType=INTEGER}
   </select>
+  <select id="selectMaxCourseId" resultType="java.lang.Integer">
+    select max(course_id) from t_course;
+  </select>
 </mapper>

@@ -59,4 +59,13 @@ public interface ChooseCourseDTOMapper {
     * @return
     **/
     ChooseCourseDTO selectChooseCourseIdByUserIdAndCourseId(ChooseCourseDTO chooseCourseDTO);
+    
+    /**
+    * @author Spark
+    * @Description get the max chooseCourseId
+    * @Date 3:33 PM 1/30/2019
+    * @Param []
+    * @return int
+    **/
+    int selectMaxChooseCourseId();
 }

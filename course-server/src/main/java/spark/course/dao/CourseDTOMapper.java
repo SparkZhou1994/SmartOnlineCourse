@@ -74,4 +74,13 @@ public interface CourseDTOMapper {
     **/
     List<CourseDTO> selectCourseSortByScore(@Param("start") Integer start,
                                             @Param("size") Integer size);
+
+    /**
+    * @author Spark
+    * @Description get the max courseID
+    * @Date 3:55 PM 1/30/2019
+    * @Param []
+    * @return int
+    **/
+    int selectMaxCourseId();
 }
