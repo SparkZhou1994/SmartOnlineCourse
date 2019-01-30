@@ -4,17 +4,17 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>spark.smartonlinecourse</groupId>
-    <artifactId>course-server</artifactId>
+    <artifactId>discuss-server</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <name>course-server</name>
+    <name>discuss-server</name>
     <!-- FIXME change it to the project's website -->
     <url>http://www.example.com</url>
 
     <dependencies>
         <dependency>
             <groupId>spark.smartonlinecourse</groupId>
-            <artifactId>course-api</artifactId>
+            <artifactId>discuss-api</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>

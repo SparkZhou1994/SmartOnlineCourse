@@ -124,5 +124,7 @@
         <module>eureka-center</module>
         <module>course-api</module>
         <module>course-server</module>
+        <module>discuss-api</module>
+        <module>discuss-server</module>
     </modules>
 </project>
