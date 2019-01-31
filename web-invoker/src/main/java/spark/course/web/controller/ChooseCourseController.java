@@ -14,6 +14,9 @@ import spark.course.entity.vo.CourseVO;
 import spark.course.error.BusinessException;
 import spark.course.util.JsonUtil;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @ClassName ChooseCourseController
  * @Description TODO
@@ -40,10 +43,15 @@ public class ChooseCourseController extends BaseController {
 
     @GetMapping(value = "/{userId:\\d+}/{courseId:\\d+}",
             consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
-    String selectChooseCourseIdByUserIdAndCourseId(@PathVariable(value = "userId") Integer userId,
+    String selectChooseCourseByUserIdAndCourseId(@PathVariable(value = "userId") Integer userId,
                                                    @PathVariable(value = "courseId") Integer courseId) {
         return convertFromChooseCourseBOJson(chooseCourseService.
-                selectChooseCourseIdByUserIdAndCourseId(userId,courseId));
+                selectChooseCourseByUserIdAndCourseId(userId,courseId));
+    }
+
+    @GetMapping(value = "/courseId/{courseId}", consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
+    String selectByCourseId(@PathVariable(value = "courseId") Integer courseId){
+        return convertFromChooseCouseBOJsonList(chooseCourseService.selectByCourseId(courseId));
     }
 
     @PostMapping(consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
@@ -92,5 +100,14 @@ public class ChooseCourseController extends BaseController {
                 selectByUserId(courseVO.getOwnerUserId()),UserBO.class);
         courseVO.setOwnerUsername(userBO.getUsername());
         return JsonUtil.convertToJson(courseVO);
+    }
+
+    private String convertFromChooseCouseBOJsonList(String chooseCourseBOJsonList) {
+        List<CourseBO> courseBOList = JsonUtil.json2List(chooseCourseBOJsonList, CourseBO.class);
+        List<CourseVO> courseVOList = new ArrayList<CourseVO>();
+        for (CourseBO courseBO:courseBOList) {
+            courseVOList.add(JsonUtil.json2Bean(convertFromChooseCourseBOJson(JsonUtil.convertToJson(courseBO)),CourseVO.class));
+        }
+        return JsonUtil.convertToJson(courseVOList);
     }
 }

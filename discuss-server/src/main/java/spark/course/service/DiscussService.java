@@ -1,5 +1,10 @@
 package spark.course.service;
 
+import spark.course.entity.bo.DiscussBO;
+import spark.course.error.BusinessException;
+
+import java.util.List;
+
 /**
  * @ClassName DiscussService
  * @Description TODO
@@ -8,4 +13,9 @@ package spark.course.service;
  * @Version 1.0
  **/
 public interface DiscussService {
+    List<DiscussBO> selectByChooseCourseId(DiscussBO discussBO);
+    DiscussBO selectByDiscussId(Integer discussId);
+    DiscussBO insert(DiscussBO discussBO);
+    void delete(Integer discussId);
+    DiscussBO update(DiscussBO discussBO) throws BusinessException;
 }

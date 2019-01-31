@@ -27,12 +27,12 @@ public class ChooseCourseController implements IChooseCourseApi {
     }
 
     @Override
-    public String selectChooseCourseIdByUserIdAndCourseId(@PathVariable(value = "userId") Integer userId,
+    public String selectChooseCourseByUserIdAndCourseId(@PathVariable(value = "userId") Integer userId,
                                                           @PathVariable(value = "courseId") Integer courseId) {
         CourseBO courseBO = new CourseBO();
         courseBO.setUserId(userId);
         courseBO.setCourseId(courseId);
-        return JsonUtil.convertToJson(chooseCourseService.selectChooseCourseIdByUserIdAndCourseId(courseBO));
+        return JsonUtil.convertToJson(chooseCourseService.selectChooseCourseByUserIdAndCourseId(courseBO));
     }
 
     @Override
@@ -48,5 +48,10 @@ public class ChooseCourseController implements IChooseCourseApi {
     @Override
     public String updateByChooseCourseId(@RequestBody CourseBO courseBO) throws BusinessException {
         return JsonUtil.convertToJson(chooseCourseService.updateByChooseCourseId(courseBO));
+    }
+
+    @Override
+    public String selectByCourseId(@PathVariable(value = "courseId") Integer courseId) {
+        return JsonUtil.convertToJson(chooseCourseService.selectChooseCourseByCourseId(courseId));
     }
 }

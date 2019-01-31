@@ -9,6 +9,9 @@ import spark.course.entity.dto.ChooseCourseDTO;
 import spark.course.error.BusinessException;
 import spark.course.service.ChooseCourseService;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @ClassName ChooseCourseServiceImpl
  * @Description TODO
@@ -27,16 +30,21 @@ public class ChooseCourseServiceImpl implements ChooseCourseService {
     }
 
     @Override
-    public CourseBO selectChooseCourseIdByUserIdAndCourseId(CourseBO courseBO) {
-        return convertFromDataObject(chooseCourseDTOMapper.selectChooseCourseIdByUserIdAndCourseId(convertToChooseCourseDTO(courseBO)));
+    public CourseBO selectChooseCourseByUserIdAndCourseId(CourseBO courseBO) {
+        return convertFromDataObject(chooseCourseDTOMapper.selectChooseCourseByUserIdAndCourseId(convertToDataObject(courseBO)));
     }
 
     @Override
     public CourseBO insert(CourseBO courseBO) {
         Integer chooseCourseId = chooseCourseDTOMapper.selectMaxChooseCourseId();
+        if (chooseCourseId == null) {
+            chooseCourseId = 1;
+        } else {
+            chooseCourseId += 1;
+        }
         courseBO.setChooseCourseId(chooseCourseId);
         courseBO.setVersionChooseCourse(Long.parseLong(Integer.toString(0)));
-        chooseCourseDTOMapper.insertSelective(convertToChooseCourseDTO(courseBO));
+        chooseCourseDTOMapper.insertSelective(convertToDataObject(courseBO));
         return courseBO;
     }
 
@@ -47,9 +55,14 @@ public class ChooseCourseServiceImpl implements ChooseCourseService {
 
     @Override
     public CourseBO updateByChooseCourseId(CourseBO courseBO) throws BusinessException {
-        chooseCourseDTOMapper.updateByPrimaryKeyAndVersionSelective(convertToChooseCourseDTO(courseBO));
+        chooseCourseDTOMapper.updateByPrimaryKeyAndVersionSelective(convertToDataObject(courseBO));
         courseBO.setVersionChooseCourse(courseBO.getVersionChooseCourse()+1);
         return courseBO;
+    }
+
+    @Override
+    public List<CourseBO> selectChooseCourseByCourseId(Integer courseId) {
+        return convertFromDataObjectList(chooseCourseDTOMapper.selectChooseCourseIdByCourseId(courseId));
     }
 
     private CourseBO convertFromDataObject(ChooseCourseDTO chooseCourseDTO) {
@@ -66,7 +79,7 @@ public class ChooseCourseServiceImpl implements ChooseCourseService {
         return courseBO;
     }
 
-    private ChooseCourseDTO convertToChooseCourseDTO(CourseBO courseBO) {
+    private ChooseCourseDTO convertToDataObject(CourseBO courseBO) {
         if (courseBO == null) {
             return null;
         }
@@ -77,5 +90,13 @@ public class ChooseCourseServiceImpl implements ChooseCourseService {
             chooseCourseDTO.setScore(courseBO.getScore().byteValue());
         }
         return chooseCourseDTO;
+    }
+
+    private List<CourseBO> convertFromDataObjectList(List<ChooseCourseDTO> chooseCourseDTOList) {
+        List<CourseBO> courseBOList = new ArrayList<CourseBO>();
+        for (ChooseCourseDTO chooseCourseDTO:chooseCourseDTOList) {
+            courseBOList.add(convertFromDataObject(chooseCourseDTO));
+        }
+        return courseBOList;
     }
 }

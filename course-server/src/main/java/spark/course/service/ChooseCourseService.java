@@ -3,6 +3,8 @@ package spark.course.service;
 import spark.course.entity.bo.CourseBO;
 import spark.course.error.BusinessException;
 
+import java.util.List;
+
 /**
  * @ClassName ChooseCourseService
  * @Description TODO
@@ -12,8 +14,9 @@ import spark.course.error.BusinessException;
  **/
 public interface ChooseCourseService {
     CourseBO selectByChooseCourseId(Integer chooseCourseId);
-    CourseBO selectChooseCourseIdByUserIdAndCourseId(CourseBO courseBO);
+    CourseBO selectChooseCourseByUserIdAndCourseId(CourseBO courseBO);
     CourseBO insert(CourseBO courseBO);
     void deleteByChooseCourseId(Integer chooseCourseId);
     CourseBO updateByChooseCourseId(CourseBO courseBO) throws BusinessException;
+    List<CourseBO> selectChooseCourseByCourseId(Integer courseId);
 }

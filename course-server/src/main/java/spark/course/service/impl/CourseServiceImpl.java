@@ -55,9 +55,14 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public CourseBO insert(CourseBO courseBO) {
         Integer courseId = courseDTOMapper.selectMaxCourseId();
+        if (courseId == null) {
+            courseId = 1;
+        } else {
+            courseId += 1;
+        }
         courseBO.setCourseId(courseId);
         courseBO.setVersion(Long.parseLong(Integer.toString(0)));
-        courseDTOMapper.insertSelective(convertToCourseDTO(courseBO));
+        courseDTOMapper.insertSelective(convertToDataObject(courseBO));
         return courseBO;
     }
 
@@ -69,7 +74,7 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public CourseBO updateByCourseId(CourseBO courseBO) throws BusinessException {
         Integer result = courseDTOMapper.updateByPrimaryKeyAndVersionSelective(
-                convertToCourseDTO(courseBO));
+                convertToDataObject(courseBO));
         if (result !=1) {
             throw new BusinessException(EmBusinessError.SERVER_BUSY);
         }
@@ -89,7 +94,7 @@ public class CourseServiceImpl implements CourseService {
         return courseBO;
     }
 
-    private CourseDTO convertToCourseDTO(CourseBO courseBO) {
+    private CourseDTO convertToDataObject(CourseBO courseBO) {
         if (courseBO == null) {
             return null;
         }

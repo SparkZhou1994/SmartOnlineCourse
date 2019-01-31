@@ -42,13 +42,13 @@ public class UserServiceImpl implements UserService {
         if(userId == null){
             userId = 1;
         }else {
-            userId +=1;
+            userId += 1;
         }
         userBO.setUserId(userId);
-        userDTOMapper.insertSelective(convertToUserDTO(userBO));
-        userPasswordDTOMapper.insertSelective(convertToUserPasswordDTO(userBO));
         userBO.setVersion(Long.parseLong(Integer.toString(0)));
         userBO.setVersionPassword(Long.parseLong(Integer.toString(0)));
+        userDTOMapper.insertSelective(convertToUserDTO(userBO));
+        userPasswordDTOMapper.insertSelective(convertToUserPasswordDTO(userBO));
         return userBO;
     }
 

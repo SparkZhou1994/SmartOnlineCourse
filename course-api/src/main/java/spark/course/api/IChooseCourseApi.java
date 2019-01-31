@@ -21,8 +21,11 @@ public interface IChooseCourseApi {
 
     @GetMapping(value = "/{userId}/{courseId}",
             consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
-    String selectChooseCourseIdByUserIdAndCourseId(@PathVariable(value = "userId") Integer userId,
+    String selectChooseCourseByUserIdAndCourseId(@PathVariable(value = "userId") Integer userId,
                                                    @PathVariable(value = "courseId") Integer courseId);
+
+    @GetMapping(value = "/courseId/{courseId}", consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
+    String selectByCourseId(@PathVariable(value = "courseId") Integer courseId);
 
     @PostMapping(consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
     String insert(@RequestBody CourseBO courseBO);
