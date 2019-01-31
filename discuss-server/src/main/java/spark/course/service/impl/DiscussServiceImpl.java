@@ -28,9 +28,7 @@ public class DiscussServiceImpl implements DiscussService {
     @Override
     public List<DiscussBO> selectByChooseCourseId(DiscussBO discussBO) {
         return convertFromDataObjectList(discussDTOMapper.
-                selectByChooseCourseId(discussBO.getChooseCourseId(),
-                        discussBO.getStart(),
-                        discussBO.getSize()));
+                selectByChooseCourseId(discussBO.getChooseCourseId()));
     }
 
     @Override
@@ -75,7 +73,8 @@ public class DiscussServiceImpl implements DiscussService {
         DiscussBO discussBO = new DiscussBO();
         BeanUtils.copyProperties(discussDTO, discussBO);
         if (discussDTO.getLastPublishTime() != null) {
-            discussBO.setLastPublishTime(DateUtil.convertToLocalDateTime(discussDTO.getLastPublishTime()));
+            discussBO.setLastPublishTime(DateUtil.
+                    convertToLocalDateTime(discussDTO.getLastPublishTime()));
         }
         return discussBO;
     }

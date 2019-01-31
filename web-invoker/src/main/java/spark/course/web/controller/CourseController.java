@@ -34,7 +34,7 @@ public class CourseController extends BaseController {
 
     @GetMapping(value = "/{courseId:\\d+}",
             consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
-    String selectByCourseId(@PathVariable(value = "courseId") Integer courseId) {
+    public String selectByCourseId(@PathVariable(value = "courseId") Integer courseId) {
         CourseVO courseVO = convertFromBO(JsonUtil.json2Bean(
                 courseService.selectByCourseId(courseId), CourseBO.class));
         UserBO userBO = JsonUtil.json2Bean(userService.
@@ -45,7 +45,7 @@ public class CourseController extends BaseController {
 
     @GetMapping(value = "/{courseName}/{start:\\d+}/{size:\\d+}",
             consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
-    String selectByCourseName(@PathVariable(value = "courseName") String courseName,
+    public String selectByCourseName(@PathVariable(value = "courseName") String courseName,
                               @PathVariable(value = "start") Integer start,
                               @PathVariable(value = "size") Integer size) {
         return convertFromCourseBOListJsonToCourseVOListJson(courseService.
@@ -53,14 +53,14 @@ public class CourseController extends BaseController {
     }
 
     @GetMapping(value = "/{start:\\d+}/{size:\\d+}")
-    String selectSortByScore(@PathVariable(value = "start") Integer start,
+    public String selectSortByScore(@PathVariable(value = "start") Integer start,
                              @PathVariable(value = "size") Integer size) {
         return convertFromCourseBOListJsonToCourseVOListJson(courseService.
                 selectSortByScore(start, size));
     }
 
     @PostMapping(consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
-    String insert(@RequestBody CourseVO courseVO) {
+    public String insert(@RequestBody CourseVO courseVO) {
         courseVO = convertFromBO(JsonUtil.json2Bean(courseService.
                 insert(convertToBO(courseVO)),CourseBO.class));
         courseVO.setOwnerUsername(JsonUtil.json2Bean(userService.
@@ -69,12 +69,12 @@ public class CourseController extends BaseController {
     }
 
     @DeleteMapping(value = "/{courseId:\\d+}")
-    void deleteCourse(@PathVariable(value = "courseId") Integer courseId) {
+    public void deleteCourse(@PathVariable(value = "courseId") Integer courseId) {
         courseService.deleteCourse(courseId);
     }
 
     @PutMapping(consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
-    String updataCourseByCourseId(@RequestBody CourseVO courseVO) throws BusinessException {
+    public String updataCourseByCourseId(@RequestBody CourseVO courseVO) throws BusinessException {
         courseVO = convertFromBO(JsonUtil.json2Bean(courseService.
                 updataCourseByCourseId(convertToBO(courseVO)),CourseBO.class));
         courseVO.setOwnerUsername(JsonUtil.json2Bean(userService.

@@ -36,36 +36,36 @@ public class ChooseCourseController extends BaseController {
 
     @GetMapping(value = "/{chooseCourseId:\\d+}",
             consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
-    String selectByChooseCourseId(@PathVariable(value = "chooseCourseId") Integer chooseCourseId) {
+    public String selectByChooseCourseId(@PathVariable(value = "chooseCourseId") Integer chooseCourseId) {
         return convertFromChooseCourseBOJson(chooseCourseService.
                 selectByChooseCourseId(chooseCourseId));
     }
 
     @GetMapping(value = "/{userId:\\d+}/{courseId:\\d+}",
             consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
-    String selectChooseCourseByUserIdAndCourseId(@PathVariable(value = "userId") Integer userId,
+    public String selectChooseCourseByUserIdAndCourseId(@PathVariable(value = "userId") Integer userId,
                                                    @PathVariable(value = "courseId") Integer courseId) {
         return convertFromChooseCourseBOJson(chooseCourseService.
                 selectChooseCourseByUserIdAndCourseId(userId,courseId));
     }
 
     @GetMapping(value = "/courseId/{courseId}", consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
-    String selectByCourseId(@PathVariable(value = "courseId") Integer courseId){
+    public String selectByCourseId(@PathVariable(value = "courseId") Integer courseId){
         return convertFromChooseCouseBOJsonList(chooseCourseService.selectByCourseId(courseId));
     }
 
     @PostMapping(consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
-    String insert(@RequestBody CourseVO courseVO) {
+    public String insert(@RequestBody CourseVO courseVO) {
         return convertFromChooseCourseBOJson(chooseCourseService.insert(convertToBO(courseVO)));
     }
 
     @DeleteMapping(value = "/{chooseCourseId}")
-    void deleteChooseCourse(@PathVariable(value = "chooseCourseId") Integer chooseCourseId) {
+    public void deleteChooseCourse(@PathVariable(value = "chooseCourseId") Integer chooseCourseId) {
         chooseCourseService.deleteChooseCourse(chooseCourseId);
     }
 
     @PutMapping(consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
-    String updateByChooseCourseId(@RequestBody CourseVO courseVO) throws BusinessException {
+    public String updateByChooseCourseId(@RequestBody CourseVO courseVO) throws BusinessException {
         return convertFromChooseCourseBOJson(chooseCourseService.
                 updateByChooseCourseId(convertToBO(courseVO)));
     }

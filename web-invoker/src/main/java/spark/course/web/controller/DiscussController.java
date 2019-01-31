@@ -2,18 +2,17 @@ package spark.course.web.controller;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import spark.course.api.FeignChooseCourseApi;
 import spark.course.api.FeignDiscussApi;
 import spark.course.api.FeignUserApi;
 import spark.course.constants.CommonConstants;
+import spark.course.controller.BaseController;
 import spark.course.entity.bo.CourseBO;
 import spark.course.entity.bo.DiscussBO;
 import spark.course.entity.bo.UserBO;
 import spark.course.entity.vo.DiscussVO;
+import spark.course.error.BusinessException;
 import spark.course.util.DateUtil;
 import spark.course.util.JsonUtil;
 
@@ -29,7 +28,7 @@ import java.util.List;
  **/
 @RestController
 @RequestMapping("/discuss")
-public class DiscussController {
+public class DiscussController extends BaseController {
     @Autowired
     FeignUserApi userService;
     @Autowired
@@ -37,20 +36,49 @@ public class DiscussController {
     @Autowired
     FeignDiscussApi discussService;
     @GetMapping(consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
-    String selectByChooseCourseId(@RequestBody DiscussVO discussVO) {
+    public String selectByChooseCourseId(@RequestBody DiscussVO discussVO) {
         List<DiscussVO> discussVOList = new ArrayList<DiscussVO>();
         //get the courseId
-        CourseBO courseBO = JsonUtil.json2Bean(chooseCourseService.selectByChooseCourseId(discussVO.getChooseCourseId()),CourseBO.class);
+        CourseBO courseBO = JsonUtil.json2Bean(chooseCourseService.
+                selectByChooseCourseId(discussVO.getChooseCourseId()),CourseBO.class);
         //get the chooseCourseId List
-        List<CourseBO> courseBOList = JsonUtil.json2List(chooseCourseService.selectByCourseId(courseBO.getCourseId()),CourseBO.class);
+        List<CourseBO> courseBOList = JsonUtil.json2List(chooseCourseService.
+                selectByCourseId(courseBO.getCourseId()),CourseBO.class);
         for (CourseBO courseBOTemp:courseBOList) {
             DiscussBO discussBO = new DiscussBO();
             discussBO.setChooseCourseId(courseBOTemp.getChooseCourseId());
             //get the discussBO list
-            discussVOList.addAll(convertFromBOListJson(discussService.selectByChooseCourseId(discussBO)));
+            discussVOList.addAll(convertFromBOListJson(discussService.
+                    selectByChooseCourseId(discussBO)));
         }
         //get the subList
-        return JsonUtil.convertToJson(discussVOList.subList(discussVO.getStart(), discussVO.getSize()+discussVO.getStart()));
+        return JsonUtil.convertToJson(discussVOList.subList(discussVO.getStart(),
+                discussVO.getSize()+discussVO.getStart()));
+    }
+
+    @GetMapping(value = "/{discussId}",
+            consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
+    public String selectByDiscussId(@PathVariable("discussId") Integer discussId) {
+        return JsonUtil.convertToJson(convertFromBO(JsonUtil.json2Bean(discussService.
+                selectByDiscussId(discussId),DiscussBO.class)));
+    }
+
+    @PostMapping(consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
+    public String insert(@RequestBody DiscussVO discussVO) {
+        return JsonUtil.convertToJson(convertFromBO(JsonUtil.json2Bean(discussService.
+                insert(convertToBO(discussVO)),DiscussBO.class)));
+    }
+
+    @DeleteMapping(value = "/{discussId",
+            consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
+    public void delete(@PathVariable("discussId") Integer discussId) {
+        discussService.delete(discussId);
+    }
+
+    @PutMapping(consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
+    public String update(@RequestBody DiscussVO discussVO) throws BusinessException {
+        return JsonUtil.convertToJson(convertFromBO(JsonUtil.json2Bean(discussService.
+                update(convertToBO(discussVO)),DiscussBO.class)));
     }
 
     private DiscussVO convertFromBO(DiscussBO discussBO) {
