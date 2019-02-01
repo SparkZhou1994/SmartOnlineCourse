@@ -13,7 +13,7 @@ import java.util.List;
  * @Version 1.0
  **/
 public interface DiscussService {
-    List<DiscussBO> selectByChooseCourseId(DiscussBO discussBO);
+    List<DiscussBO> selectByChooseCourseId(Integer chooseCourseId);
     DiscussBO selectByDiscussId(Integer discussId);
     DiscussBO insert(DiscussBO discussBO);
     void delete(Integer discussId);

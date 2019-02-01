@@ -17,8 +17,8 @@ import java.util.List;
 @RequestMapping("/discussServer")
 @CrossOrigin(allowCredentials = "true", allowedHeaders = "*")
 public interface IDiscussApi {
-    @GetMapping(consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
-    String selectByChooseCourseId(@RequestBody DiscussBO discussBO);
+    @GetMapping(value = "/chooseCourseId/{chooseCourseId}",consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
+    String selectByChooseCourseId(@PathVariable("chooseCourseId") Integer chooseCourseId);
 
     @GetMapping(value = "/{discussId}",
             consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)

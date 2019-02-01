@@ -126,5 +126,7 @@
         <module>course-server</module>
         <module>discuss-api</module>
         <module>discuss-server</module>
+        <module>sign-api</module>
+        <module>sign-server</module>
     </modules>
 </project>

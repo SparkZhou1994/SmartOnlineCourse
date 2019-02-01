@@ -11,6 +11,7 @@ import spark.course.error.EmBusinessError;
 import spark.course.service.DiscussContentService;
 import spark.course.util.DateUtil;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,10 +27,9 @@ public class DiscussContentServiceImpl implements DiscussContentService {
     @Autowired
     DiscussContentDTOMapper discussContentDTOMapper;
     @Override
-    public List<DiscussContentBO> selectByDiscussId(DiscussContentBO discussContentBO) {
+    public List<DiscussContentBO> selectByDiscussId(Integer discussId,Integer start,Integer size) {
         return convertFromDataObjectList(discussContentDTOMapper.
-                selectByDiscussId(discussContentBO.getDiscussId(),
-                        discussContentBO.getStart(), discussContentBO.getSize()));
+                selectByDiscussId(discussId, start, size));
     }
 
     @Override
@@ -47,6 +47,7 @@ public class DiscussContentServiceImpl implements DiscussContentService {
         }
         discussContentBO.setDiscussContentId(discussContentId);
         discussContentBO.setVersion(Long.parseLong(Integer.toString(0)));
+        discussContentBO.setPublishTime(LocalDateTime.now());
         discussContentDTOMapper.insertSelective(convertToDataObject(discussContentBO));
         return discussContentBO;
     }
@@ -58,6 +59,7 @@ public class DiscussContentServiceImpl implements DiscussContentService {
 
     @Override
     public DiscussContentBO update(DiscussContentBO discussContentBO) throws BusinessException {
+        discussContentBO.setPublishTime(LocalDateTime.now());
         Integer result = discussContentDTOMapper.updateByPrimaryKeyAndVersionSelective(
                 convertToDataObject(discussContentBO));
         if (result !=1) {

@@ -25,8 +25,6 @@ public class DiscussBO {
     private String choose2;
     private String choose3;
     private String choose4;
-    private Integer start;
-    private Integer size;
 
     public Integer getDiscussId() {
         return discussId;
@@ -114,21 +112,5 @@ public class DiscussBO {
 
     public void setChoose4(String choose4) {
         this.choose4 = choose4;
-    }
-
-    public Integer getStart() {
-        return start;
-    }
-
-    public void setStart(Integer start) {
-        this.start = start;
-    }
-
-    public Integer getSize() {
-        return size;
-    }
-
-    public void setSize(Integer size) {
-        this.size = size;
     }
 }

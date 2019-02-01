@@ -13,7 +13,7 @@ import java.util.List;
  * @Version 1.0
  **/
 public interface DiscussContentService {
-    List<DiscussContentBO> selectByDiscussId(DiscussContentBO discussContentBO);
+    List<DiscussContentBO> selectByDiscussId(Integer discussId,Integer start,Integer size);
     DiscussContentBO selectByPrimaryKey(Integer discussContentId);
     DiscussContentBO insert(DiscussContentBO discussContentBO);
     void delete(Integer discussContentId);

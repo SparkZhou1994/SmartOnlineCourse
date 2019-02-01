@@ -22,8 +22,8 @@ public class DiscussController implements IDiscussApi {
     @Autowired
     DiscussService discussService;
     @Override
-    public String selectByChooseCourseId(@RequestBody DiscussBO discussBO) {
-        return JsonUtil.convertToJson(discussService.selectByChooseCourseId(discussBO));
+    public String selectByChooseCourseId(@PathVariable("chooseCourseId") Integer chooseCourseId) {
+        return JsonUtil.convertToJson(discussService.selectByChooseCourseId(chooseCourseId));
     }
 
     @Override
@@ -32,17 +32,17 @@ public class DiscussController implements IDiscussApi {
     }
 
     @Override
-    public String insert(DiscussBO discussBO) {
+    public String insert(@RequestBody DiscussBO discussBO) {
         return JsonUtil.convertToJson(discussService.insert(discussBO));
     }
 
     @Override
-    public void delete(Integer discussId) {
+    public void delete(@PathVariable("discussId") Integer discussId) {
         discussService.delete(discussId);
     }
 
     @Override
-    public String update(DiscussBO discussBO) throws BusinessException {
+    public String update(@RequestBody DiscussBO discussBO) throws BusinessException {
         return JsonUtil.convertToJson(discussService.update(discussBO));
     }
 }

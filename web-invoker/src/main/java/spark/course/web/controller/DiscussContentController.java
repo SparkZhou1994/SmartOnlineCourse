@@ -35,12 +35,15 @@ public class DiscussContentController extends BaseController {
     @Autowired
     FeignUserApi userService;
 
-    @GetMapping(consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
-    public String selectByDiscussId(@RequestBody DiscussContentVO discussContentVO) {
-        return JsonUtil.convertToJson(convertFromBOListJson(discussContentService.selectByDiscussId(convertToBo(discussContentVO))));
+    @GetMapping(value = "/{discussId:\\d+}/{start:\\d+}/{size:\\d+}",
+            consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
+    public String selectByDiscussId(@PathVariable("discussId") Integer discussId,
+                                    @PathVariable("start") Integer start,
+                                    @PathVariable("size") Integer size) {
+        return JsonUtil.convertToJson(convertFromBOListJson(discussContentService.selectByDiscussId(discussId, start, size)));
     }
 
-    @GetMapping(value = "/{discussContentId}")
+    @GetMapping(value = "/{discussContentId:\\d+}")
     public String selectByPrimaryKey(@PathVariable(value = "discussContentId") Integer discussContentId) {
         return JsonUtil.convertToJson(convertFromBO(JsonUtil.json2Bean(discussContentService.
                 selectByPrimaryKey(discussContentId), DiscussContentBO.class)));
@@ -52,7 +55,7 @@ public class DiscussContentController extends BaseController {
                 insert(convertToBo(discussContentVO)), DiscussContentBO.class)));
     }
 
-    @DeleteMapping(value = "/{discussContentId}",
+    @DeleteMapping(value = "/{discussContentId:\\d+}",
             consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
     public void delete(@PathVariable(value = "discussContentId") Integer discussContentId) {
         discussContentService.delete(discussContentId);
@@ -70,7 +73,8 @@ public class DiscussContentController extends BaseController {
         }
         DiscussContentVO discussContentVO = new DiscussContentVO();
         BeanUtils.copyProperties(discussContentBO, discussContentVO);
-        discussContentVO.setPublishTime(DateUtil.convertFromLocalDateTime(discussContentBO.getPublishTime()));
+        discussContentVO.setPublishTime(DateUtil.
+                convertFromLocalDateTime(discussContentBO.getPublishTime()));
         discussContentVO.setUsername(JsonUtil.json2Bean(userService.
                 selectByUserId(discussContentBO.getUserId()),UserBO.class).getUsername());
         return discussContentVO;
@@ -89,7 +93,8 @@ public class DiscussContentController extends BaseController {
 
     private List<DiscussContentVO> convertFromBOListJson(String discussContentBOlistJson) {
         List<DiscussContentVO> discussContentVOList = new ArrayList<DiscussContentVO>();
-        List<DiscussContentBO> discussContentBOList = JsonUtil.json2List(discussContentBOlistJson, DiscussContentBO.class);
+        List<DiscussContentBO> discussContentBOList = JsonUtil.
+                json2List(discussContentBOlistJson, DiscussContentBO.class);
         for (DiscussContentBO discussContentBO:discussContentBOList) {
             discussContentVOList.add(convertFromBO(discussContentBO));
         }

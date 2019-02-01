@@ -35,12 +35,15 @@ public class DiscussController extends BaseController {
     FeignChooseCourseApi chooseCourseService;
     @Autowired
     FeignDiscussApi discussService;
-    @GetMapping(consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
-    public String selectByChooseCourseId(@RequestBody DiscussVO discussVO) {
+    @GetMapping(value = "/{chooseCourseId:\\d+}/{start:\\d+}/{size:\\d+}",
+            consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
+    public String selectByChooseCourseId(@PathVariable("chooseCourseId") Integer chooseCourseId,
+                                         @PathVariable("start") Integer start,
+                                         @PathVariable("size") Integer size) {
         List<DiscussVO> discussVOList = new ArrayList<DiscussVO>();
         //get the courseId
         CourseBO courseBO = JsonUtil.json2Bean(chooseCourseService.
-                selectByChooseCourseId(discussVO.getChooseCourseId()),CourseBO.class);
+                selectByChooseCourseId(chooseCourseId),CourseBO.class);
         //get the chooseCourseId List
         List<CourseBO> courseBOList = JsonUtil.json2List(chooseCourseService.
                 selectByCourseId(courseBO.getCourseId()),CourseBO.class);
@@ -49,14 +52,13 @@ public class DiscussController extends BaseController {
             discussBO.setChooseCourseId(courseBOTemp.getChooseCourseId());
             //get the discussBO list
             discussVOList.addAll(convertFromBOListJson(discussService.
-                    selectByChooseCourseId(discussBO)));
+                    selectByChooseCourseId(discussBO.getChooseCourseId())));
         }
         //get the subList
-        return JsonUtil.convertToJson(discussVOList.subList(discussVO.getStart(),
-                discussVO.getSize()+discussVO.getStart()));
+        return JsonUtil.convertToJson(discussVOList.subList(start, size+start));
     }
 
-    @GetMapping(value = "/{discussId}",
+    @GetMapping(value = "/{discussId:\\d+}",
             consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
     public String selectByDiscussId(@PathVariable("discussId") Integer discussId) {
         return JsonUtil.convertToJson(convertFromBO(JsonUtil.json2Bean(discussService.
@@ -69,7 +71,7 @@ public class DiscussController extends BaseController {
                 insert(convertToBO(discussVO)),DiscussBO.class)));
     }
 
-    @DeleteMapping(value = "/{discussId",
+    @DeleteMapping(value = "/{discussId:\\d+",
             consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
     public void delete(@PathVariable("discussId") Integer discussId) {
         discussService.delete(discussId);

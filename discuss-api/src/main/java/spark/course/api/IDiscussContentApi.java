@@ -1,5 +1,6 @@
 package spark.course.api;
 
+import org.omg.PortableInterceptor.INACTIVE;
 import org.springframework.web.bind.annotation.*;
 import spark.course.constants.CommonConstants;
 import spark.course.entity.bo.DiscussContentBO;
@@ -17,8 +18,10 @@ import java.util.List;
 @RequestMapping("/discussContentServer")
 @CrossOrigin(allowCredentials = "true", allowedHeaders = "*")
 public interface IDiscussContentApi {
-    @GetMapping(consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
-    String selectByDiscussId(@RequestBody DiscussContentBO discussContentBO);
+    @GetMapping(value = "/{discussId}/{start}/{size}", consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
+    String selectByDiscussId(@PathVariable("discussId") Integer discussId,
+                             @PathVariable("start") Integer start,
+                             @PathVariable("size") Integer size);
 
     @GetMapping(value = "/{discussContentId}")
     String selectByPrimaryKey(@PathVariable(value = "discussContentId") Integer discussContentId);

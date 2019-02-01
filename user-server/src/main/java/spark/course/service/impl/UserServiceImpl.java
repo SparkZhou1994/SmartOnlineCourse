@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
         Integer userId = userDTOMapper.selectMaxUserId();
         if(userId == null){
             userId = 1;
-        }else {
+        } else {
             userId += 1;
         }
         userBO.setUserId(userId);
@@ -74,7 +74,7 @@ public class UserServiceImpl implements UserService {
     public UserBO updatePasswordByUserId(UserBO userBO) throws BusinessException {
         Integer result = userPasswordDTOMapper.
                 updateByPrimaryKeyAndVersionSelective(convertToUserPasswordDTO(userBO));
-        if(result != 1 ) {
+        if (result != 1 ) {
             throw new BusinessException(EmBusinessError.SERVER_BUSY);
         }
         userBO.setVersionPassword(userBO.getVersionPassword()+1);

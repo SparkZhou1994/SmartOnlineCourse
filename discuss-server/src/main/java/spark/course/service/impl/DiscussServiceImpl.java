@@ -11,6 +11,7 @@ import spark.course.error.EmBusinessError;
 import spark.course.service.DiscussService;
 import spark.course.util.DateUtil;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,9 +27,9 @@ public class DiscussServiceImpl implements DiscussService {
     @Autowired
     DiscussDTOMapper discussDTOMapper;
     @Override
-    public List<DiscussBO> selectByChooseCourseId(DiscussBO discussBO) {
+    public List<DiscussBO> selectByChooseCourseId(Integer chooseCourseId) {
         return convertFromDataObjectList(discussDTOMapper.
-                selectByChooseCourseId(discussBO.getChooseCourseId()));
+                selectByChooseCourseId(chooseCourseId));
     }
 
     @Override
@@ -46,6 +47,7 @@ public class DiscussServiceImpl implements DiscussService {
         }
         discussBO.setDiscussId(discussId);
         discussBO.setVersion(Long.parseLong(Integer.toString(0)));
+        discussBO.setLastPublishTime(LocalDateTime.now());
         discussDTOMapper.insertSelective(convertToDataObject(discussBO));
         return discussBO;
     }
@@ -57,9 +59,10 @@ public class DiscussServiceImpl implements DiscussService {
 
     @Override
     public DiscussBO update(DiscussBO discussBO) throws BusinessException {
+        discussBO.setLastPublishTime(LocalDateTime.now());
         Integer result = discussDTOMapper.updateByPrimaryKeyAndVersionSelective(
                 convertToDataObject(discussBO));
-        if (result !=1) {
+        if (result != 1) {
             throw new BusinessException(EmBusinessError.SERVER_BUSY);
         }
         discussBO.setVersion(discussBO.getVersion()+1);
@@ -73,8 +76,7 @@ public class DiscussServiceImpl implements DiscussService {
         DiscussBO discussBO = new DiscussBO();
         BeanUtils.copyProperties(discussDTO, discussBO);
         if (discussDTO.getLastPublishTime() != null) {
-            discussBO.setLastPublishTime(DateUtil.
-                    convertToLocalDateTime(discussDTO.getLastPublishTime()));
+            discussBO.setLastPublishTime(discussDTO.getLastPublishTime());
         }
         return discussBO;
     }
@@ -86,7 +88,7 @@ public class DiscussServiceImpl implements DiscussService {
         DiscussDTO discussDTO = new DiscussDTO();
         BeanUtils.copyProperties(discussBO, discussDTO);
         if (discussBO.getLastPublishTime() != null ){
-            discussDTO.setLastPublishTime(DateUtil.convertToDate(discussBO.getLastPublishTime()));
+            discussDTO.setLastPublishTime(discussBO.getLastPublishTime());
         }
         return discussDTO;
     }
