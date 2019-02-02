@@ -28,5 +28,10 @@ public final class CommonConstants {
         public static  final String RANGE_1 = "按时签到";
         public static  final String RANGE_NULL = "未签到";
     }
+    public final class Homework {
+        public static final String RANGE_0 = "超时提交";
+        public static  final String RANGE_1 = "按时提交";
+        public static  final String RANGE_NULL = "未提交";
+    }
 
 }

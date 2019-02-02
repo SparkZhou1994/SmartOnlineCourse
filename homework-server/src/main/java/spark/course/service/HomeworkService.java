@@ -1,6 +1,7 @@
 package spark.course.service;
 
 import spark.course.entity.bo.HomeworkBO;
+import spark.course.error.BusinessException;
 
 import java.util.List;
 
@@ -16,5 +17,5 @@ public interface HomeworkService {
     List<HomeworkBO> selectByChooseCourseId(Integer chooseCourseId, Integer start, Integer size);
     HomeworkBO insert(HomeworkBO homeworkBO);
     void delete(Integer homeworkId);
-    HomeworkBO update(HomeworkBO homeworkBO);
+    HomeworkBO update(HomeworkBO homeworkBO) throws BusinessException;
 }

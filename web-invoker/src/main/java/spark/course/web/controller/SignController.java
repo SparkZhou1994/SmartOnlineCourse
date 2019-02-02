@@ -43,7 +43,8 @@ public class SignController extends BaseController {
                 selectBySignId(signId), SignBO.class)));
     }
 
-    @GetMapping(value = "/{chooseCourseId}/{start}/{size}", consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
+    @GetMapping(value = "/{chooseCourseId:\\d+}/{start:\\d+}/{size:\\d+}",
+            consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
     String selectByChooseCoureId(@PathVariable("chooseCourseId") Integer chooseCourseId,
                                  @PathVariable("start") Integer start,
                                  @PathVariable("size") Integer size) {
@@ -67,7 +68,7 @@ public class SignController extends BaseController {
         return JsonUtil.convertToJson(signVOList);
     }
 
-    @DeleteMapping(value = "/{signId}")
+    @DeleteMapping(value = "/{signId:\\d+}")
     void delete(@PathVariable(value = "signId") Integer signId) {
         signService.delete(signId);
     }
