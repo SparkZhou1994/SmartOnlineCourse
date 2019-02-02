@@ -1,5 +1,8 @@
 package spark.course.entity.bo;
 
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
+
 import java.time.LocalDateTime;
 
 /**
@@ -13,9 +16,13 @@ public class HomeworkBO {
     private Integer homeworkId;
     private Long version;
     private Integer chooseCourseId;
+    @NotBlank(message = "作业描述不能为空")
     private String describe;
+    @NotBlank(message = "作业标题不能为空")
     private String title;
+    @NotBlank(message = "作业附件不能为空")
     private String attachment;
+    @NotEmpty(message = "作业批次不能为空")
     private Integer batch;
     private LocalDateTime endTime;
     private LocalDateTime submitTime;
