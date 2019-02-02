@@ -73,4 +73,13 @@ public interface SignDTOMapper {
     List<SignDTO> selectByChooseCourseId(@Param("chooseCourseId") Integer chooseCourseId,
                                          @Param("start") Integer start,
                                          @Param("size") Integer size);
+    
+    /**
+    * @author Spark
+    * @Description select max batch
+    * @Date 11:04 AM 2/2/2019
+    * @Param [chooseCourseId]
+    * @return java.lang.Integer
+    **/
+    Integer selectMaxBatchByChooseCourseId(Integer chooseCourseId);
 }

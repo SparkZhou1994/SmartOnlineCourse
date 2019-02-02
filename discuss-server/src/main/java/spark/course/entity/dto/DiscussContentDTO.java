@@ -1,5 +1,6 @@
 package spark.course.entity.dto;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class DiscussContentDTO {
@@ -55,7 +56,7 @@ public class DiscussContentDTO {
      *
      * @mbg.generated Wed Jan 30 22:53:03 CST 2019
      */
-    private Date publishTime;
+    private LocalDateTime publishTime;
 
     /**
      *
@@ -194,7 +195,7 @@ public class DiscussContentDTO {
      *
      * @mbg.generated Wed Jan 30 22:53:03 CST 2019
      */
-    public Date getPublishTime() {
+    public LocalDateTime getPublishTime() {
         return publishTime;
     }
 
@@ -206,7 +207,7 @@ public class DiscussContentDTO {
      *
      * @mbg.generated Wed Jan 30 22:53:03 CST 2019
      */
-    public void setPublishTime(Date publishTime) {
+    public void setPublishTime(LocalDateTime publishTime) {
         this.publishTime = publishTime;
     }
 

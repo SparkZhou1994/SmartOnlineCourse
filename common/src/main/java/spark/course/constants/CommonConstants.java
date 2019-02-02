@@ -18,4 +18,15 @@ public final class CommonConstants {
         public static final String DEFAULT_PAGE_SIZE = "20";
         private Pagination() {}
     }
+    public final class Discuss {
+        public static final String VOTE_0 = "讨论";
+        public static final String VOTE_1 = "投票";
+        private Discuss() {}
+    }
+    public final class Sign {
+        public static final String RANGE_0 = "超时签到";
+        public static  final String RANGE_1 = "按时签到";
+        public static  final String RANGE_NULL = "未签到";
+    }
+
 }

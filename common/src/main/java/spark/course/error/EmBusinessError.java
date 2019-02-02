@@ -21,7 +21,12 @@ public enum EmBusinessError implements CommonError{
     * @Date 2:12 PM 1/14/2019
     **/
     USER_NOT_EXIST(20001,"用户不存在"),
-
+    /**
+     * @author Spark
+     * @Description 30000开头为签到信息相关错误定义
+     * @Date 2:12 PM 1/14/2019
+     **/
+    SIGN_CODE_ERROR(30001,"签到码错误"),
     ;
 
     private EmBusinessError(Integer errCode, String errMsg) {

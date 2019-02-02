@@ -147,9 +147,7 @@
     -->
     update t_discuss
     <set>
-      <if test="version != null">
         version = version + 1,
-      </if>
       <if test="chooseCourseId != null">
         choose_course_id = #{chooseCourseId,jdbcType=INTEGER},
       </if>
@@ -178,7 +176,7 @@
         choose_4 = #{choose4,jdbcType=VARCHAR},
       </if>
     </set>
-    where discuss_id = #{discussId,jdbcType=INTEGER} and version = version = #{version,jdbcType=BIGINT}
+    where discuss_id = #{discussId,jdbcType=INTEGER} and version = #{version,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKeyAndVersion" parameterType="spark.course.entity.dto.DiscussDTO">
     <!--

@@ -104,6 +104,10 @@ public class DiscussController extends BaseController {
                     selectByUserId(discussVO.getUserId()), UserBO.class);
             discussVO.setUsername(userBO.getUsername());
         }
+        switch (discussBO.getVote()) {
+            case "0" : discussVO.setVote(CommonConstants.Discuss.VOTE_0); break;
+            case "1" : discussVO.setVote(CommonConstants.Discuss.VOTE_1); break;
+        }
         return discussVO;
     }
 
@@ -116,6 +120,10 @@ public class DiscussController extends BaseController {
         if (discussVO.getLastPublishTime() != null) {
             discussBO.setLastPublishTime(DateUtil.convertFromString(discussVO.
                     getLastPublishTime()));
+        }
+        switch (discussVO.getVote()) {
+            case CommonConstants.Discuss.VOTE_0 : discussBO.setVote("0"); break;
+            case CommonConstants.Discuss.VOTE_1 : discussBO.setVote("1"); break;
         }
         return discussBO;
     }

@@ -6,17 +6,17 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
 /**
- * @ClassName SignServerApplication
+ * @ClassName HomeworkServerApplication
  * @Description TODO
  * @Author Spark
- * @Date 2/1/2019 9:43 AM
+ * @Date 2/2/2019 1:47 PM
  * @Version 1.0
  **/
 @SpringBootApplication(scanBasePackages = {"spark.course"})
 @EnableEurekaClient
 @MapperScan("spark.course.dao")
-public class SignServerApplication {
+public class HomeworkServerApplication {
     public static void main(String[] args) {
-        SpringApplication.run(SignServerApplication.class, args);
+        SpringApplication.run(HomeworkServerApplication.class, args);
     }
 }

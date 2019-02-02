@@ -63,7 +63,7 @@ public interface DiscussContentDTOMapper {
     **/
     Integer selectMaxDiscussContentId();
 
-    List<DiscussContentDTO> selectByDiscussId(@Param("discuss") Integer discussId,
+    List<DiscussContentDTO> selectByDiscussId(@Param("discussId") Integer discussId,
                                               @Param("start") Integer start,
                                               @Param("size") Integer size);
 }

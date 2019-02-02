@@ -148,8 +148,8 @@
       choose = #{choose,jdbcType=CHAR}
     where discuss_content_id = #{discussContentId,jdbcType=INTEGER} and version = #{version,jdbcType=BIGINT},
   </update>
-  <select id="selectMaxDiscussId" resultType="java.lang.Integer">
-    select max(discuss_id) from t_discuss;
+  <select id="selectMaxDiscussContentId" resultType="java.lang.Integer">
+    select max(discuss_content_id) from t_discuss_content;
   </select>
   <select id="selectByDiscussId" parameterType="map" resultMap="BaseResultMap">
     <!--

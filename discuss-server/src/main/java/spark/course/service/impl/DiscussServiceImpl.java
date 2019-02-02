@@ -3,6 +3,7 @@ package spark.course.service.impl;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import spark.course.constants.CommonConstants;
 import spark.course.dao.DiscussDTOMapper;
 import spark.course.entity.bo.DiscussBO;
 import spark.course.entity.dto.DiscussDTO;

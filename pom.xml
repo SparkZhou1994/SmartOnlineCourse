@@ -128,5 +128,7 @@
         <module>discuss-server</module>
         <module>sign-api</module>
         <module>sign-server</module>
+        <module>homework-api</module>
+        <module>homework-server</module>
     </modules>
 </project>

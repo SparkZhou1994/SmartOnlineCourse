@@ -76,7 +76,7 @@ public class DiscussContentServiceImpl implements DiscussContentService {
         DiscussContentBO discussContentBO = new DiscussContentBO();
         BeanUtils.copyProperties(discussContentDTO, discussContentBO);
         if (discussContentDTO.getPublishTime() != null) {
-            discussContentBO.setPublishTime(DateUtil.convertToLocalDateTime(discussContentDTO.getPublishTime()));
+            discussContentBO.setPublishTime(discussContentDTO.getPublishTime());
         }
         return discussContentBO;
     }
@@ -88,7 +88,7 @@ public class DiscussContentServiceImpl implements DiscussContentService {
         DiscussContentDTO discussContentDTO = new DiscussContentDTO();
         BeanUtils.copyProperties(discussContentBO, discussContentDTO);
         if (discussContentBO.getPublishTime() != null ){
-            discussContentDTO.setPublishTime(DateUtil.convertToDate(discussContentBO.getPublishTime()));
+            discussContentDTO.setPublishTime(discussContentBO.getPublishTime());
         }
         return discussContentDTO;
     }

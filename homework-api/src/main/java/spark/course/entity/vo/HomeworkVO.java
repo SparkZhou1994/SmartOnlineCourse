@@ -3,34 +3,36 @@ package spark.course.entity.vo;
 import java.time.LocalDateTime;
 
 /**
- * @ClassName SignVO
+ * @ClassName HomeworkVO
  * @Description TODO
  * @Author Spark
- * @Date 2/1/2019 9:50 AM
+ * @Date 2/2/2019 2:19 PM
  * @Version 1.0
  **/
-public class SignVO {
-    private Integer signId;
+public class HomeworkVO {
+    private Integer homeworkId;
     private Long version;
     private Integer chooseCourseId;
-    private Integer courseId;
     private Integer userId;
     private String username;
+    private Integer courseId;
+    private String describe;
+    private String title;
+    private String attachment;
     private Integer batch;
-    private String code;
-    private Integer expireTime;
     private String endTime;
-    private String signTime;
+    private String submitTime;
     private String range;
+    private Integer score;
     private Integer start;
     private Integer size;
 
-    public Integer getSignId() {
-        return signId;
+    public Integer getHomeworkId() {
+        return homeworkId;
     }
 
-    public void setSignId(Integer signId) {
-        this.signId = signId;
+    public void setHomeworkId(Integer homeworkId) {
+        this.homeworkId = homeworkId;
     }
 
     public Long getVersion() {
@@ -49,14 +51,6 @@ public class SignVO {
         this.chooseCourseId = chooseCourseId;
     }
 
-    public Integer getCourseId() {
-        return courseId;
-    }
-
-    public void setCourseId(Integer courseId) {
-        this.courseId = courseId;
-    }
-
     public Integer getUserId() {
         return userId;
     }
@@ -73,28 +67,44 @@ public class SignVO {
         this.username = username;
     }
 
+    public Integer getCourseId() {
+        return courseId;
+    }
+
+    public void setCourseId(Integer courseId) {
+        this.courseId = courseId;
+    }
+
+    public String getDescribe() {
+        return describe;
+    }
+
+    public void setDescribe(String describe) {
+        this.describe = describe;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getAttachment() {
+        return attachment;
+    }
+
+    public void setAttachment(String attachment) {
+        this.attachment = attachment;
+    }
+
     public Integer getBatch() {
         return batch;
     }
 
     public void setBatch(Integer batch) {
         this.batch = batch;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public Integer getExpireTime() {
-        return expireTime;
-    }
-
-    public void setExpireTime(Integer expireTime) {
-        this.expireTime = expireTime;
     }
 
     public String getEndTime() {
@@ -105,12 +115,12 @@ public class SignVO {
         this.endTime = endTime;
     }
 
-    public String getSignTime() {
-        return signTime;
+    public String getSubmitTime() {
+        return submitTime;
     }
 
-    public void setSignTime(String signTime) {
-        this.signTime = signTime;
+    public void setSubmitTime(String submitTime) {
+        this.submitTime = submitTime;
     }
 
     public String getRange() {
@@ -119,6 +129,14 @@ public class SignVO {
 
     public void setRange(String range) {
         this.range = range;
+    }
+
+    public Integer getScore() {
+        return score;
+    }
+
+    public void setScore(Integer score) {
+        this.score = score;
     }
 
     public Integer getStart() {

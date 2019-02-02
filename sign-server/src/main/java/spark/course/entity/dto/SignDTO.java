@@ -1,5 +1,6 @@
 package spark.course.entity.dto;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class SignDTO {
@@ -55,7 +56,7 @@ public class SignDTO {
      *
      * @mbg.generated Fri Feb 01 09:45:56 CST 2019
      */
-    private Date endTime;
+    private LocalDateTime endTime;
 
     /**
      *
@@ -64,7 +65,7 @@ public class SignDTO {
      *
      * @mbg.generated Fri Feb 01 09:45:56 CST 2019
      */
-    private Date signTime;
+    private LocalDateTime signTime;
 
     /**
      *
@@ -203,7 +204,7 @@ public class SignDTO {
      *
      * @mbg.generated Fri Feb 01 09:45:56 CST 2019
      */
-    public Date getEndTime() {
+    public LocalDateTime getEndTime() {
         return endTime;
     }
 
@@ -215,7 +216,7 @@ public class SignDTO {
      *
      * @mbg.generated Fri Feb 01 09:45:56 CST 2019
      */
-    public void setEndTime(Date endTime) {
+    public void setEndTime(LocalDateTime endTime) {
         this.endTime = endTime;
     }
 
@@ -227,7 +228,7 @@ public class SignDTO {
      *
      * @mbg.generated Fri Feb 01 09:45:56 CST 2019
      */
-    public Date getSignTime() {
+    public LocalDateTime getSignTime() {
         return signTime;
     }
 
@@ -239,7 +240,7 @@ public class SignDTO {
      *
      * @mbg.generated Fri Feb 01 09:45:56 CST 2019
      */
-    public void setSignTime(Date signTime) {
+    public void setSignTime(LocalDateTime signTime) {
         this.signTime = signTime;
     }
 

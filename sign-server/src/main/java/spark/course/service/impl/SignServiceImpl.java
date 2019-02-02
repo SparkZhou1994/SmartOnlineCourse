@@ -10,9 +10,8 @@ import spark.course.entity.dto.SignDTO;
 import spark.course.error.BusinessException;
 import spark.course.error.EmBusinessError;
 import spark.course.service.SignService;
-import spark.course.util.DateUtil;
 
-import java.net.Inet4Address;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,7 +46,15 @@ public class SignServiceImpl implements SignService {
         } else {
             signId += 1;
         }
+        Integer batch = signDTOMapper.selectMaxBatchByChooseCourseId(signBO.getChooseCourseId());
+        if (batch == null) {
+            batch = 1;
+        } else {
+            batch += 1;
+        }
         signBO.setSignId(signId);
+        signBO.setBatch(batch);
+        signBO.setEndTime(LocalDateTime.now().plusMinutes(signBO.getExpireTime()));
         signBO.setVersion(Long.parseLong(Integer.toString(0)));
         signDTOMapper.insert(convertToDataObject(signBO));
         return signBO;
@@ -60,13 +67,25 @@ public class SignServiceImpl implements SignService {
 
     @Override
     public SignBO update(SignBO signBO) throws BusinessException {
-        Integer result = signDTOMapper.
-                updateByPrimaryKeyAndVersionSelective(convertToDataObject(signBO));
-        if (result != 1 ) {
-            throw new BusinessException(EmBusinessError.SERVER_BUSY);
+        SignDTO signDTO = signDTOMapper.selectByPrimaryKey(signBO.getSignId());
+        signBO.setEndTime(signDTO.getEndTime());
+        if (signDTO.getCode().equals(signBO.getCode())) {
+            signBO.setSignTime(LocalDateTime.now());
+            if (signBO.getSignTime().isAfter(signBO.getEndTime())) {
+                signBO.setRange("0");
+            } else {
+                signBO.setRange("1");
+            }
+            Integer result = signDTOMapper.
+                    updateByPrimaryKeyAndVersionSelective(convertToDataObject(signBO));
+            if (result != 1 ) {
+                throw new BusinessException(EmBusinessError.SERVER_BUSY);
+            }
+            signBO.setVersion(signBO.getVersion()+1);
+            return signBO;
+        } else {
+            throw new BusinessException(EmBusinessError.SIGN_CODE_ERROR);
         }
-        signBO.setVersion(signBO.getVersion()+1);
-        return signBO;
     }
 
     private SignBO convertFromDataObject(SignDTO signDTO) {
@@ -79,10 +98,10 @@ public class SignServiceImpl implements SignService {
             signBO.setBatch(Byte.toUnsignedInt(signDTO.getBatch()));
         }
         if (signDTO.getEndTime() != null) {
-            signBO.setEndTime(DateUtil.convertToLocalDateTime(signDTO.getEndTime()));
+            signBO.setEndTime(signDTO.getEndTime());
         }
         if (signDTO.getSignTime() != null) {
-            signBO.setSignTime(DateUtil.convertToLocalDateTime(signDTO.getSignTime()));
+            signBO.setSignTime(signDTO.getSignTime());
         }
         return signBO;
     }
@@ -97,10 +116,10 @@ public class SignServiceImpl implements SignService {
             signDTO.setBatch(signBO.getBatch().byteValue());
         }
         if (signBO.getEndTime() != null) {
-            signDTO.setEndTime(DateUtil.convertToDate(signBO.getEndTime()));
+            signDTO.setEndTime(signBO.getEndTime());
         }
         if (signBO.getSignTime() != null) {
-            signDTO.setSignTime(DateUtil.convertToDate(signBO.getSignTime()));
+            signDTO.setSignTime(signBO.getSignTime());
         }
         return signDTO;
     }

@@ -53,8 +53,18 @@ public class SignController extends BaseController {
 
     @PostMapping(consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
     String insert(@RequestBody SignVO signVO) {
-        return JsonUtil.convertToJson(convertFromBO(JsonUtil.json2Bean(signService.
-                insert(convertToBO(signVO)), SignBO.class)));
+        //get the courseId
+        CourseBO courseBO = JsonUtil.json2Bean(chooseCourseService.
+                selectByChooseCourseId(signVO.getChooseCourseId()), CourseBO.class);
+        //get the chooseCourseId list by courseId
+        List<CourseBO> courseBOList = JsonUtil.json2List(chooseCourseService.
+                selectByCourseId(courseBO.getCourseId()), CourseBO.class);
+        List<SignVO> signVOList = new ArrayList<SignVO>();
+        for (CourseBO courseBOTemp:courseBOList) {
+            signVOList.add(convertFromBO(JsonUtil.json2Bean(signService.
+                    insert(convertToBO(signVO)), SignBO.class)));
+        }
+        return JsonUtil.convertToJson(signVOList);
     }
 
     @DeleteMapping(value = "/{signId}")
@@ -84,6 +94,11 @@ public class SignController extends BaseController {
         UserBO userBO = JsonUtil.json2Bean(userService.
                 selectByUserId(courseBO.getUserId()), UserBO.class);
         signVO.setUsername(userBO.getUsername());
+        switch (signBO.getRange()) {
+            case "0" : signVO.setRange(CommonConstants.Sign.RANGE_0); break;
+            case "1" : signVO.setRange(CommonConstants.Sign.RANGE_1); break;
+            default : signVO.setRange(CommonConstants.Sign.RANGE_NULL); break;
+        }
         return signVO;
     }
 
@@ -98,6 +113,11 @@ public class SignController extends BaseController {
         }
         if (signVO.getSignTime() != null) {
             signBO.setSignTime(DateUtil.convertFromString(signVO.getSignTime()));
+        }
+        switch (signVO.getRange()) {
+            case CommonConstants.Sign.RANGE_0 : signBO.setRange("0"); break;
+            case CommonConstants.Sign.RANGE_1 : signBO.setRange("1"); break;
+            default : signBO.setRange(null); break;
         }
         return signBO;
     }
