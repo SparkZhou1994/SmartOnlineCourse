@@ -3,12 +3,15 @@ package spark.course.service.impl;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import spark.course.constants.CommonConstants;
 import spark.course.dao.HomeworkDTOMapper;
 import spark.course.entity.bo.HomeworkBO;
 import spark.course.entity.dto.HomeworkDTO;
 import spark.course.error.BusinessException;
+import spark.course.error.EmBusinessError;
 import spark.course.service.HomeworkService;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,8 +65,18 @@ public class HomeworkServiceImpl implements HomeworkService {
 
     @Override
     public HomeworkBO update(HomeworkBO homeworkBO)throws BusinessException {
-        homeworkDTOMapper.updateByPrimaryKeyAndVersionSelective(convertToDataObject(homeworkBO));
-        homeworkBO.setVersion(homeworkBO.getVersion()+1);
+        HomeworkDTO homeworkDTO = homeworkDTOMapper.selectByPrimaryKey(homeworkBO.getHomeworkId());
+        homeworkBO.setSubmitTime(LocalDateTime.now());
+        if (homeworkBO.getSubmitTime().isAfter(homeworkDTO.getEndTime())) {
+            homeworkBO.setRange("0");
+        } else {
+            homeworkBO.setRange("1");
+        }
+        Integer result = homeworkDTOMapper.updateByPrimaryKeyAndVersionSelective(convertToDataObject(homeworkBO));
+        if (result != 1 ) {
+            throw new BusinessException(EmBusinessError.SERVER_BUSY);
+        }
+        homeworkBO.setVersion(homeworkBO.getVersion() + 1);
         return homeworkBO;
     }
 
@@ -88,8 +101,12 @@ public class HomeworkServiceImpl implements HomeworkService {
         }
         HomeworkDTO homeworkDTO = new HomeworkDTO();
         BeanUtils.copyProperties(homeworkBO, homeworkDTO);
-        homeworkDTO.setBatch(homeworkBO.getBatch().byteValue());
-        homeworkDTO.setScore(homeworkBO.getScore().byteValue());
+        if (homeworkBO.getBatch() != null) {
+            homeworkDTO.setBatch(homeworkBO.getBatch().byteValue());
+        }
+        if (homeworkBO.getScore() != null) {
+            homeworkDTO.setScore(homeworkBO.getScore().byteValue());
+        }
         return homeworkDTO;
     }
 

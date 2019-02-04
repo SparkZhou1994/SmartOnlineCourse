@@ -66,7 +66,7 @@ public class DiscussServiceImpl implements DiscussService {
         if (result != 1) {
             throw new BusinessException(EmBusinessError.SERVER_BUSY);
         }
-        discussBO.setVersion(discussBO.getVersion()+1);
+        discussBO.setVersion(discussBO.getVersion() + 1);
         return discussBO;
     }
 

@@ -66,7 +66,7 @@ public class UserServiceImpl implements UserService {
         if (result != 1 ) {
             throw new BusinessException(EmBusinessError.SERVER_BUSY);
         }
-        userBO.setVersion(userBO.getVersion()+1);
+        userBO.setVersion(userBO.getVersion() + 1);
         return userBO;
     }
 
@@ -77,7 +77,7 @@ public class UserServiceImpl implements UserService {
         if (result != 1 ) {
             throw new BusinessException(EmBusinessError.SERVER_BUSY);
         }
-        userBO.setVersionPassword(userBO.getVersionPassword()+1);
+        userBO.setVersionPassword(userBO.getVersionPassword() + 1);
         return userBO;
     }
 

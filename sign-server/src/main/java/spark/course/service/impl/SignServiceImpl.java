@@ -81,7 +81,7 @@ public class SignServiceImpl implements SignService {
             if (result != 1 ) {
                 throw new BusinessException(EmBusinessError.SERVER_BUSY);
             }
-            signBO.setVersion(signBO.getVersion()+1);
+            signBO.setVersion(signBO.getVersion() + 1);
             return signBO;
         } else {
             throw new BusinessException(EmBusinessError.SIGN_CODE_ERROR);

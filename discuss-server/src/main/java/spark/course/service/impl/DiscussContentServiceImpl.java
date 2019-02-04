@@ -62,10 +62,10 @@ public class DiscussContentServiceImpl implements DiscussContentService {
         discussContentBO.setPublishTime(LocalDateTime.now());
         Integer result = discussContentDTOMapper.updateByPrimaryKeyAndVersionSelective(
                 convertToDataObject(discussContentBO));
-        if (result !=1) {
+        if (result != 1) {
             throw new BusinessException(EmBusinessError.SERVER_BUSY);
         }
-        discussContentBO.setVersion(discussContentBO.getVersion()+1);
+        discussContentBO.setVersion(discussContentBO.getVersion() + 1);
         return discussContentBO;
     }
 

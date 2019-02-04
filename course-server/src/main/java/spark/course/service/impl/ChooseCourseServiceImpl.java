@@ -56,13 +56,13 @@ public class ChooseCourseServiceImpl implements ChooseCourseService {
     @Override
     public CourseBO updateByChooseCourseId(CourseBO courseBO) throws BusinessException {
         chooseCourseDTOMapper.updateByPrimaryKeyAndVersionSelective(convertToDataObject(courseBO));
-        courseBO.setVersionChooseCourse(courseBO.getVersionChooseCourse()+1);
+        courseBO.setVersionChooseCourse(courseBO.getVersionChooseCourse() + 1);
         return courseBO;
     }
 
     @Override
     public List<CourseBO> selectChooseCourseByCourseId(Integer courseId) {
-        return convertFromDataObjectList(chooseCourseDTOMapper.selectChooseCourseIdByCourseId(courseId));
+        return convertFromDataObjectList(chooseCourseDTOMapper.selectChooseCourseByCourseId(courseId));
     }
 
     private CourseBO convertFromDataObject(ChooseCourseDTO chooseCourseDTO) {

@@ -1,0 +1,102 @@
+package spark.course.service.impl;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import spark.course.dao.CourseWareDTOMapper;
+import spark.course.entity.bo.CourseWareBO;
+import spark.course.entity.dto.CourseWareDTO;
+import spark.course.error.BusinessException;
+import spark.course.error.EmBusinessError;
+import spark.course.service.CourseWareService;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * @ClassName CourseWareServiceImpl
+ * @Description TODO
+ * @Author Spark
+ * @Date 2/3/2019 9:37 PM
+ * @Version 1.0
+ **/
+@Service
+public class CourseWareServiceImpl implements CourseWareService {
+    @Autowired
+    CourseWareDTOMapper courseWareDTOMapper;
+    @Override
+    public CourseWareBO selectByCourseWareId(Integer courseWareId) {
+        return convertFromDataObject(courseWareDTOMapper.selectByPrimaryKey(courseWareId));
+    }
+
+    @Override
+    public List<CourseWareBO> selectByCourseId(Integer courseId, Integer start, Integer size) {
+        return convertFromDataObjectList(courseWareDTOMapper.
+                selectByCourseId(courseId, start, size));
+    }
+
+    @Override
+    public CourseWareBO insert(CourseWareBO courseWareBO) {
+        Integer courseWareId = courseWareDTOMapper.selectMaxCourseWareId();
+        if (courseWareId == null) {
+            courseWareId = 1;
+        } else {
+            courseWareId += 1;
+        }
+        Integer batch = courseWareDTOMapper.selectMaxBatchByCourseId(courseWareBO.getCourseId());
+        if (batch == null) {
+            batch = 1;
+        } else {
+            batch += 1;
+        }
+        courseWareBO.setCourseId(courseWareId);
+        courseWareBO.setBatch(batch);
+        courseWareBO.setVersion(Long.parseLong(Integer.toString(0)));
+        courseWareDTOMapper.insertSelective(convertToDataObject(courseWareBO));
+        return courseWareBO;
+    }
+
+    @Override
+    public void delete(Integer courseWareId) {
+        courseWareDTOMapper.deleteByPrimaryKey(courseWareId);
+    }
+
+    @Override
+    public CourseWareBO update(CourseWareBO courseWareBO) throws BusinessException {
+        Integer result = courseWareDTOMapper.updateByPrimaryKeyAndVersionSelective(convertToDataObject(courseWareBO));
+        if (result != 1 ) {
+            throw new BusinessException(EmBusinessError.SERVER_BUSY);
+        }
+        courseWareBO.setVersion(courseWareBO.getVersion() + 1);
+        return courseWareBO;
+    }
+
+    private CourseWareBO convertFromDataObject(CourseWareDTO courseWareDTO) {
+        if (courseWareDTO == null) {
+            return null;
+        }
+        CourseWareBO courseWareBO = new CourseWareBO();
+        if (courseWareDTO.getBatch() != null) {
+            courseWareBO.setBatch(Byte.toUnsignedInt(courseWareDTO.getBatch()));
+        }
+        return courseWareBO;
+    }
+
+    private CourseWareDTO convertToDataObject(CourseWareBO courseWareBO) {
+        if (courseWareBO == null) {
+            return null;
+        }
+        CourseWareDTO courseWareDTO = new CourseWareDTO();
+        if (courseWareBO.getBatch() != null) {
+            courseWareDTO.setBatch(courseWareBO.getBatch().byteValue());
+        }
+        return courseWareDTO;
+    }
+
+    private List<CourseWareBO> convertFromDataObjectList(List<CourseWareDTO> courseWareDTOList) {
+        List<CourseWareBO> courseWareBOList = new ArrayList<CourseWareBO>();
+        for (CourseWareDTO courseWareDTO:courseWareDTOList) {
+            courseWareBOList.add(convertFromDataObject(courseWareDTO));
+        }
+        return courseWareBOList;
+    }
+}

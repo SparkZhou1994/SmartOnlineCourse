@@ -23,7 +23,9 @@ public interface IHomeworkApi {
 
     @GetMapping(value = "/{chooseCourseId}/{start}/{size}",
             consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
-    String selectByChooseCourseId(Integer chooseCourseId, Integer start, Integer size);
+    String selectByChooseCourseId(@PathVariable("chooseCourseId") Integer chooseCourseId,
+                                  @PathVariable("start") Integer start,
+                                  @PathVariable("size") Integer size);
 
     @PostMapping(consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
     String insert(@RequestBody HomeworkBO homeworkBO);

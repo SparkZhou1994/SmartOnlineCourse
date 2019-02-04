@@ -78,7 +78,7 @@ public class CourseServiceImpl implements CourseService {
         if (result !=1) {
             throw new BusinessException(EmBusinessError.SERVER_BUSY);
         }
-        courseBO.setVersion(courseBO.getVersion()+1);
+        courseBO.setVersion(courseBO.getVersion() + 1);
         return courseBO;
     }
 

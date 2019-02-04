@@ -47,7 +47,9 @@ public class HomeworkController extends BaseController {
 
     @GetMapping(value = "/{chooseCourseId:\\d+}/{start:\\d+}/{size:\\d+}",
             consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
-    String selectByChooseCourseId(Integer chooseCourseId, Integer start, Integer size) {
+    String selectByChooseCourseId(@PathVariable("chooseCourseId") Integer chooseCourseId,
+                                  @PathVariable("start") Integer start,
+                                  @PathVariable("size") Integer size) {
         return JsonUtil.convertToJson(convertFromBOListJson(homeworkService.
                 selectByChooseCourseId(chooseCourseId, start, size)));
     }
@@ -100,10 +102,18 @@ public class HomeworkController extends BaseController {
         UserBO userBO = JsonUtil.json2Bean(userService.
                 selectByUserId(courseBO.getUserId()), UserBO.class);
         homeworkVO.setUsername(userBO.getUsername());
-        switch (homeworkBO.getRange()) {
-            case "0" : homeworkVO.setRange(CommonConstants.Homework.RANGE_0); break;
-            case "1" : homeworkVO.setRange(CommonConstants.Homework.RANGE_1); break;
-            default : homeworkVO.setRange(CommonConstants.Homework.RANGE_NULL); break;
+        if (homeworkBO.getRange() != null) {
+            switch (homeworkBO.getRange()) {
+                case "0":
+                    homeworkVO.setRange(CommonConstants.Homework.RANGE_0);
+                    break;
+                case "1":
+                    homeworkVO.setRange(CommonConstants.Homework.RANGE_1);
+                    break;
+                default:
+                    homeworkVO.setRange(CommonConstants.Homework.RANGE_NULL);
+                    break;
+            }
         }
         return homeworkVO;
     }
@@ -120,10 +130,18 @@ public class HomeworkController extends BaseController {
         if (homeworkVO.getSubmitTime() != null) {
             homeworkBO.setEndTime(DateUtil.convertFromString(homeworkVO.getSubmitTime()));
         }
-        switch (homeworkBO.getRange()) {
-            case CommonConstants.Homework.RANGE_0 : homeworkVO.setRange("0"); break;
-            case CommonConstants.Homework.RANGE_1 : homeworkVO.setRange("1"); break;
-            default : homeworkVO.setRange(null); break;
+        if (homeworkBO.getRange() != null) {
+            switch (homeworkBO.getRange()) {
+                case CommonConstants.Homework.RANGE_0:
+                    homeworkVO.setRange("0");
+                    break;
+                case CommonConstants.Homework.RANGE_1:
+                    homeworkVO.setRange("1");
+                    break;
+                default:
+                    homeworkVO.setRange(null);
+                    break;
+            }
         }
         return homeworkBO;
     }
