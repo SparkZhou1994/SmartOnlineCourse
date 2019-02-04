@@ -47,6 +47,11 @@
             <artifactId>course-ware-api</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>spark.smartonlinecourse</groupId>
+            <artifactId>message-api</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
     <parent>

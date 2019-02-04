@@ -35,17 +35,17 @@ public class CourseWareController extends BaseController {
                 selectByCourseWareId(courseWareId), CourseWareBO.class)));
     }
 
-    @GetMapping(value = "/{courseId:\\d+}/{start\\d+}/{size\\d+}",
+    @GetMapping(value = "/{courseId:\\d+}/{start:\\d+}/{size:\\d+}",
             consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
     String selectByCourseId(@PathVariable("courseId") Integer courseId,
                             @PathVariable("start") Integer start,
-                            @PathVariable("size") Integer size){
-        return JsonUtil.convertToJson(convertFromBO(JsonUtil.json2Bean(courseWareService.
-                selectByCourseId(courseId, start, size), CourseWareBO.class)));
+                            @PathVariable("size") Integer size) {
+        return JsonUtil.convertToJson(convertFromBOListJson(courseWareService.
+                selectByCourseId(courseId, start, size)));
     }
 
     @PostMapping(consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
-    String insert(@RequestBody CourseWareVO courseWareVO){
+    String insert(@RequestBody CourseWareVO courseWareVO) {
         return JsonUtil.convertToJson(convertFromBO(JsonUtil.json2Bean(courseWareService.
                 insert(convertToBO(courseWareVO)), CourseWareBO.class)));
     }
@@ -57,7 +57,7 @@ public class CourseWareController extends BaseController {
     }
 
     @PutMapping(consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
-    String update(@RequestBody CourseWareVO courseWareVO) throws BusinessException{
+    String update(@RequestBody CourseWareVO courseWareVO) throws BusinessException {
         return JsonUtil.convertToJson(convertFromBO(JsonUtil.json2Bean(courseWareService.
                 update(convertToBO(courseWareVO)), CourseWareBO.class)));
     }

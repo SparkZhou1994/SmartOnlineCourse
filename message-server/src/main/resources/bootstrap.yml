@@ -1,0 +1,9 @@
+spring:
+  cloud:
+    config:
+      name: discuss-server
+      profile: leader
+      uri: http://localhost:8888
+      label: master
+encrypt:
+  key: Spark

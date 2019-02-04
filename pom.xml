@@ -133,5 +133,7 @@
         <module>course-wareapi</module>
         <module>course-ware-api</module>
         <module>course-ware-server</module>
+        <module>message-api</module>
+        <module>message-server</module>
     </modules>
 </project>

@@ -1,5 +1,7 @@
 package spark.course.service.impl;
 
+import com.fasterxml.jackson.databind.util.BeanUtil;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import spark.course.dao.CourseWareDTOMapper;
@@ -48,7 +50,7 @@ public class CourseWareServiceImpl implements CourseWareService {
         } else {
             batch += 1;
         }
-        courseWareBO.setCourseId(courseWareId);
+        courseWareBO.setCourseWareId(courseWareId);
         courseWareBO.setBatch(batch);
         courseWareBO.setVersion(Long.parseLong(Integer.toString(0)));
         courseWareDTOMapper.insertSelective(convertToDataObject(courseWareBO));
@@ -75,6 +77,7 @@ public class CourseWareServiceImpl implements CourseWareService {
             return null;
         }
         CourseWareBO courseWareBO = new CourseWareBO();
+        BeanUtils.copyProperties(courseWareDTO, courseWareBO);
         if (courseWareDTO.getBatch() != null) {
             courseWareBO.setBatch(Byte.toUnsignedInt(courseWareDTO.getBatch()));
         }
@@ -86,6 +89,7 @@ public class CourseWareServiceImpl implements CourseWareService {
             return null;
         }
         CourseWareDTO courseWareDTO = new CourseWareDTO();
+        BeanUtils.copyProperties(courseWareBO, courseWareDTO);
         if (courseWareBO.getBatch() != null) {
             courseWareDTO.setBatch(courseWareBO.getBatch().byteValue());
         }

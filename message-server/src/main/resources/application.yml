@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: message-server
+  profiles:
+    active: leader
+  datasource:
+    name: smart_online_course
+    url: jdbc:mysql://127.0.0.1:3306/smart_online_course
+    username: root
+    password: root
+    type: com.alibaba.druid.pool.DruidDataSource
+    driverClassName: com.mysql.jdbc.Driver
+  cloud:
+    loadbalancer:
+      retry: false
+eureka:
+  instance:
+    hostname: localhost
+    leaseRenewalIntervalInSeconds: 5
+    lease-expiration-duration-in-seconds: 10
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/,http://localhost:8762/eureka/
+mybatis:
+  mapperLocations: classpath:mapping/*.xml
+logging:
+  level:
+    com.netflix: debug
