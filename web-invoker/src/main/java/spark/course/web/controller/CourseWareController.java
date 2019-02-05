@@ -9,25 +9,33 @@ package spark.course.web.controller;
  **/
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import spark.course.api.FeignCourseApi;
+import org.springframework.web.multipart.MultipartFile;
 import spark.course.api.FeignCourseWareApi;
 import spark.course.constants.CommonConstants;
 import spark.course.controller.BaseController;
 import spark.course.entity.bo.CourseWareBO;
+import spark.course.entity.bo.HomeworkBO;
 import spark.course.entity.vo.CourseWareVO;
+import spark.course.entity.vo.HomeworkVO;
 import spark.course.error.BusinessException;
+import spark.course.error.EmBusinessError;
+import spark.course.util.FileUtil;
 import spark.course.util.JsonUtil;
+
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
-@RestController
-
+@Controller
 @RequestMapping("/courseWare")
 public class CourseWareController extends BaseController {
     @Autowired
     FeignCourseWareApi courseWareService;
 
+    @ResponseBody
     @GetMapping(value = "/{courseWareId:\\d+}",
             consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
     String selectByCourseWareId(@PathVariable("courseWareId") Integer courseWareId) {
@@ -35,6 +43,7 @@ public class CourseWareController extends BaseController {
                 selectByCourseWareId(courseWareId), CourseWareBO.class)));
     }
 
+    @ResponseBody
     @GetMapping(value = "/{courseId:\\d+}/{start:\\d+}/{size:\\d+}",
             consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
     String selectByCourseId(@PathVariable("courseId") Integer courseId,
@@ -44,18 +53,47 @@ public class CourseWareController extends BaseController {
                 selectByCourseId(courseId, start, size)));
     }
 
+    @ResponseBody
     @PostMapping(consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
     String insert(@RequestBody CourseWareVO courseWareVO) {
         return JsonUtil.convertToJson(convertFromBO(JsonUtil.json2Bean(courseWareService.
                 insert(convertToBO(courseWareVO)), CourseWareBO.class)));
     }
 
+    @PostMapping(value = "/courseWareUpload")
+    String courseWareUpload(Integer courseId, String title, MultipartFile attachmentFile,
+                            Integer batch) throws Exception{
+        String fileName = FileUtil.fileNameConvert(attachmentFile);
+        try {
+            FileUtil.uploadFile(attachmentFile, CommonConstants.CourseWare.FILE_PATH, fileName);
+        } catch (Exception e) {
+            throw new BusinessException(EmBusinessError.COURSE_WARE_UPLOAD_ERROR);
+        }
+        CourseWareVO courseWareVO = new CourseWareVO();
+        courseWareVO.setCourseId(courseId);
+        courseWareVO.setTitle(title);
+        courseWareVO.setAttachment(fileName);
+        courseWareVO.setBatch(batch);
+        return insert(courseWareVO);
+    }
+
+    @GetMapping(value = "/courseWareDownload/{courseWareId}")
+    ResponseEntity<byte[]> homeworkDownload(@PathVariable("courseWareId") Integer courseWareId,
+                                            HttpServletRequest request){
+        CourseWareBO courseWareBO = JsonUtil.json2Bean(courseWareService.
+                selectByCourseWareId(courseWareId), CourseWareBO.class);
+        return FileUtil.downloadFile(courseWareBO.getAttachment(),
+                CommonConstants.Homework.FILE_PATH , request);
+    }
+
+    @ResponseBody
     @DeleteMapping(value = "/{courseWareId:\\d+}",
             consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
     void delete(@PathVariable("courseWareId") Integer courseWareId){
         courseWareService.delete(courseWareId);
     }
 
+    @ResponseBody
     @PutMapping(consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
     String update(@RequestBody CourseWareVO courseWareVO) throws BusinessException {
         return JsonUtil.convertToJson(convertFromBO(JsonUtil.json2Bean(courseWareService.

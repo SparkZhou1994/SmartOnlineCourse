@@ -27,6 +27,18 @@ public enum EmBusinessError implements CommonError{
      * @Date 2:12 PM 1/14/2019
      **/
     SIGN_CODE_ERROR(30001,"签到码错误"),
+    /**
+     * @author Spark
+     * @Description 40000开头为作业信息相关错误定义
+     * @Date 2:12 PM 1/14/2019
+     **/
+    HOMEWORK_UPLOAD_ERROR(40001,"作业文件上传失败"),
+    /**
+     * @author Spark
+     * @Description 50000开头为课件信息相关错误定义
+     * @Date 2:12 PM 1/14/2019
+     **/
+    COURSE_WARE_UPLOAD_ERROR(50001,"课件上传失败")
     ;
 
     private EmBusinessError(Integer errCode, String errMsg) {

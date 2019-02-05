@@ -2,23 +2,26 @@ package spark.course.web.controller;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import spark.course.api.FeignChooseCourseApi;
 import spark.course.api.FeignHomeworkApi;
-import spark.course.api.FeignSignApi;
 import spark.course.api.FeignUserApi;
 import spark.course.constants.CommonConstants;
 import spark.course.controller.BaseController;
 import spark.course.entity.bo.CourseBO;
 import spark.course.entity.bo.HomeworkBO;
-import spark.course.entity.bo.SignBO;
 import spark.course.entity.bo.UserBO;
 import spark.course.entity.vo.HomeworkVO;
-import spark.course.entity.vo.SignVO;
 import spark.course.error.BusinessException;
+import spark.course.error.EmBusinessError;
 import spark.course.util.DateUtil;
+import spark.course.util.FileUtil;
 import spark.course.util.JsonUtil;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +32,7 @@ import java.util.List;
  * @Date 2/3/2019 1:45 AM
  * @Version 1.0
  **/
-@RestController
+@Controller
 @RequestMapping("/homework")
 public class HomeworkController extends BaseController {
     @Autowired
@@ -38,6 +41,8 @@ public class HomeworkController extends BaseController {
     FeignHomeworkApi homeworkService;
     @Autowired
     FeignUserApi userService;
+
+    @ResponseBody
     @GetMapping(value = "/{homeworkId:\\d+}",
             consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
     String selectByHomeworkId(@PathVariable("homeworkId") Integer homeworkId) {
@@ -45,6 +50,7 @@ public class HomeworkController extends BaseController {
                 selectByHomeworkId(homeworkId),HomeworkBO.class)));
     }
 
+    @ResponseBody
     @GetMapping(value = "/{chooseCourseId:\\d+}/{start:\\d+}/{size:\\d+}",
             consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
     String selectByChooseCourseId(@PathVariable("chooseCourseId") Integer chooseCourseId,
@@ -54,6 +60,7 @@ public class HomeworkController extends BaseController {
                 selectByChooseCourseId(chooseCourseId, start, size)));
     }
 
+    @ResponseBody
     @PostMapping(consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
     String insert(@RequestBody HomeworkVO homeworkVO) {
         //get the courseId
@@ -70,12 +77,43 @@ public class HomeworkController extends BaseController {
         return JsonUtil.convertToJson(homeworkVOList);
     }
 
+    @PostMapping(value = "/homeworkUpload")
+    String homeworkUpload(Integer chooseCourseId, String describe, String title,
+                          MultipartFile attachmentFile,String endTime,
+                          Integer batch) throws Exception{
+        String fileName = FileUtil.fileNameConvert(attachmentFile);
+        try {
+            FileUtil.uploadFile(attachmentFile, CommonConstants.Homework.FILE_PATH, fileName);
+        } catch (Exception e) {
+            throw new BusinessException(EmBusinessError.HOMEWORK_UPLOAD_ERROR);
+        }
+        HomeworkVO homeworkVO = new HomeworkVO();
+        homeworkVO.setChooseCourseId(chooseCourseId);
+        homeworkVO.setDescribe(describe);
+        homeworkVO.setTitle(title);
+        homeworkVO.setAttachment(fileName);
+        homeworkVO.setEndTime(endTime);
+        homeworkVO.setBatch(batch);
+        return insert(homeworkVO);
+    }
+
+    @GetMapping(value = "/homeworkDownload/{homeworkId}")
+    ResponseEntity<byte[]> homeworkDownload(@PathVariable("homeworkId") Integer homeworkId,
+                                            HttpServletRequest request){
+        HomeworkBO homeworkBO = JsonUtil.json2Bean(homeworkService.
+                selectByHomeworkId(homeworkId),HomeworkBO.class);
+        return FileUtil.downloadFile(homeworkBO.getAttachment(),
+                CommonConstants.Homework.FILE_PATH , request);
+    }
+
+    @ResponseBody
     @DeleteMapping(value = "/{homeworkId:\\d+}",
             consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
     void delete(@PathVariable("homeworkId") Integer homeworkId){
         homeworkService.delete(homeworkId);
     }
 
+    @ResponseBody
     @PutMapping(consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
     String update(@RequestBody HomeworkVO homeworkVO) throws BusinessException {
         return JsonUtil.convertToJson(convertFromBO(JsonUtil.json2Bean(homeworkService.

@@ -32,6 +32,10 @@ public final class CommonConstants {
         public static final String RANGE_0 = "超时提交";
         public static  final String RANGE_1 = "按时提交";
         public static  final String RANGE_NULL = "未提交";
+        public static final String FILE_PATH = "E://SmartOnlineCourse//homework";
+    }
+    public final class CourseWare {
+        public static final String FILE_PATH = "E://SmartOnlineCourse//courseWare";
     }
 
 }
