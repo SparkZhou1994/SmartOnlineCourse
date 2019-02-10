@@ -38,7 +38,14 @@ public enum EmBusinessError implements CommonError{
      * @Description 50000开头为课件信息相关错误定义
      * @Date 2:12 PM 1/14/2019
      **/
-    COURSE_WARE_UPLOAD_ERROR(50001,"课件上传失败")
+    COURSE_WARE_UPLOAD_ERROR(50001,"课件上传失败"),
+    /**
+     * @author Spark
+     * @Description 60000开头为登录信息相关错误定义
+     * @Date 2:12 PM 1/14/2019
+     **/
+    UNAUTHORIZED(60001,"需要身份验证"),
+    AUTHORIZED_REDIRECT(60002,"验证跳转错误")
     ;
 
     private EmBusinessError(Integer errCode, String errMsg) {

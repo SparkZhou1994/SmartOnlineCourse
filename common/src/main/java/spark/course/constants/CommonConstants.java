@@ -37,5 +37,7 @@ public final class CommonConstants {
     public final class CourseWare {
         public static final String FILE_PATH = "E://SmartOnlineCourse//courseWare";
     }
-
+    public final class ImageCode {
+        public static final String SESSION_KEY = "SESSION_KEY_IMAGE_CODE";
+    }
 }
