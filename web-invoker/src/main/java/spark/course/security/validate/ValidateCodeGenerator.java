@@ -1,6 +1,7 @@
-package spark.course.security;
+package spark.course.security.validate;
 
 import org.springframework.web.context.request.ServletWebRequest;
+import spark.course.security.validate.image.ImageCode;
 
 /**
  * @ClassName ValidateCodeGenerator

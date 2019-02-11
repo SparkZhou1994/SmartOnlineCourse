@@ -1,4 +1,4 @@
-package spark.course.security;
+package spark.course.security.validate;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.InitializingBean;
@@ -11,6 +11,8 @@ import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.filter.OncePerRequestFilter;
 import spark.course.constants.CommonConstants;
+import spark.course.security.validate.image.ImageCode;
+import spark.course.security.SecurityProperties;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;

@@ -1,4 +1,4 @@
-package spark.course.security;
+package spark.course.security.validate.image;
 
 import java.awt.image.BufferedImage;
 import java.time.LocalDateTime;

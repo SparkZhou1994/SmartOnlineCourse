@@ -1,4 +1,4 @@
-package spark.course.security;
+package spark.course.security.validate;
 
 
 import org.springframework.security.core.AuthenticationException;

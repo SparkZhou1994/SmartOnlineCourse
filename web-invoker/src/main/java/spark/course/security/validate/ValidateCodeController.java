@@ -1,4 +1,4 @@
-package spark.course.security;
+package spark.course.security.validate;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.social.connect.web.HttpSessionSessionStrategy;
@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.ServletWebRequest;
 import spark.course.constants.CommonConstants;
+import spark.course.security.validate.image.ImageCode;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;

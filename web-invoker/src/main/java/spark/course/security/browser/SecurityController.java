@@ -1,4 +1,4 @@
-package spark.course.security;
+package spark.course.security.browser;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;

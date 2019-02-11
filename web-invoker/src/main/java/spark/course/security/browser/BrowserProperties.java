@@ -1,4 +1,4 @@
-package spark.course.security;
+package spark.course.security.browser;
 
 /**
  * @ClassName BrowserProperties

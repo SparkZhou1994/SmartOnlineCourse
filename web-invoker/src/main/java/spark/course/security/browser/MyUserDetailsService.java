@@ -1,4 +1,4 @@
-package spark.course.security;
+package spark.course.security.browser;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

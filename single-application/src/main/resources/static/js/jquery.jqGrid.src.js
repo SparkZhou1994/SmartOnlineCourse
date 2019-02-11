@@ -7328,7 +7328,7 @@ $.jgrid.extend({
 				if(p.tmplNames && p.tmplNames.length) {
 					found = true;
 					tmpl = p.tmplLabel;
-					tmpl += "<select class='ui-template'>";
+					tmpl += "<select class='ui-templates'>";
 					tmpl += "<option value='default'>Default</option>";
 					$.each(p.tmplNames, function(i,n){
 						tmpl += "<option value='"+i+"'>"+n+"</option>";
@@ -7364,7 +7364,7 @@ $.jgrid.extend({
 				});
 				fil.append( bt );
 				if(found && p.tmplFilters && p.tmplFilters.length) {
-					$(".ui-template", fil).bind('change', function(){
+					$(".ui-templates", fil).bind('change', function(){
 						var curtempl = $(this).val();
 						if(curtempl==="default") {
 							$("#"+fid).jqFilter('addFilter', defaultFilters);
@@ -7478,7 +7478,7 @@ $.jgrid.extend({
 					}
 					fl[0].resetFilter();
 					if(found) {
-						$(".ui-template", fil).val("default");
+						$(".ui-templates", fil).val("default");
 					}
 					$.extend($t.p.postData,sdata);
 					mustReload = $($t).triggerHandler("jqGridFilterReset");

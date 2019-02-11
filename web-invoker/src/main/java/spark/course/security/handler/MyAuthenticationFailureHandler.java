@@ -1,12 +1,13 @@
-package spark.course.security;
+package spark.course.security.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
 import spark.course.response.CommonReturnType;
+import spark.course.security.browser.LoginType;
+import spark.course.security.SecurityProperties;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

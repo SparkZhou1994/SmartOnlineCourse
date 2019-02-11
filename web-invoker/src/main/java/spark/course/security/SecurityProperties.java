@@ -1,6 +1,8 @@
 package spark.course.security;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import spark.course.security.browser.BrowserProperties;
+import spark.course.security.validate.ValidateCodeProperties;
 
 /**
  * @ClassName SecurityProperties

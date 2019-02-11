@@ -1,8 +1,10 @@
-package spark.course.security;
+package spark.course.security.validate.image;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.context.request.ServletWebRequest;
+import spark.course.security.SecurityProperties;
+import spark.course.security.validate.ValidateCodeGenerator;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -15,7 +17,7 @@ import java.util.Random;
  * @Date 2/10/2019 7:34 PM
  * @Version 1.0
  **/
-public class ImageCodeGenerator implements ValidateCodeGenerator{
+public class ImageCodeGenerator implements ValidateCodeGenerator {
     @Autowired
     private SecurityProperties securityProperties;
     @Override
