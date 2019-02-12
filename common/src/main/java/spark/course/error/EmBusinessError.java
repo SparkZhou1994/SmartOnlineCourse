@@ -21,6 +21,7 @@ public enum EmBusinessError implements CommonError{
     * @Date 2:12 PM 1/14/2019
     **/
     USER_NOT_EXIST(20001,"用户不存在"),
+    USER_PASSWORD_ERROR(20002,"用户名不存在或密码错误"),
     /**
      * @author Spark
      * @Description 30000开头为签到信息相关错误定义

@@ -1,12 +1,16 @@
 package spark.course.controller;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindException;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import spark.course.error.BusinessException;
 import spark.course.error.EmBusinessError;
 import spark.course.response.CommonReturnType;
+import spark.course.validator.ValidationResult;
 
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,10 +32,10 @@ public class BaseController {
     * @Param [request, ex]
     * @return java.lang.Object
     **/
-    @ExceptionHandler(Exception.class)
+    @ExceptionHandler(BusinessException.class)
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public Object handlerException(HttpServletRequest request, Exception ex) {
+    public Object businessHandlerException(HttpServletRequest request, Exception ex) {
         Map<String,Object> responseData = new HashMap<>();
         if (ex instanceof BusinessException) {
             BusinessException businessException = (BusinessException)ex;

@@ -16,4 +16,5 @@ public interface UserService {
     void deleteByUserId(Integer userId);
     UserBO updateUserByUserId(UserBO userBO) throws BusinessException;
     UserBO updatePasswordByUserId(UserBO userBO) throws BusinessException;
+    UserBO selectByEmail(String email);
 }

@@ -15,7 +15,7 @@ import java.util.Set;
  * @Version 1.0
  **/
 public class ValidatorImpl implements InitializingBean {
-    private Validator validator;
+    private static Validator validator =  Validation.buildDefaultValidatorFactory().getValidator();
     /**
     * @author Spark
     * @Description 实现校验方法并返回校验结果

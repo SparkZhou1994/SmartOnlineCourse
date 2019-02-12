@@ -50,8 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/authentication/require",
                         securityProperties.getBrowser().getLoginPage(),
                         "/code/image").permitAll()
-                .anyRequest()
-                .authenticated()
+                .antMatchers("/my_index").access("hasRole('ROLE_USER')")
                 .and()
                 .csrf().disable();
     }

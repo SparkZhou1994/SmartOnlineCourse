@@ -6,6 +6,7 @@ import org.hibernate.validator.constraints.NotBlank;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
+
 /**
  * @ClassName UserBO
  * @Description TODO

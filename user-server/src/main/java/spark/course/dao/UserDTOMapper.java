@@ -59,4 +59,13 @@ public interface UserDTOMapper {
     * @return int
     **/
     Integer selectMaxUserId();
+
+    /**
+    * @author Spark
+    * @Description Select by email
+    * @Date 9:49 AM 2/12/2019
+    * @Param [email]
+    * @return spark.course.entity.dto.UserDTO
+    **/
+    UserDTO selectByEmail(String email);
 }

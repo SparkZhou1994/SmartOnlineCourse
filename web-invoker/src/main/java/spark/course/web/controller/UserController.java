@@ -32,8 +32,10 @@ public class UserController extends BaseController {
 
     @PostMapping(consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
     public String insertUser(@RequestBody UserBO user) throws BusinessException {
+        String result = userService.insertUser(user);
+        //TODO
         return JsonUtil.convertToJson(convertFromBO(
-                JsonUtil.json2Bean(userService.insertUser(user), UserBO.class)));
+                JsonUtil.json2Bean(result, UserBO.class)));
     }
 
     @PutMapping(consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)

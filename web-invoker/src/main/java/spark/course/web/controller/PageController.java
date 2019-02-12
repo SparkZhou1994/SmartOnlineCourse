@@ -16,4 +16,8 @@ public class PageController {
     public String loginAndResiger() {
         return "LoginAndRegister";
     }
+    @GetMapping("/Index.html")
+    public String index() {
+        return "Index";
+    }
 }

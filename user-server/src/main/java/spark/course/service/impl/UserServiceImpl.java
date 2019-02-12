@@ -81,6 +81,13 @@ public class UserServiceImpl implements UserService {
         return userBO;
     }
 
+    @Override
+    public UserBO selectByEmail(String email) {
+        UserDTO userDTO = userDTOMapper.selectByEmail(email);
+        UserPasswordDTO userPasswordDTO = userPasswordDTOMapper.selectByPrimaryKey(userDTO.getUserId());
+        return convertFromDataObject(userDTO, userPasswordDTO);
+    }
+
     private UserBO convertFromDataObject(UserDTO userDTO, UserPasswordDTO userPasswordDTO) {
         if (userDTO == null) {
             return null;
