@@ -10,7 +10,6 @@ package spark.course.error;
 public class BusinessException extends Exception implements CommonError {
 
     private CommonError  commonError;
-
     /**
     * @author Spark
     * @Description 直接接收EmBusinessError的传参用于构造业务异常

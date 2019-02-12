@@ -36,6 +36,6 @@ public class ValidationExceptionHandler {
                 errorMsgMap.put(error.getField(), error.getDefaultMessage());
             }
         }
-        return new ValidationResult(false,errorMsgMap);
+        return new ValidationResult(true,errorMsgMap);
     }
 }

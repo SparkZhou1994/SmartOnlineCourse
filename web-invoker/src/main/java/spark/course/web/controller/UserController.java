@@ -9,6 +9,7 @@ import spark.course.controller.BaseController;
 import spark.course.entity.bo.UserBO;
 import spark.course.entity.vo.UserVO;
 import spark.course.error.BusinessException;
+import spark.course.error.ClassBusinessError;
 import spark.course.util.JsonUtil;
 
 /**
@@ -33,7 +34,9 @@ public class UserController extends BaseController {
     @PostMapping(consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
     public String insertUser(@RequestBody UserBO user) throws BusinessException {
         String result = userService.insertUser(user);
-        //TODO
+        if (result.contains("true")) {
+            throw new BusinessException(new ClassBusinessError(result));
+        }
         return JsonUtil.convertToJson(convertFromBO(
                 JsonUtil.json2Bean(result, UserBO.class)));
     }
