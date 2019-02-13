@@ -17,4 +17,5 @@ public interface UserService {
     UserBO updateUserByUserId(UserBO userBO) throws BusinessException;
     UserBO updatePasswordByUserId(UserBO userBO) throws BusinessException;
     UserBO selectByEmail(String email);
+    void updateAge();
 }

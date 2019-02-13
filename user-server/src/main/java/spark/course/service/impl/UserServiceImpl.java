@@ -88,6 +88,11 @@ public class UserServiceImpl implements UserService {
         return convertFromDataObject(userDTO, userPasswordDTO);
     }
 
+    @Override
+    public void updateAge() {
+        userDTOMapper.updateAge();
+    }
+
     private UserBO convertFromDataObject(UserDTO userDTO, UserPasswordDTO userPasswordDTO) {
         if (userDTO == null) {
             return null;

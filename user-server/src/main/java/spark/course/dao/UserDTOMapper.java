@@ -68,4 +68,13 @@ public interface UserDTOMapper {
     * @return spark.course.entity.dto.UserDTO
     **/
     UserDTO selectByEmail(String email);
+
+    /**
+    * @author Spark
+    * @Description update age every year
+    * @Date 12:01 PM 2/13/2019
+    * @Param []
+    * @return java.lang.Integer
+    **/
+    Integer updateAge();
 }
