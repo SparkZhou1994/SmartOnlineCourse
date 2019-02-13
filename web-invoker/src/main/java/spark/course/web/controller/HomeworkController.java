@@ -16,6 +16,7 @@ import spark.course.entity.bo.HomeworkBO;
 import spark.course.entity.bo.UserBO;
 import spark.course.entity.vo.HomeworkVO;
 import spark.course.error.BusinessException;
+import spark.course.error.ClassBusinessError;
 import spark.course.error.EmBusinessError;
 import spark.course.util.DateUtil;
 import spark.course.util.FileUtil;
@@ -62,7 +63,7 @@ public class HomeworkController extends BaseController {
 
     @ResponseBody
     @PostMapping(consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
-    String insert(@RequestBody HomeworkVO homeworkVO) {
+    String insert(@RequestBody HomeworkVO homeworkVO) throws BusinessException {
         //get the courseId
         CourseBO courseBO = JsonUtil.json2Bean(chooseCourseService.
                 selectByChooseCourseId(homeworkVO.getChooseCourseId()), CourseBO.class);
@@ -71,8 +72,11 @@ public class HomeworkController extends BaseController {
                 selectByCourseId(courseBO.getCourseId()), CourseBO.class);
         List<HomeworkVO> homeworkVOList = new ArrayList<HomeworkVO>();
         for (CourseBO courseBOTemp:courseBOList) {
-            homeworkVOList.add(convertFromBO(JsonUtil.json2Bean(homeworkService.
-                    insert(convertToBO(homeworkVO)), HomeworkBO.class)));
+            String result = homeworkService.insert(convertToBO(homeworkVO));
+            if (result.contains("true")) {
+                throw new BusinessException(new ClassBusinessError(result));
+            }
+            homeworkVOList.add(convertFromBO(JsonUtil.json2Bean(result, HomeworkBO.class)));
         }
         return JsonUtil.convertToJson(homeworkVOList);
     }

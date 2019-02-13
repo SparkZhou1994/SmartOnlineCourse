@@ -9,6 +9,9 @@ import spark.course.entity.bo.HomeworkBO;
 import spark.course.error.BusinessException;
 import spark.course.service.HomeworkService;
 import spark.course.util.JsonUtil;
+import spark.course.validator.ValidationExceptionHandler;
+
+import javax.validation.Valid;
 
 /**
  * @ClassName HomeworkController
@@ -18,7 +21,7 @@ import spark.course.util.JsonUtil;
  * @Version 1.0
  **/
 @RestController
-public class HomeworkController implements IHomeworkApi {
+public class HomeworkController extends ValidationExceptionHandler implements IHomeworkApi {
     @Autowired
     HomeworkService homeworkService;
     @Override
@@ -35,7 +38,7 @@ public class HomeworkController implements IHomeworkApi {
     }
 
     @Override
-    public String insert(@RequestBody HomeworkBO homeworkBO) {
+    public String insert(@RequestBody @Valid HomeworkBO homeworkBO) throws BusinessException{
         return JsonUtil.convertToJson(homeworkService.insert(homeworkBO));
     }
 

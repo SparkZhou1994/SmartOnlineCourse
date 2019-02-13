@@ -1,5 +1,7 @@
 package spark.course.entity.bo;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 import java.time.LocalDate;
 
 /**
@@ -13,6 +15,7 @@ public class MessageBO {
     private Integer messageId;
     private Long version;
     private Integer chooseCourseId;
+    @NotBlank(message = "消息内容不能为空")
     private String content;
     private LocalDate publishData;
 

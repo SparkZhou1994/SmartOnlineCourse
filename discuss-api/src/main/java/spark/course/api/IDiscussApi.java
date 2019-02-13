@@ -25,7 +25,7 @@ public interface IDiscussApi {
     String selectByDiscussId(@PathVariable("discussId") Integer discussId);
 
     @PostMapping(consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
-    String insert(@RequestBody DiscussBO discussBO);
+    String insert(@RequestBody DiscussBO discussBO) throws BusinessException;
 
     @DeleteMapping(value = "/{discussId",
             consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)

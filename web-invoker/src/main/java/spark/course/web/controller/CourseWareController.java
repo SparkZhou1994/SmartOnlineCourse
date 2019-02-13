@@ -21,6 +21,7 @@ import spark.course.entity.bo.HomeworkBO;
 import spark.course.entity.vo.CourseWareVO;
 import spark.course.entity.vo.HomeworkVO;
 import spark.course.error.BusinessException;
+import spark.course.error.ClassBusinessError;
 import spark.course.error.EmBusinessError;
 import spark.course.util.FileUtil;
 import spark.course.util.JsonUtil;
@@ -55,9 +56,12 @@ public class CourseWareController extends BaseController {
 
     @ResponseBody
     @PostMapping(consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
-    String insert(@RequestBody CourseWareVO courseWareVO) {
-        return JsonUtil.convertToJson(convertFromBO(JsonUtil.json2Bean(courseWareService.
-                insert(convertToBO(courseWareVO)), CourseWareBO.class)));
+    String insert(@RequestBody CourseWareVO courseWareVO) throws BusinessException {
+        String result = courseWareService.insert(convertToBO(courseWareVO));
+        if (result.contains("true")) {
+            throw new BusinessException(new ClassBusinessError(result));
+        }
+        return JsonUtil.convertToJson(convertFromBO(JsonUtil.json2Bean(result, CourseWareBO.class)));
     }
 
     @PostMapping(value = "/courseWareUpload")

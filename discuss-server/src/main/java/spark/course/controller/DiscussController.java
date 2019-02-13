@@ -9,6 +9,9 @@ import spark.course.entity.bo.DiscussBO;
 import spark.course.error.BusinessException;
 import spark.course.service.DiscussService;
 import spark.course.util.JsonUtil;
+import spark.course.validator.ValidationExceptionHandler;
+
+import javax.validation.Valid;
 
 /**
  * @ClassName DiscussController
@@ -18,7 +21,7 @@ import spark.course.util.JsonUtil;
  * @Version 1.0
  **/
 @RestController
-public class DiscussController implements IDiscussApi {
+public class DiscussController extends ValidationExceptionHandler implements IDiscussApi {
     @Autowired
     DiscussService discussService;
     @Override
@@ -32,7 +35,7 @@ public class DiscussController implements IDiscussApi {
     }
 
     @Override
-    public String insert(@RequestBody DiscussBO discussBO) {
+    public String insert(@RequestBody @Valid DiscussBO discussBO) throws BusinessException {
         return JsonUtil.convertToJson(discussService.insert(discussBO));
     }
 

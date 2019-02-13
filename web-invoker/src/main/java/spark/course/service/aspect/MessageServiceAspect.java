@@ -14,6 +14,8 @@ import spark.course.entity.bo.CourseBO;
 import spark.course.entity.bo.MessageBO;
 import spark.course.entity.vo.HomeworkVO;
 import spark.course.entity.vo.MessageVO;
+import spark.course.error.BusinessException;
+import spark.course.error.ClassBusinessError;
 import spark.course.util.DateUtil;
 import spark.course.util.JsonUtil;
 
@@ -40,7 +42,7 @@ public class MessageServiceAspect {
     public void homeworkRelease() {}
 
     @After("homeworkRelease()")
-    public void doAfterHomeworkRelease(JoinPoint joinPoint) {
+    public void doAfterHomeworkRelease(JoinPoint joinPoint) throws BusinessException {
         //get the param
         Object[] objects = joinPoint.getArgs();
         for (Object object:objects) {
@@ -58,7 +60,10 @@ public class MessageServiceAspect {
                     MessageVO messageVO = new MessageVO();
                     messageVO.setChooseCourseId(courseBOTemp.getChooseCourseId());
                     messageVO.setContent(courseBOWithCourseDetail.getCourseName() + ",有了一份新作业");
-                    String message = messageService.insert(convertToBO(messageVO));
+                    String result = messageService.insert(convertToBO(messageVO));
+                    if (result.contains("true")) {
+                        throw new BusinessException(new ClassBusinessError(result));
+                    }
                 }
             }
         }

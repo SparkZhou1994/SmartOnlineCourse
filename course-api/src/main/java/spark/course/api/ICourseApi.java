@@ -29,7 +29,7 @@ public interface ICourseApi {
                              @PathVariable(value = "size") Integer size);
 
     @PostMapping(consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
-    String insert(@RequestBody CourseBO courseBO);
+    String insert(@RequestBody CourseBO courseBO) throws BusinessException;
 
     @DeleteMapping(value = "/{courseId}")
     void deleteCourse(@PathVariable(value = "courseId") Integer courseId);

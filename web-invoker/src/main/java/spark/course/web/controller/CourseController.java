@@ -11,6 +11,7 @@ import spark.course.entity.bo.CourseBO;
 import spark.course.entity.bo.UserBO;
 import spark.course.entity.vo.CourseVO;
 import spark.course.error.BusinessException;
+import spark.course.error.ClassBusinessError;
 import spark.course.util.JsonUtil;
 
 import java.util.ArrayList;
@@ -60,9 +61,12 @@ public class CourseController extends BaseController {
     }
 
     @PostMapping(consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
-    public String insert(@RequestBody CourseVO courseVO) {
-        courseVO = convertFromBO(JsonUtil.json2Bean(courseService.
-                insert(convertToBO(courseVO)),CourseBO.class));
+    public String insert(@RequestBody CourseVO courseVO) throws BusinessException{
+        String result = courseService.insert(convertToBO(courseVO));
+        if (result.contains("true")) {
+            throw new BusinessException(new ClassBusinessError(result));
+        }
+        courseVO = convertFromBO(JsonUtil.json2Bean(result,CourseBO.class));
         courseVO.setOwnerUsername(JsonUtil.json2Bean(userService.
                 selectByUserId(courseVO.getOwnerUserId()), UserBO.class).getUsername());
         return JsonUtil.convertToJson(courseVO);

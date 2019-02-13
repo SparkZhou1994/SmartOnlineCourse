@@ -9,6 +9,9 @@ import spark.course.entity.bo.CourseWareBO;
 import spark.course.error.BusinessException;
 import spark.course.service.CourseWareService;
 import spark.course.util.JsonUtil;
+import spark.course.validator.ValidationExceptionHandler;
+
+import javax.validation.Valid;
 
 /**
  * @ClassName CourseWareController
@@ -18,7 +21,7 @@ import spark.course.util.JsonUtil;
  * @Version 1.0
  **/
 @RestController
-public class CourseWareController implements ICourseWareApi {
+public class CourseWareController extends ValidationExceptionHandler implements ICourseWareApi {
     @Autowired
     CourseWareService courseWareService;
 
@@ -35,7 +38,7 @@ public class CourseWareController implements ICourseWareApi {
     }
 
     @Override
-    public String insert(@RequestBody CourseWareBO courseWareBO) {
+    public String insert(@RequestBody @Valid CourseWareBO courseWareBO) throws BusinessException {
         return JsonUtil.convertToJson(courseWareService.insert(courseWareBO));
     }
 

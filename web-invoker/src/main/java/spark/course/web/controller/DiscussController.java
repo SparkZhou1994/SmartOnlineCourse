@@ -13,6 +13,7 @@ import spark.course.entity.bo.DiscussBO;
 import spark.course.entity.bo.UserBO;
 import spark.course.entity.vo.DiscussVO;
 import spark.course.error.BusinessException;
+import spark.course.error.ClassBusinessError;
 import spark.course.util.DateUtil;
 import spark.course.util.JsonUtil;
 
@@ -66,9 +67,12 @@ public class DiscussController extends BaseController {
     }
 
     @PostMapping(consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
-    public String insert(@RequestBody DiscussVO discussVO) {
-        return JsonUtil.convertToJson(convertFromBO(JsonUtil.json2Bean(discussService.
-                insert(convertToBO(discussVO)),DiscussBO.class)));
+    public String insert(@RequestBody DiscussVO discussVO) throws BusinessException {
+        String result = discussService.insert(convertToBO(discussVO));
+        if (result.contains("true")) {
+            throw new BusinessException(new ClassBusinessError(result));
+        }
+        return JsonUtil.convertToJson(convertFromBO(JsonUtil.json2Bean(result, DiscussBO.class)));
     }
 
     @DeleteMapping(value = "/{discussId:\\d+",

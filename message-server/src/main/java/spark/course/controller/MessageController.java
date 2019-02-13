@@ -9,6 +9,9 @@ import spark.course.entity.bo.MessageBO;
 import spark.course.error.BusinessException;
 import spark.course.service.MessageService;
 import spark.course.util.JsonUtil;
+import spark.course.validator.ValidationExceptionHandler;
+
+import javax.validation.Valid;
 
 /**
  * @ClassName MessageController
@@ -18,7 +21,7 @@ import spark.course.util.JsonUtil;
  * @Version 1.0
  **/
 @RestController
-public class MessageController implements IMessageApi {
+public class MessageController extends ValidationExceptionHandler implements IMessageApi {
     @Autowired
     MessageService messageService;
 
@@ -36,7 +39,7 @@ public class MessageController implements IMessageApi {
     }
 
     @Override
-    public String insert(@RequestBody MessageBO messageBO) {
+    public String insert(@RequestBody @Valid MessageBO messageBO) throws BusinessException{
         return JsonUtil.convertToJson(messageService.insert(messageBO));
     }
 

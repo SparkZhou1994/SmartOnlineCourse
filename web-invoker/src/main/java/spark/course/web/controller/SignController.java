@@ -13,6 +13,7 @@ import spark.course.entity.bo.SignBO;
 import spark.course.entity.bo.UserBO;
 import spark.course.entity.vo.SignVO;
 import spark.course.error.BusinessException;
+import spark.course.error.ClassBusinessError;
 import spark.course.util.DateUtil;
 import spark.course.util.JsonUtil;
 
@@ -53,7 +54,7 @@ public class SignController extends BaseController {
     }
 
     @PostMapping(consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
-    String insert(@RequestBody SignVO signVO) {
+    String insert(@RequestBody SignVO signVO) throws BusinessException {
         //get the courseId
         CourseBO courseBO = JsonUtil.json2Bean(chooseCourseService.
                 selectByChooseCourseId(signVO.getChooseCourseId()), CourseBO.class);
@@ -62,8 +63,11 @@ public class SignController extends BaseController {
                 selectByCourseId(courseBO.getCourseId()), CourseBO.class);
         List<SignVO> signVOList = new ArrayList<SignVO>();
         for (CourseBO courseBOTemp:courseBOList) {
-            signVOList.add(convertFromBO(JsonUtil.json2Bean(signService.
-                    insert(convertToBO(signVO)), SignBO.class)));
+            String result = signService.insert(convertToBO(signVO));
+            if (result.contains("true")) {
+                throw new BusinessException(new ClassBusinessError(result));
+            }
+            signVOList.add(convertFromBO(JsonUtil.json2Bean(result, SignBO.class)));
         }
         return JsonUtil.convertToJson(signVOList);
     }

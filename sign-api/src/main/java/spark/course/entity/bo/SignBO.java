@@ -1,5 +1,8 @@
 package spark.course.entity.bo;
 
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
+
 import java.time.LocalDateTime;
 
 /**
@@ -13,7 +16,9 @@ public class SignBO {
     private Integer signId;
     private Long version;
     private Integer chooseCourseId;
+    @NotEmpty(message = "签到批次不能为空")
     private Integer batch;
+    @NotBlank(message = "签到码不能为空")
     private String code;
     private Integer expireTime;
     private LocalDateTime endTime;

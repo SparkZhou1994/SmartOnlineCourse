@@ -24,7 +24,7 @@ public interface ISignApi {
                                  @PathVariable("size") Integer size);
 
     @PostMapping(consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
-    String insert(@RequestBody SignBO signBO);
+    String insert(@RequestBody SignBO signBO) throws BusinessException;
 
     @DeleteMapping(value = "/{signId}")
     void delete(@PathVariable(value = "signId") Integer signId);

@@ -9,6 +9,9 @@ import spark.course.entity.bo.SignBO;
 import spark.course.error.BusinessException;
 import spark.course.service.SignService;
 import spark.course.util.JsonUtil;
+import spark.course.validator.ValidationExceptionHandler;
+
+import javax.validation.Valid;
 
 /**
  * @ClassName SignController
@@ -18,7 +21,7 @@ import spark.course.util.JsonUtil;
  * @Version 1.0
  **/
 @RestController
-public class SignController implements ISignApi {
+public class SignController extends ValidationExceptionHandler implements ISignApi {
     @Autowired
     SignService signService;
 
@@ -36,7 +39,7 @@ public class SignController implements ISignApi {
     }
 
     @Override
-    public String insert(@RequestBody SignBO signBO) {
+    public String insert(@RequestBody @Valid SignBO signBO) throws BusinessException{
         return JsonUtil.convertToJson(signService.insert(signBO));
     }
 

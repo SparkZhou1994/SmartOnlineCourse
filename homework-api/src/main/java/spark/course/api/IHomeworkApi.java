@@ -28,7 +28,7 @@ public interface IHomeworkApi {
                                   @PathVariable("size") Integer size);
 
     @PostMapping(consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
-    String insert(@RequestBody HomeworkBO homeworkBO);
+    String insert(@RequestBody HomeworkBO homeworkBO) throws BusinessException;
 
     @DeleteMapping(value = "/{homeworkId}",
             consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)

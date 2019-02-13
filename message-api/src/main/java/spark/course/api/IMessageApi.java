@@ -28,7 +28,7 @@ public interface IMessageApi {
                             @PathVariable("size") Integer size);
 
     @PostMapping(consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
-    String insert(@RequestBody MessageBO messageBO);
+    String insert(@RequestBody MessageBO messageBO) throws BusinessException;
 
     @DeleteMapping(value = "/{messageId}",
             consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
