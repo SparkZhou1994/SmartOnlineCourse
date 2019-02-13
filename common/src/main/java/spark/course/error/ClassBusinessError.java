@@ -17,16 +17,17 @@ public class ClassBusinessError implements CommonError{
 
     @Override
     public Integer getErrCode() {
-        return null;
+        return errCode;
     }
 
     @Override
     public String getErrMsg() {
-        return null;
+        return errMsg;
     }
 
     @Override
     public CommonError setErrMsg(String errMsg) {
-        return null;
+        this.errMsg = errMsg;
+        return this;
     }
 }

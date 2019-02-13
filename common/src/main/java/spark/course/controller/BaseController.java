@@ -32,7 +32,7 @@ public class BaseController {
     * @Param [request, ex]
     * @return java.lang.Object
     **/
-    @ExceptionHandler(BusinessException.class)
+    @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public Object businessHandlerException(HttpServletRequest request, Exception ex) {
