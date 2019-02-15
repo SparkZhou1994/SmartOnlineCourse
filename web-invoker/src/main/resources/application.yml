@@ -3,6 +3,11 @@ spring:
     name: web-invoker
   profiles:
     active: leader
+  zipkin:
+    base-url: http://localhost:9411
+  sleuth:
+    sampler:
+      percentage: 1.0
 management:
   security:
     enabled: false
@@ -25,4 +30,6 @@ spark:
         url: /applepear
 logging:
   level:
+    root: INFO
+    org.springframework.cloud.sleuth: DEBUG
     com.netflix: debug

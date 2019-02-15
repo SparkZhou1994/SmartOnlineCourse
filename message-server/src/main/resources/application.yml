@@ -13,6 +13,11 @@ spring:
   cloud:
     loadbalancer:
       retry: false
+  zipkin:
+    base-url: http://localhost:9411
+  sleuth:
+    sampler:
+      percentage: 1.0
 eureka:
   instance:
     hostname: localhost
@@ -25,4 +30,6 @@ mybatis:
   mapperLocations: classpath:mapping/*.xml
 logging:
   level:
+    root: INFO
+    org.springframework.cloud.sleuth: DEBUG
     com.netflix: debug
