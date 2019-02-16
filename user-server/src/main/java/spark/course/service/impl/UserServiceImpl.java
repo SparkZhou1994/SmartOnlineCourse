@@ -12,6 +12,8 @@ import spark.course.entity.dto.UserPasswordDTO;
 import spark.course.error.BusinessException;
 import spark.course.error.EmBusinessError;
 import spark.course.service.UserService;
+import spark.course.util.JsonUtil;
+import spark.course.util.SendMessageUtil;
 
 /**
  * @ClassName UserServiceImpl
@@ -26,12 +28,15 @@ public class UserServiceImpl implements UserService {
     private UserDTOMapper userDTOMapper;
     @Autowired
     private UserPasswordDTOMapper userPasswordDTOMapper;
+    @Autowired
+    private SendMessageUtil sendMessageUtil;
 
     @Override
     public UserBO selectByUserId(Integer userId) {
         UserDTO userDTO = userDTOMapper.selectByPrimaryKey(userId);
         UserPasswordDTO userPasswordDTO = userPasswordDTOMapper.selectByPrimaryKey(userId);
         UserBO userBO = convertFromDataObject(userDTO, userPasswordDTO);
+        sendMessageUtil.sendErrorMessage(UserBO.class, JsonUtil.convertToJson(userBO));
         return userBO;
     }
 
