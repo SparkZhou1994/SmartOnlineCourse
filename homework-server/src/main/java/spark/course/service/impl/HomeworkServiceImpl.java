@@ -10,6 +10,8 @@ import spark.course.entity.dto.HomeworkDTO;
 import spark.course.error.BusinessException;
 import spark.course.error.EmBusinessError;
 import spark.course.service.HomeworkService;
+import spark.course.util.JsonUtil;
+import spark.course.util.SendMessageUtil;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -26,6 +28,8 @@ import java.util.List;
 public class HomeworkServiceImpl implements HomeworkService {
     @Autowired
     HomeworkDTOMapper homeworkDTOMapper;
+    @Autowired
+    SendMessageUtil sendMessageUtil;
     @Override
     public HomeworkBO selectByHomeworkId(Integer homeworkId) {
         return convertFromDataObject(homeworkDTOMapper.selectByPrimaryKey(homeworkId));
@@ -55,12 +59,16 @@ public class HomeworkServiceImpl implements HomeworkService {
         homeworkBO.setBatch(batch);
         homeworkBO.setVersion(Long.parseLong(Integer.toString(0)));
         homeworkDTOMapper.insertSelective(convertToDataObject(homeworkBO));
+        sendMessageUtil.sendInsertMessage(HomeworkBO.class, JsonUtil.convertToJson(homeworkBO));
         return homeworkBO;
     }
 
     @Override
     public void delete(Integer homeworkId) {
+        HomeworkDTO homeworkDTO = homeworkDTOMapper.selectByPrimaryKey(homeworkId);
         homeworkDTOMapper.deleteByPrimaryKey(homeworkId);
+        sendMessageUtil.sendDeleteMessage(HomeworkBO.class,
+                JsonUtil.convertToJson(convertFromDataObject(homeworkDTO)));
     }
 
     @Override
@@ -74,9 +82,11 @@ public class HomeworkServiceImpl implements HomeworkService {
         }
         Integer result = homeworkDTOMapper.updateByPrimaryKeyAndVersionSelective(convertToDataObject(homeworkBO));
         if (result != 1 ) {
+            sendMessageUtil.sendErrorMessage(HomeworkBO.class, JsonUtil.convertToJson(homeworkBO));
             throw new BusinessException(EmBusinessError.SERVER_BUSY);
         }
         homeworkBO.setVersion(homeworkBO.getVersion() + 1);
+        sendMessageUtil.sendUpdateMessage(HomeworkBO.class, JsonUtil.convertToJson(homeworkBO));
         return homeworkBO;
     }
 

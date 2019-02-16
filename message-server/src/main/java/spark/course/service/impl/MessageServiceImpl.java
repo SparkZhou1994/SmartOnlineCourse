@@ -9,6 +9,8 @@ import spark.course.entity.dto.MessageDTO;
 import spark.course.error.BusinessException;
 import spark.course.error.EmBusinessError;
 import spark.course.service.MessageService;
+import spark.course.util.JsonUtil;
+import spark.course.util.SendMessageUtil;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -25,7 +27,8 @@ import java.util.List;
 public class MessageServiceImpl implements MessageService {
     @Autowired
     MessageDTOMapper messageDTOMapper;
-
+    @Autowired
+    SendMessageUtil sendMessageUtil;
     @Override
     public MessageBO selectByMessageId(Integer messageId) {
         return convertFromDataObject(messageDTOMapper.selectByPrimaryKey(messageId));
@@ -49,12 +52,16 @@ public class MessageServiceImpl implements MessageService {
         messageBO.setVersion(Long.parseLong(Integer.toString(0)));
         messageBO.setPublishData(LocalDate.now());
         messageDTOMapper.insertSelective(convertToDataObject(messageBO));
+        sendMessageUtil.sendInsertMessage(MessageBO.class, JsonUtil.convertToJson(messageBO));
         return messageBO;
     }
 
     @Override
     public void delete(Integer messageId) {
+        MessageDTO messageDTO = messageDTOMapper.selectByPrimaryKey(messageId);
         messageDTOMapper.deleteByPrimaryKey(messageId);
+        sendMessageUtil.sendDeleteMessage(MessageBO.class,
+                JsonUtil.convertToJson(convertFromDataObject(messageDTO)));
     }
 
     @Override
@@ -62,9 +69,11 @@ public class MessageServiceImpl implements MessageService {
         messageBO.setPublishData(LocalDate.now());
         Integer result = messageDTOMapper.updateByPrimaryKeyAndVersionSelective(convertToDataObject(messageBO));
         if (result != 1 ) {
+            sendMessageUtil.sendErrorMessage(MessageBO.class, JsonUtil.convertToJson(messageBO));
             throw new BusinessException(EmBusinessError.SERVER_BUSY);
         }
         messageBO.setVersion(messageBO.getVersion() + 1);
+        sendMessageUtil.sendUpdateMessage(MessageBO.class, JsonUtil.convertToJson(messageBO));
         return messageBO;
     }
 

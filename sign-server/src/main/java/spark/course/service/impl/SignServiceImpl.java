@@ -10,6 +10,8 @@ import spark.course.entity.dto.SignDTO;
 import spark.course.error.BusinessException;
 import spark.course.error.EmBusinessError;
 import spark.course.service.SignService;
+import spark.course.util.JsonUtil;
+import spark.course.util.SendMessageUtil;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -26,6 +28,8 @@ import java.util.List;
 public class SignServiceImpl implements SignService {
     @Autowired
     SignDTOMapper signDTOMapper;
+    @Autowired
+    SendMessageUtil sendMessageUtil;
     @Override
     public SignBO selectBySignId(Integer signId) {
         return convertFromDataObject(signDTOMapper.selectByPrimaryKey(signId));
@@ -57,12 +61,16 @@ public class SignServiceImpl implements SignService {
         signBO.setEndTime(LocalDateTime.now().plusMinutes(signBO.getExpireTime()));
         signBO.setVersion(Long.parseLong(Integer.toString(0)));
         signDTOMapper.insert(convertToDataObject(signBO));
+        sendMessageUtil.sendInsertMessage(SignBO.class, JsonUtil.convertToJson(signBO));
         return signBO;
     }
 
     @Override
     public void delete(Integer signId) {
+        SignDTO signDTO = signDTOMapper.selectByPrimaryKey(signId);
         signDTOMapper.deleteByPrimaryKey(signId);
+        sendMessageUtil.sendDeleteMessage(SignBO.class,
+                JsonUtil.convertToJson(convertFromDataObject(signDTO)));
     }
 
     @Override
@@ -79,11 +87,14 @@ public class SignServiceImpl implements SignService {
             Integer result = signDTOMapper.
                     updateByPrimaryKeyAndVersionSelective(convertToDataObject(signBO));
             if (result != 1 ) {
+                sendMessageUtil.sendErrorMessage(SignBO.class, JsonUtil.convertToJson(signBO));
                 throw new BusinessException(EmBusinessError.SERVER_BUSY);
             }
             signBO.setVersion(signBO.getVersion() + 1);
+            sendMessageUtil.sendUpdateMessage(SignBO.class, JsonUtil.convertToJson(signBO));
             return signBO;
         } else {
+            sendMessageUtil.sendErrorMessage(SignBO.class, JsonUtil.convertToJson(signBO));
             throw new BusinessException(EmBusinessError.SIGN_CODE_ERROR);
         }
     }

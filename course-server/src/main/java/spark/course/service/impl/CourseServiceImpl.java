@@ -9,6 +9,8 @@ import spark.course.entity.dto.CourseDTO;
 import spark.course.error.BusinessException;
 import spark.course.error.EmBusinessError;
 import spark.course.service.CourseService;
+import spark.course.util.JsonUtil;
+import spark.course.util.SendMessageUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +26,8 @@ import java.util.List;
 public class CourseServiceImpl implements CourseService {
     @Autowired
     CourseDTOMapper courseDTOMapper;
-
+    @Autowired
+    SendMessageUtil sendMessageUtil;
     @Override
     public CourseBO selectByCourseId(Integer courseId) {
         return convertFromDataObject(courseDTOMapper.selectByPrimaryKey(courseId));
@@ -63,12 +66,16 @@ public class CourseServiceImpl implements CourseService {
         courseBO.setCourseId(courseId);
         courseBO.setVersion(Long.parseLong(Integer.toString(0)));
         courseDTOMapper.insertSelective(convertToDataObject(courseBO));
+        sendMessageUtil.sendInsertMessage(CourseBO.class, JsonUtil.convertToJson(courseBO));
         return courseBO;
     }
 
     @Override
     public void deleteByCourseId(Integer courseId) {
+        CourseDTO courseDTO = courseDTOMapper.selectByPrimaryKey(courseId);
         courseDTOMapper.deleteByPrimaryKey(courseId);
+        sendMessageUtil.sendDeleteMessage(CourseBO.class,
+                JsonUtil.convertToJson(convertFromDataObject(courseDTO)));
     }
 
     @Override
@@ -76,9 +83,11 @@ public class CourseServiceImpl implements CourseService {
         Integer result = courseDTOMapper.updateByPrimaryKeyAndVersionSelective(
                 convertToDataObject(courseBO));
         if (result !=1) {
+            sendMessageUtil.sendErrorMessage(CourseBO.class, JsonUtil.convertToJson(courseBO));
             throw new BusinessException(EmBusinessError.SERVER_BUSY);
         }
         courseBO.setVersion(courseBO.getVersion() + 1);
+        sendMessageUtil.sendUpdateMessage(CourseBO.class, JsonUtil.convertToJson(courseBO));
         return courseBO;
     }
 

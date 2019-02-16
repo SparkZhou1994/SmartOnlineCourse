@@ -10,6 +10,8 @@ import spark.course.entity.dto.CourseWareDTO;
 import spark.course.error.BusinessException;
 import spark.course.error.EmBusinessError;
 import spark.course.service.CourseWareService;
+import spark.course.util.JsonUtil;
+import spark.course.util.SendMessageUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +27,8 @@ import java.util.List;
 public class CourseWareServiceImpl implements CourseWareService {
     @Autowired
     CourseWareDTOMapper courseWareDTOMapper;
+    @Autowired
+    SendMessageUtil sendMessageUtil;
     @Override
     public CourseWareBO selectByCourseWareId(Integer courseWareId) {
         return convertFromDataObject(courseWareDTOMapper.selectByPrimaryKey(courseWareId));
@@ -54,21 +58,27 @@ public class CourseWareServiceImpl implements CourseWareService {
         courseWareBO.setBatch(batch);
         courseWareBO.setVersion(Long.parseLong(Integer.toString(0)));
         courseWareDTOMapper.insertSelective(convertToDataObject(courseWareBO));
+        sendMessageUtil.sendInsertMessage(CourseWareBO.class, JsonUtil.convertToJson(courseWareBO));
         return courseWareBO;
     }
 
     @Override
     public void delete(Integer courseWareId) {
+        CourseWareDTO courseWareDTO = courseWareDTOMapper.selectByPrimaryKey(courseWareId)
         courseWareDTOMapper.deleteByPrimaryKey(courseWareId);
+        sendMessageUtil.sendDeleteMessage(CourseWareBO.class,
+                JsonUtil.convertToJson(convertFromDataObject(courseWareDTO)));
     }
 
     @Override
     public CourseWareBO update(CourseWareBO courseWareBO) throws BusinessException {
         Integer result = courseWareDTOMapper.updateByPrimaryKeyAndVersionSelective(convertToDataObject(courseWareBO));
         if (result != 1 ) {
+            sendMessageUtil.sendErrorMessage(CourseWareBO.class, JsonUtil.convertToJson(courseWareBO));
             throw new BusinessException(EmBusinessError.SERVER_BUSY);
         }
         courseWareBO.setVersion(courseWareBO.getVersion() + 1);
+        sendMessageUtil.sendUpdateMessage(CourseWareBO.class, JsonUtil.convertToJson(courseWareBO));
         return courseWareBO;
     }
 

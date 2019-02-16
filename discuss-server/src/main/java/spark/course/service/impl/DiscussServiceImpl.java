@@ -11,6 +11,8 @@ import spark.course.error.BusinessException;
 import spark.course.error.EmBusinessError;
 import spark.course.service.DiscussService;
 import spark.course.util.DateUtil;
+import spark.course.util.JsonUtil;
+import spark.course.util.SendMessageUtil;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -27,6 +29,8 @@ import java.util.List;
 public class DiscussServiceImpl implements DiscussService {
     @Autowired
     DiscussDTOMapper discussDTOMapper;
+    @Autowired
+    SendMessageUtil sendMessageUtil;
     @Override
     public List<DiscussBO> selectByChooseCourseId(Integer chooseCourseId) {
         return convertFromDataObjectList(discussDTOMapper.
@@ -50,12 +54,16 @@ public class DiscussServiceImpl implements DiscussService {
         discussBO.setVersion(Long.parseLong(Integer.toString(0)));
         discussBO.setLastPublishTime(LocalDateTime.now());
         discussDTOMapper.insertSelective(convertToDataObject(discussBO));
+        sendMessageUtil.sendInsertMessage(DiscussBO.class, JsonUtil.convertToJson(discussBO));
         return discussBO;
     }
 
     @Override
     public void delete(Integer discussId) {
+        DiscussDTO discussDTO = discussDTOMapper.selectByPrimaryKey(discussId);
         discussDTOMapper.deleteByPrimaryKey(discussId);
+        sendMessageUtil.sendDeleteMessage(DiscussBO.class,
+                JsonUtil.convertToJson(convertFromDataObject(discussDTO)));
     }
 
     @Override
@@ -64,9 +72,11 @@ public class DiscussServiceImpl implements DiscussService {
         Integer result = discussDTOMapper.updateByPrimaryKeyAndVersionSelective(
                 convertToDataObject(discussBO));
         if (result != 1) {
+            sendMessageUtil.sendErrorMessage(DiscussBO.class, JsonUtil.convertToJson(discussBO));
             throw new BusinessException(EmBusinessError.SERVER_BUSY);
         }
         discussBO.setVersion(discussBO.getVersion() + 1);
+        sendMessageUtil.sendUpdateMessage(DiscussBO.class, JsonUtil.convertToJson(discussBO));
         return discussBO;
     }
 

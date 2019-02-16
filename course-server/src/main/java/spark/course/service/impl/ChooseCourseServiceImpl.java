@@ -7,7 +7,10 @@ import spark.course.dao.ChooseCourseDTOMapper;
 import spark.course.entity.bo.CourseBO;
 import spark.course.entity.dto.ChooseCourseDTO;
 import spark.course.error.BusinessException;
+import spark.course.error.EmBusinessError;
 import spark.course.service.ChooseCourseService;
+import spark.course.util.JsonUtil;
+import spark.course.util.SendMessageUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +26,8 @@ import java.util.List;
 public class ChooseCourseServiceImpl implements ChooseCourseService {
     @Autowired
     ChooseCourseDTOMapper chooseCourseDTOMapper;
-
+    @Autowired
+    SendMessageUtil sendMessageUtil;
     @Override
     public CourseBO selectByChooseCourseId(Integer chooseCourseId) {
         return convertFromDataObject(chooseCourseDTOMapper.selectByPrimaryKey(chooseCourseId));
@@ -45,18 +49,27 @@ public class ChooseCourseServiceImpl implements ChooseCourseService {
         courseBO.setChooseCourseId(chooseCourseId);
         courseBO.setVersionChooseCourse(Long.parseLong(Integer.toString(0)));
         chooseCourseDTOMapper.insertSelective(convertToDataObject(courseBO));
+        sendMessageUtil.sendInsertMessage(CourseBO.class, JsonUtil.convertToJson(courseBO));
         return courseBO;
     }
 
     @Override
     public void deleteByChooseCourseId(Integer chooseCourseId) {
+        ChooseCourseDTO chooseCourseDTO = chooseCourseDTOMapper.selectByPrimaryKey(chooseCourseId);
         chooseCourseDTOMapper.deleteByPrimaryKey(chooseCourseId);
+        sendMessageUtil.sendDeleteMessage(CourseBO.class,
+                JsonUtil.convertToJson(convertFromDataObject(chooseCourseDTO)));
     }
 
     @Override
     public CourseBO updateByChooseCourseId(CourseBO courseBO) throws BusinessException {
-        chooseCourseDTOMapper.updateByPrimaryKeyAndVersionSelective(convertToDataObject(courseBO));
+        Integer result = chooseCourseDTOMapper.updateByPrimaryKeyAndVersionSelective(convertToDataObject(courseBO));
+        if (result !=1) {
+            sendMessageUtil.sendErrorMessage(CourseBO.class, JsonUtil.convertToJson(courseBO));
+            throw new BusinessException(EmBusinessError.SERVER_BUSY);
+        }
         courseBO.setVersionChooseCourse(courseBO.getVersionChooseCourse() + 1);
+        sendMessageUtil.sendUpdateMessage(CourseBO.class, JsonUtil.convertToJson(courseBO));
         return courseBO;
     }
 

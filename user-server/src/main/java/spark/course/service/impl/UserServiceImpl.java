@@ -36,7 +36,6 @@ public class UserServiceImpl implements UserService {
         UserDTO userDTO = userDTOMapper.selectByPrimaryKey(userId);
         UserPasswordDTO userPasswordDTO = userPasswordDTOMapper.selectByPrimaryKey(userId);
         UserBO userBO = convertFromDataObject(userDTO, userPasswordDTO);
-        sendMessageUtil.sendErrorMessage(UserBO.class, JsonUtil.convertToJson(userBO));
         return userBO;
     }
 
@@ -54,14 +53,19 @@ public class UserServiceImpl implements UserService {
         userBO.setVersionPassword(Long.parseLong(Integer.toString(0)));
         userDTOMapper.insertSelective(convertToUserDTO(userBO));
         userPasswordDTOMapper.insertSelective(convertToUserPasswordDTO(userBO));
+        sendMessageUtil.sendInsertMessage(UserBO.class, JsonUtil.convertToJson(userBO));
         return userBO;
     }
 
     @Override
     @Transactional
     public void deleteByUserId(Integer userId) {
+        UserPasswordDTO userPasswordDTO = userPasswordDTOMapper.selectByPrimaryKey(userId);
         userPasswordDTOMapper.deleteByPrimaryKey(userId);
+        UserDTO userDTO = userDTOMapper.selectByPrimaryKey(userId);
         userDTOMapper.deleteByPrimaryKey(userId);
+        UserBO userBO = convertFromDataObject(userDTO, userPasswordDTO);
+        sendMessageUtil.sendDeleteMessage(UserBO.class, JsonUtil.convertToJson(userBO));
     }
 
     @Override
@@ -69,9 +73,11 @@ public class UserServiceImpl implements UserService {
         Integer result = userDTOMapper.
                 updateByPrimaryKeyAndVersionSelective(convertToUserDTO(userBO));
         if (result != 1 ) {
+            sendMessageUtil.sendErrorMessage(UserBO.class, JsonUtil.convertToJson(userBO));
             throw new BusinessException(EmBusinessError.SERVER_BUSY);
         }
         userBO.setVersion(userBO.getVersion() + 1);
+        sendMessageUtil.sendUpdateMessage(UserBO.class, JsonUtil.convertToJson(userBO));
         return userBO;
     }
 
@@ -80,9 +86,11 @@ public class UserServiceImpl implements UserService {
         Integer result = userPasswordDTOMapper.
                 updateByPrimaryKeyAndVersionSelective(convertToUserPasswordDTO(userBO));
         if (result != 1 ) {
+            sendMessageUtil.sendErrorMessage(UserBO.class, JsonUtil.convertToJson(userBO));
             throw new BusinessException(EmBusinessError.SERVER_BUSY);
         }
         userBO.setVersionPassword(userBO.getVersionPassword() + 1);
+        sendMessageUtil.sendUpdateMessage(UserBO.class, JsonUtil.convertToJson(userBO));
         return userBO;
     }
 
