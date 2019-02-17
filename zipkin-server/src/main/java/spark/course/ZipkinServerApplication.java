@@ -2,6 +2,7 @@ package spark.course;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.sleuth.zipkin.stream.EnableZipkinStreamServer;
 import zipkin.server.EnableZipkinServer;
 
 /**
@@ -11,7 +12,7 @@ import zipkin.server.EnableZipkinServer;
  * @Date 2/15/2019 12:55 PM
  * @Version 1.0
  **/
-@EnableZipkinServer
+@EnableZipkinStreamServer
 @SpringBootApplication
 public class ZipkinServerApplication {
     public static void main(String[] args) {
