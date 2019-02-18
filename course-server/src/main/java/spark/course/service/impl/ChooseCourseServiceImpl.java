@@ -1,5 +1,7 @@
 package spark.course.service.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,8 +11,7 @@ import spark.course.entity.dto.ChooseCourseDTO;
 import spark.course.error.BusinessException;
 import spark.course.error.EmBusinessError;
 import spark.course.service.ChooseCourseService;
-import spark.course.util.JsonUtil;
-import spark.course.util.SendMessageUtil;
+import spark.course.util.SendLogMessageUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,10 +25,11 @@ import java.util.List;
  **/
 @Service
 public class ChooseCourseServiceImpl implements ChooseCourseService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ChooseCourseServiceImpl.class);
     @Autowired
     ChooseCourseDTOMapper chooseCourseDTOMapper;
     @Autowired
-    SendMessageUtil sendMessageUtil;
+    SendLogMessageUtil sendLogMessageUtil;
     @Override
     public CourseBO selectByChooseCourseId(Integer chooseCourseId) {
         return convertFromDataObject(chooseCourseDTOMapper.selectByPrimaryKey(chooseCourseId));
@@ -49,7 +51,7 @@ public class ChooseCourseServiceImpl implements ChooseCourseService {
         courseBO.setChooseCourseId(chooseCourseId);
         courseBO.setVersionChooseCourse(Long.parseLong(Integer.toString(0)));
         chooseCourseDTOMapper.insertSelective(convertToDataObject(courseBO));
-        sendMessageUtil.sendInsertMessage(CourseBO.class, JsonUtil.convertToJson(courseBO));
+        sendLogMessageUtil.sendInsertMessage(CourseBO.class, courseBO);
         return courseBO;
     }
 
@@ -57,19 +59,18 @@ public class ChooseCourseServiceImpl implements ChooseCourseService {
     public void deleteByChooseCourseId(Integer chooseCourseId) {
         ChooseCourseDTO chooseCourseDTO = chooseCourseDTOMapper.selectByPrimaryKey(chooseCourseId);
         chooseCourseDTOMapper.deleteByPrimaryKey(chooseCourseId);
-        sendMessageUtil.sendDeleteMessage(CourseBO.class,
-                JsonUtil.convertToJson(convertFromDataObject(chooseCourseDTO)));
+        sendLogMessageUtil.sendDeleteMessage(CourseBO.class, convertFromDataObject(chooseCourseDTO));
     }
 
     @Override
     public CourseBO updateByChooseCourseId(CourseBO courseBO) throws BusinessException {
         Integer result = chooseCourseDTOMapper.updateByPrimaryKeyAndVersionSelective(convertToDataObject(courseBO));
         if (result !=1) {
-            sendMessageUtil.sendErrorMessage(CourseBO.class, JsonUtil.convertToJson(courseBO));
+            sendLogMessageUtil.sendErrorMessage(CourseBO.class, courseBO);
             throw new BusinessException(EmBusinessError.SERVER_BUSY);
         }
         courseBO.setVersionChooseCourse(courseBO.getVersionChooseCourse() + 1);
-        sendMessageUtil.sendUpdateMessage(CourseBO.class, JsonUtil.convertToJson(courseBO));
+        sendLogMessageUtil.sendUpdateMessage(CourseBO.class, courseBO);
         return courseBO;
     }
 

@@ -1,17 +1,17 @@
 package spark.course.service.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import spark.course.constants.CommonConstants;
 import spark.course.dao.HomeworkDTOMapper;
 import spark.course.entity.bo.HomeworkBO;
 import spark.course.entity.dto.HomeworkDTO;
 import spark.course.error.BusinessException;
 import spark.course.error.EmBusinessError;
 import spark.course.service.HomeworkService;
-import spark.course.util.JsonUtil;
-import spark.course.util.SendMessageUtil;
+import spark.course.util.SendLogMessageUtil;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -26,10 +26,11 @@ import java.util.List;
  **/
 @Service
 public class HomeworkServiceImpl implements HomeworkService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(HomeworkServiceImpl.class);
     @Autowired
     HomeworkDTOMapper homeworkDTOMapper;
     @Autowired
-    SendMessageUtil sendMessageUtil;
+    SendLogMessageUtil sendLogMessageUtil;
     @Override
     public HomeworkBO selectByHomeworkId(Integer homeworkId) {
         return convertFromDataObject(homeworkDTOMapper.selectByPrimaryKey(homeworkId));
@@ -59,7 +60,7 @@ public class HomeworkServiceImpl implements HomeworkService {
         homeworkBO.setBatch(batch);
         homeworkBO.setVersion(Long.parseLong(Integer.toString(0)));
         homeworkDTOMapper.insertSelective(convertToDataObject(homeworkBO));
-        sendMessageUtil.sendInsertMessage(HomeworkBO.class, JsonUtil.convertToJson(homeworkBO));
+        sendLogMessageUtil.sendInsertMessage(HomeworkBO.class, homeworkBO);
         return homeworkBO;
     }
 
@@ -67,8 +68,7 @@ public class HomeworkServiceImpl implements HomeworkService {
     public void delete(Integer homeworkId) {
         HomeworkDTO homeworkDTO = homeworkDTOMapper.selectByPrimaryKey(homeworkId);
         homeworkDTOMapper.deleteByPrimaryKey(homeworkId);
-        sendMessageUtil.sendDeleteMessage(HomeworkBO.class,
-                JsonUtil.convertToJson(convertFromDataObject(homeworkDTO)));
+        sendLogMessageUtil.sendDeleteMessage(HomeworkBO.class, convertFromDataObject(homeworkDTO));
     }
 
     @Override
@@ -82,11 +82,11 @@ public class HomeworkServiceImpl implements HomeworkService {
         }
         Integer result = homeworkDTOMapper.updateByPrimaryKeyAndVersionSelective(convertToDataObject(homeworkBO));
         if (result != 1 ) {
-            sendMessageUtil.sendErrorMessage(HomeworkBO.class, JsonUtil.convertToJson(homeworkBO));
+            sendLogMessageUtil.sendErrorMessage(HomeworkBO.class, homeworkBO);
             throw new BusinessException(EmBusinessError.SERVER_BUSY);
         }
         homeworkBO.setVersion(homeworkBO.getVersion() + 1);
-        sendMessageUtil.sendUpdateMessage(HomeworkBO.class, JsonUtil.convertToJson(homeworkBO));
+        sendLogMessageUtil.sendUpdateMessage(HomeworkBO.class, homeworkBO);
         return homeworkBO;
     }
 

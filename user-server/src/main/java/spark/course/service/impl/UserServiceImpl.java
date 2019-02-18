@@ -1,5 +1,7 @@
 package spark.course.service.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,8 +14,7 @@ import spark.course.entity.dto.UserPasswordDTO;
 import spark.course.error.BusinessException;
 import spark.course.error.EmBusinessError;
 import spark.course.service.UserService;
-import spark.course.util.JsonUtil;
-import spark.course.util.SendMessageUtil;
+import spark.course.util.SendLogMessageUtil;
 
 /**
  * @ClassName UserServiceImpl
@@ -24,13 +25,13 @@ import spark.course.util.SendMessageUtil;
  **/
 @Service
 public class UserServiceImpl implements UserService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
     @Autowired
     private UserDTOMapper userDTOMapper;
     @Autowired
     private UserPasswordDTOMapper userPasswordDTOMapper;
     @Autowired
-    private SendMessageUtil sendMessageUtil;
-
+    SendLogMessageUtil sendLogMessageUtil;
     @Override
     public UserBO selectByUserId(Integer userId) {
         UserDTO userDTO = userDTOMapper.selectByPrimaryKey(userId);
@@ -53,7 +54,7 @@ public class UserServiceImpl implements UserService {
         userBO.setVersionPassword(Long.parseLong(Integer.toString(0)));
         userDTOMapper.insertSelective(convertToUserDTO(userBO));
         userPasswordDTOMapper.insertSelective(convertToUserPasswordDTO(userBO));
-        sendMessageUtil.sendInsertMessage(UserBO.class, JsonUtil.convertToJson(userBO));
+        sendLogMessageUtil.sendInsertMessage(UserBO.class, userBO);
         return userBO;
     }
 
@@ -65,7 +66,7 @@ public class UserServiceImpl implements UserService {
         UserDTO userDTO = userDTOMapper.selectByPrimaryKey(userId);
         userDTOMapper.deleteByPrimaryKey(userId);
         UserBO userBO = convertFromDataObject(userDTO, userPasswordDTO);
-        sendMessageUtil.sendDeleteMessage(UserBO.class, JsonUtil.convertToJson(userBO));
+        sendLogMessageUtil.sendDeleteMessage(UserBO.class, userBO);
     }
 
     @Override
@@ -73,11 +74,11 @@ public class UserServiceImpl implements UserService {
         Integer result = userDTOMapper.
                 updateByPrimaryKeyAndVersionSelective(convertToUserDTO(userBO));
         if (result != 1 ) {
-            sendMessageUtil.sendErrorMessage(UserBO.class, JsonUtil.convertToJson(userBO));
+            sendLogMessageUtil.sendErrorMessage(UserBO.class, userBO);
             throw new BusinessException(EmBusinessError.SERVER_BUSY);
         }
         userBO.setVersion(userBO.getVersion() + 1);
-        sendMessageUtil.sendUpdateMessage(UserBO.class, JsonUtil.convertToJson(userBO));
+        sendLogMessageUtil.sendUpdateMessage(UserBO.class, userBO);
         return userBO;
     }
 
@@ -86,11 +87,11 @@ public class UserServiceImpl implements UserService {
         Integer result = userPasswordDTOMapper.
                 updateByPrimaryKeyAndVersionSelective(convertToUserPasswordDTO(userBO));
         if (result != 1 ) {
-            sendMessageUtil.sendErrorMessage(UserBO.class, JsonUtil.convertToJson(userBO));
+            sendLogMessageUtil.sendErrorMessage(UserBO.class, userBO);
             throw new BusinessException(EmBusinessError.SERVER_BUSY);
         }
         userBO.setVersionPassword(userBO.getVersionPassword() + 1);
-        sendMessageUtil.sendUpdateMessage(UserBO.class, JsonUtil.convertToJson(userBO));
+        sendLogMessageUtil.sendUpdateMessage(UserBO.class, userBO);
         return userBO;
     }
 

@@ -1,5 +1,7 @@
 package spark.course.service.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,9 +11,7 @@ import spark.course.entity.dto.DiscussContentDTO;
 import spark.course.error.BusinessException;
 import spark.course.error.EmBusinessError;
 import spark.course.service.DiscussContentService;
-import spark.course.util.DateUtil;
-import spark.course.util.JsonUtil;
-import spark.course.util.SendMessageUtil;
+import spark.course.util.SendLogMessageUtil;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -26,10 +26,11 @@ import java.util.List;
  **/
 @Service
 public class DiscussContentServiceImpl implements DiscussContentService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(DiscussContentServiceImpl.class);
     @Autowired
     DiscussContentDTOMapper discussContentDTOMapper;
     @Autowired
-    SendMessageUtil sendMessageUtil;
+    SendLogMessageUtil sendLogMessageUtil;
     @Override
     public List<DiscussContentBO> selectByDiscussId(Integer discussId,Integer start,Integer size) {
         return convertFromDataObjectList(discussContentDTOMapper.
@@ -53,7 +54,7 @@ public class DiscussContentServiceImpl implements DiscussContentService {
         discussContentBO.setVersion(Long.parseLong(Integer.toString(0)));
         discussContentBO.setPublishTime(LocalDateTime.now());
         discussContentDTOMapper.insertSelective(convertToDataObject(discussContentBO));
-        sendMessageUtil.sendInsertMessage(DiscussContentBO.class, JsonUtil.convertToJson(discussContentBO));
+        sendLogMessageUtil.sendInsertMessage(DiscussContentBO.class, discussContentBO);
         return discussContentBO;
     }
 
@@ -61,8 +62,8 @@ public class DiscussContentServiceImpl implements DiscussContentService {
     public void delete(Integer discussContentId) {
         DiscussContentDTO discussContentDTO = discussContentDTOMapper.selectByPrimaryKey(discussContentId);
         discussContentDTOMapper.deleteByPrimaryKey(discussContentId);
-        sendMessageUtil.sendDeleteMessage(DiscussContentBO.class,
-                JsonUtil.convertToJson(convertFromDataObject(discussContentDTO)));
+        sendLogMessageUtil.sendDeleteMessage(DiscussContentBO.class,
+                convertFromDataObject(discussContentDTO));
     }
 
     @Override
@@ -71,11 +72,11 @@ public class DiscussContentServiceImpl implements DiscussContentService {
         Integer result = discussContentDTOMapper.updateByPrimaryKeyAndVersionSelective(
                 convertToDataObject(discussContentBO));
         if (result != 1) {
-            sendMessageUtil.sendErrorMessage(DiscussContentBO.class, JsonUtil.convertToJson(discussContentBO));
+            sendLogMessageUtil.sendErrorMessage(DiscussContentBO.class, discussContentBO);
             throw new BusinessException(EmBusinessError.SERVER_BUSY);
         }
         discussContentBO.setVersion(discussContentBO.getVersion() + 1);
-        sendMessageUtil.sendUpdateMessage(DiscussContentBO.class, JsonUtil.convertToJson(discussContentBO));
+        sendLogMessageUtil.sendUpdateMessage(DiscussContentBO.class, discussContentBO);
         return discussContentBO;
     }
 

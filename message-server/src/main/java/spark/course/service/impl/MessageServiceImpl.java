@@ -1,5 +1,7 @@
 package spark.course.service.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,8 +11,7 @@ import spark.course.entity.dto.MessageDTO;
 import spark.course.error.BusinessException;
 import spark.course.error.EmBusinessError;
 import spark.course.service.MessageService;
-import spark.course.util.JsonUtil;
-import spark.course.util.SendMessageUtil;
+import spark.course.util.SendLogMessageUtil;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -25,10 +26,11 @@ import java.util.List;
  **/
 @Service
 public class MessageServiceImpl implements MessageService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(MessageServiceImpl.class);
     @Autowired
     MessageDTOMapper messageDTOMapper;
     @Autowired
-    SendMessageUtil sendMessageUtil;
+    SendLogMessageUtil sendLogMessageUtil;
     @Override
     public MessageBO selectByMessageId(Integer messageId) {
         return convertFromDataObject(messageDTOMapper.selectByPrimaryKey(messageId));
@@ -52,7 +54,7 @@ public class MessageServiceImpl implements MessageService {
         messageBO.setVersion(Long.parseLong(Integer.toString(0)));
         messageBO.setPublishData(LocalDate.now());
         messageDTOMapper.insertSelective(convertToDataObject(messageBO));
-        sendMessageUtil.sendInsertMessage(MessageBO.class, JsonUtil.convertToJson(messageBO));
+        sendLogMessageUtil.sendInsertMessage(MessageBO.class, messageBO);
         return messageBO;
     }
 
@@ -60,8 +62,7 @@ public class MessageServiceImpl implements MessageService {
     public void delete(Integer messageId) {
         MessageDTO messageDTO = messageDTOMapper.selectByPrimaryKey(messageId);
         messageDTOMapper.deleteByPrimaryKey(messageId);
-        sendMessageUtil.sendDeleteMessage(MessageBO.class,
-                JsonUtil.convertToJson(convertFromDataObject(messageDTO)));
+        sendLogMessageUtil.sendDeleteMessage(MessageBO.class, convertFromDataObject(messageDTO));
     }
 
     @Override
@@ -69,11 +70,11 @@ public class MessageServiceImpl implements MessageService {
         messageBO.setPublishData(LocalDate.now());
         Integer result = messageDTOMapper.updateByPrimaryKeyAndVersionSelective(convertToDataObject(messageBO));
         if (result != 1 ) {
-            sendMessageUtil.sendErrorMessage(MessageBO.class, JsonUtil.convertToJson(messageBO));
+            sendLogMessageUtil.sendErrorMessage(MessageBO.class, messageBO);
             throw new BusinessException(EmBusinessError.SERVER_BUSY);
         }
         messageBO.setVersion(messageBO.getVersion() + 1);
-        sendMessageUtil.sendUpdateMessage(MessageBO.class, JsonUtil.convertToJson(messageBO));
+        sendLogMessageUtil.sendUpdateMessage(MessageBO.class, messageBO);
         return messageBO;
     }
 

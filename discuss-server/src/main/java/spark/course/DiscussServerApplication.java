@@ -18,7 +18,7 @@ import spark.course.service.SendService;
 @SpringBootApplication(scanBasePackages = {"spark.course"})
 @EnableEurekaClient
 @MapperScan("spark.course.dao")
-@EnableBinding(value = {SendService.class, Source.class})
+/*@EnableBinding(value = {SendService.class, Source.class})*/
 public class DiscussServerApplication {
     public static void main(String[] args) {
         SpringApplication.run(DiscussServerApplication.class, args);

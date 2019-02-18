@@ -12,30 +12,20 @@ import java.time.LocalDateTime;
  * @Version 1.0
  **/
 public class LogMessage {
-    // insert update delete
+   // insert update delete
     private String type;
     // User Course
     private Object dataType;
     // UserData CourseData
-    private String dataJson;
-    //operation time
-    private String operationTime;
+    private Object data;
 
     public LogMessage() {
     }
 
-    public LogMessage(String type, Object dataType, String dataJson) {
+    public LogMessage(String type, Object dataType, Object data) {
         this.type = type;
         this.dataType = dataType;
-        this.dataJson = dataJson;
-        this.operationTime = DateUtil.convertFromLocalDateTime(LocalDateTime.now());
-    }
-
-    public LogMessage(String type, Object dataType, String dataJson, String operationTime) {
-        this.type = type;
-        this.dataType = dataType;
-        this.dataJson = dataJson;
-        this.operationTime = operationTime;
+        this.data = data;
     }
 
     public String getType() {
@@ -54,29 +44,11 @@ public class LogMessage {
         this.dataType = dataType;
     }
 
-    public Object getDataJson() {
-        return dataJson;
+    public Object getData() {
+        return data;
     }
 
-    public void setData(String dataJson) {
-        this.dataJson = dataJson;
-    }
-
-    public String getOperationTime() {
-        return operationTime;
-    }
-
-    public void setOperationTime(String operationTime) {
-        this.operationTime = operationTime;
-    }
-
-    @Override
-    public String toString() {
-        return "LogMessage{" +
-                "type='" + type + '\'' +
-                ", dataType=" + dataType +
-                ", data=" + dataJson +
-                ", operationTime='" + operationTime + '\'' +
-                '}';
+    public void setData(Object data) {
+        this.data = data;
     }
 }

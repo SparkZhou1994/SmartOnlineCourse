@@ -3,22 +3,11 @@ server:
 spring:
   application:
     name: gateway
-  cloud:
-    stream:
-      bindings:
-        error:
-          group: groupA
-        insert:
-          group: groupA
-        update:
-          group: groupA
-        delete:
-          group: groupA
   rabbitmq:
-    host: localhost
+    host: 101.132.163.86
     port: 5672
-    username: guest
-    password: guest
+    username: Spark
+    password: Spark
     listener:
       acknowledge-mode: manual
   sleuth:
@@ -39,7 +28,4 @@ zuul:
     portal:
       url: http://localhost:8090
 logging:
-  level:
-    root: INFO
-    org.springframework.cloud.sleuth: DEBUG
-    com.netflix: debug
+  config: classpath:logback-spring.xml

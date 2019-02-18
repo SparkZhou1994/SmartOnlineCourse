@@ -1,5 +1,7 @@
 package spark.course.service.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,8 +11,7 @@ import spark.course.entity.dto.CourseDTO;
 import spark.course.error.BusinessException;
 import spark.course.error.EmBusinessError;
 import spark.course.service.CourseService;
-import spark.course.util.JsonUtil;
-import spark.course.util.SendMessageUtil;
+import spark.course.util.SendLogMessageUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,10 +25,11 @@ import java.util.List;
  **/
 @Service
 public class CourseServiceImpl implements CourseService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(CourseServiceImpl.class);
     @Autowired
     CourseDTOMapper courseDTOMapper;
     @Autowired
-    SendMessageUtil sendMessageUtil;
+    SendLogMessageUtil sendLogMessageUtil;
     @Override
     public CourseBO selectByCourseId(Integer courseId) {
         return convertFromDataObject(courseDTOMapper.selectByPrimaryKey(courseId));
@@ -66,7 +68,7 @@ public class CourseServiceImpl implements CourseService {
         courseBO.setCourseId(courseId);
         courseBO.setVersion(Long.parseLong(Integer.toString(0)));
         courseDTOMapper.insertSelective(convertToDataObject(courseBO));
-        sendMessageUtil.sendInsertMessage(CourseBO.class, JsonUtil.convertToJson(courseBO));
+        sendLogMessageUtil.sendInsertMessage(CourseBO.class, courseBO);
         return courseBO;
     }
 
@@ -74,8 +76,7 @@ public class CourseServiceImpl implements CourseService {
     public void deleteByCourseId(Integer courseId) {
         CourseDTO courseDTO = courseDTOMapper.selectByPrimaryKey(courseId);
         courseDTOMapper.deleteByPrimaryKey(courseId);
-        sendMessageUtil.sendDeleteMessage(CourseBO.class,
-                JsonUtil.convertToJson(convertFromDataObject(courseDTO)));
+        sendLogMessageUtil.sendDeleteMessage(CourseBO.class, convertFromDataObject(courseDTO));
     }
 
     @Override
@@ -83,11 +84,11 @@ public class CourseServiceImpl implements CourseService {
         Integer result = courseDTOMapper.updateByPrimaryKeyAndVersionSelective(
                 convertToDataObject(courseBO));
         if (result !=1) {
-            sendMessageUtil.sendErrorMessage(CourseBO.class, JsonUtil.convertToJson(courseBO));
+            sendLogMessageUtil.sendErrorMessage(CourseBO.class,courseBO);
             throw new BusinessException(EmBusinessError.SERVER_BUSY);
         }
         courseBO.setVersion(courseBO.getVersion() + 1);
-        sendMessageUtil.sendUpdateMessage(CourseBO.class, JsonUtil.convertToJson(courseBO));
+        sendLogMessageUtil.sendUpdateMessage(CourseBO.class,courseBO);
         return courseBO;
     }
 

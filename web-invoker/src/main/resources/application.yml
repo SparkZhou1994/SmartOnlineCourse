@@ -4,10 +4,10 @@ spring:
   profiles:
     active: leader
   rabbitmq:
-    host: localhost
+    host: 101.132.163.86
     port: 5672
-    username: guest
-    password: guest
+    username: Spark
+    password: Spark
     listener:
       acknowledge-mode: manual
   sleuth:
@@ -34,7 +34,4 @@ spark:
         width: 100
         url: /applepear
 logging:
-  level:
-    root: INFO
-    org.springframework.cloud.sleuth: DEBUG
-    com.netflix: debug
+  config: classpath:logback-spring.xml

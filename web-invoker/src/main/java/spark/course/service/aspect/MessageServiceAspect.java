@@ -4,6 +4,8 @@ import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -17,8 +19,8 @@ import spark.course.entity.vo.HomeworkVO;
 import spark.course.entity.vo.MessageVO;
 import spark.course.error.BusinessException;
 import spark.course.error.ClassBusinessError;
-import spark.course.util.DateUtil;
 import spark.course.util.JsonUtil;
+import spark.course.util.SendLogMessageUtil;
 
 import java.util.List;
 
@@ -32,12 +34,15 @@ import java.util.List;
 @Configuration
 @Aspect
 public class MessageServiceAspect {
+    private static final Logger LOGGER = LoggerFactory.getLogger(MessageServiceAspect.class);
     @Autowired
     FeignMessageApi messageService;
     @Autowired
     FeignChooseCourseApi chooseCourseService;
     @Autowired
     FeignCourseApi courseService;
+    @Autowired
+    SendLogMessageUtil sendLogMessageUtil;
     private final String homeworkReleasePoint = "execution(* spark.course.web.controller.HomeworkController.insert(..))";
     private final String courseWareReleasePoint = "execution(* spark.course.web.controller.CourseWareController.insert(..))";
 
@@ -68,6 +73,7 @@ public class MessageServiceAspect {
                     messageVO.setContent(courseBOWithCourseDetail.getCourseName() + ",有了一份新作业");
                     String result = messageService.insert(convertToBO(messageVO));
                     if (result.contains("true")) {
+                        sendLogMessageUtil.sendErrorMessage(MessageBO.class, convertToBO(messageVO));
                         throw new BusinessException(new ClassBusinessError(result));
                     }
                 }
@@ -93,6 +99,7 @@ public class MessageServiceAspect {
                     messageVO.setContent(courseBOWithCourseDetail.getCourseName() + ",有了一份新课件");
                     String result = messageService.insert(convertToBO(messageVO));
                     if (result.contains("true")) {
+                        sendLogMessageUtil.sendErrorMessage(MessageBO.class, convertToBO(messageVO));
                         throw new BusinessException(new ClassBusinessError(result));
                     }
                 }
