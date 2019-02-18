@@ -160,5 +160,6 @@
         <module>message-api</module>
         <module>message-server</module>
         <module>zipkin-server</module>
+        <module>hystrix-dashboard</module>
     </modules>
 </project>
