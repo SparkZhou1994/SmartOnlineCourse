@@ -14,7 +14,9 @@ public enum EmBusinessError implements CommonError{
     **/
     PARAMETER_VALIDATION_ERROR(10001,"参数不合法"),
     UNKNOWN_ERROR(10002,"未知错误"),
-    SERVER_BUSY(10003,"服务器繁忙，请稍后重试"),
+    SERVER_BUSY(10003,"服务阻塞，请刷新重试"),
+    SERVER_PARALYSIS(10004, "服务瘫痪，请稍后重试"),
+
     /**
     * @author Spark
     * @Description 20000开头为用户信息相关错误定义

@@ -62,7 +62,7 @@ public class SignServiceImpl implements SignService {
         signBO.setEndTime(LocalDateTime.now().plusMinutes(signBO.getExpireTime()));
         signBO.setVersion(Long.parseLong(Integer.toString(0)));
         signDTOMapper.insert(convertToDataObject(signBO));
-        sendLogMessageUtil.sendInsertMessage(SignBO.class, signBO);
+        LOGGER.warn(sendLogMessageUtil.sendInsertMessage(SignBO.class, signBO));
         return signBO;
     }
 
@@ -70,7 +70,7 @@ public class SignServiceImpl implements SignService {
     public void delete(Integer signId) {
         SignDTO signDTO = signDTOMapper.selectByPrimaryKey(signId);
         signDTOMapper.deleteByPrimaryKey(signId);
-        sendLogMessageUtil.sendDeleteMessage(SignBO.class, convertFromDataObject(signDTO));
+        LOGGER.warn(sendLogMessageUtil.sendDeleteMessage(SignBO.class, convertFromDataObject(signDTO)));
     }
 
     @Override
@@ -87,11 +87,11 @@ public class SignServiceImpl implements SignService {
             Integer result = signDTOMapper.
                     updateByPrimaryKeyAndVersionSelective(convertToDataObject(signBO));
             if (result != 1 ) {
-                sendLogMessageUtil.sendErrorMessage(SignBO.class, signBO);
+                LOGGER.error(sendLogMessageUtil.sendErrorMessage(SignBO.class, signBO));
                 throw new BusinessException(EmBusinessError.SERVER_BUSY);
             }
             signBO.setVersion(signBO.getVersion() + 1);
-            sendLogMessageUtil.sendUpdateMessage(SignBO.class, signBO);
+            LOGGER.warn(sendLogMessageUtil.sendUpdateMessage(SignBO.class, signBO));
             return signBO;
         } else {
             sendLogMessageUtil.sendErrorMessage(SignBO.class, signBO);

@@ -16,23 +16,23 @@ import spark.course.error.BusinessException;
 @CrossOrigin(allowCredentials = "true", allowedHeaders = "*")
 public interface ICourseApi {
     @GetMapping(value = "/{courseId}", consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
-    String selectByCourseId(@PathVariable(value = "courseId") Integer courseId);
+    String selectByCourseId(@PathVariable(value = "courseId") Integer courseId) throws BusinessException;
 
     @GetMapping(value = "/{courseName}/{start}/{size}",
             consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
     String selectByCourseName(@PathVariable(value = "courseName") String courseName,
                               @PathVariable(value = "start") Integer start,
-                              @PathVariable(value = "size") Integer size);
+                              @PathVariable(value = "size") Integer size) throws BusinessException ;
 
     @GetMapping(value = "/{start}/{size}")
     String selectSortByScore(@PathVariable(value = "start") Integer start,
-                             @PathVariable(value = "size") Integer size);
+                             @PathVariable(value = "size") Integer size) throws BusinessException;
 
     @PostMapping(consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
     String insert(@RequestBody CourseBO courseBO) throws BusinessException;
 
     @DeleteMapping(value = "/{courseId}")
-    void deleteCourse(@PathVariable(value = "courseId") Integer courseId);
+    void deleteCourse(@PathVariable(value = "courseId") Integer courseId) throws BusinessException;
 
     @PutMapping(consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
     String updataCourseByCourseId(@RequestBody CourseBO courseBO) throws BusinessException;

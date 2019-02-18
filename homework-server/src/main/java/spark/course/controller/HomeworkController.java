@@ -25,14 +25,14 @@ public class HomeworkController extends ValidationExceptionHandler implements IH
     @Autowired
     HomeworkService homeworkService;
     @Override
-    public String selectByHomeworkId(@PathVariable("homeworkId") Integer homeworkId) {
+    public String selectByHomeworkId(@PathVariable("homeworkId") Integer homeworkId) throws BusinessException {
         return JsonUtil.convertToJson(homeworkService.selectByHomeworkId(homeworkId));
     }
 
     @Override
     public String selectByChooseCourseId(@PathVariable("chooseCourseId") Integer chooseCourseId,
                                          @PathVariable("start") Integer start,
-                                         @PathVariable("size") Integer size) {
+                                         @PathVariable("size") Integer size) throws BusinessException {
         return JsonUtil.convertToJson(homeworkService.
                 selectByChooseCourseId(chooseCourseId, start, size));
     }
@@ -43,7 +43,7 @@ public class HomeworkController extends ValidationExceptionHandler implements IH
     }
 
     @Override
-    public void delete(@PathVariable("homeworkId") Integer homeworkId) {
+    public void delete(@PathVariable("homeworkId") Integer homeworkId)throws BusinessException {
         homeworkService.delete(homeworkId);
     }
 

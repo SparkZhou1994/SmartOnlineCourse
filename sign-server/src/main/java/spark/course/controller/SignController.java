@@ -26,25 +26,25 @@ public class SignController extends ValidationExceptionHandler implements ISignA
     SignService signService;
 
     @Override
-    public String selectBySignId(@PathVariable("signId") Integer signId) {
+    public String selectBySignId(@PathVariable("signId") Integer signId) throws BusinessException {
         return JsonUtil.convertToJson(signService.selectBySignId(signId));
     }
 
     @Override
     public String selectByChooseCoureId(@PathVariable("chooseCourseId") Integer chooseCourseId,
                                         @PathVariable("start") Integer start,
-                                        @PathVariable("size") Integer size) {
+                                        @PathVariable("size") Integer size) throws BusinessException {
         return JsonUtil.convertToJson(signService.
                 selectByChooseCourseId(chooseCourseId, start, size));
     }
 
     @Override
-    public String insert(@RequestBody @Valid SignBO signBO) throws BusinessException{
+    public String insert(@RequestBody @Valid SignBO signBO) throws BusinessException {
         return JsonUtil.convertToJson(signService.insert(signBO));
     }
 
     @Override
-    public void delete(@PathVariable("signId") Integer signId) {
+    public void delete(@PathVariable("signId") Integer signId)throws BusinessException {
         signService.delete(signId);
     }
 

@@ -54,7 +54,7 @@ public class DiscussServiceImpl implements DiscussService {
         discussBO.setVersion(Long.parseLong(Integer.toString(0)));
         discussBO.setLastPublishTime(LocalDateTime.now());
         discussDTOMapper.insertSelective(convertToDataObject(discussBO));
-        sendLogMessageUtil.sendInsertMessage(DiscussBO.class, discussBO);
+        LOGGER.warn(sendLogMessageUtil.sendInsertMessage(DiscussBO.class, discussBO));
         return discussBO;
     }
 
@@ -62,7 +62,7 @@ public class DiscussServiceImpl implements DiscussService {
     public void delete(Integer discussId) {
         DiscussDTO discussDTO = discussDTOMapper.selectByPrimaryKey(discussId);
         discussDTOMapper.deleteByPrimaryKey(discussId);
-        sendLogMessageUtil.sendDeleteMessage(DiscussBO.class, convertFromDataObject(discussDTO));
+        LOGGER.warn(sendLogMessageUtil.sendDeleteMessage(DiscussBO.class, convertFromDataObject(discussDTO)));
     }
 
     @Override
@@ -71,11 +71,11 @@ public class DiscussServiceImpl implements DiscussService {
         Integer result = discussDTOMapper.updateByPrimaryKeyAndVersionSelective(
                 convertToDataObject(discussBO));
         if (result != 1) {
-            sendLogMessageUtil.sendErrorMessage(DiscussBO.class, discussBO);
+            LOGGER.error(sendLogMessageUtil.sendErrorMessage(DiscussBO.class, discussBO));
             throw new BusinessException(EmBusinessError.SERVER_BUSY);
         }
         discussBO.setVersion(discussBO.getVersion() + 1);
-        sendLogMessageUtil.sendUpdateMessage(DiscussBO.class, discussBO);
+        LOGGER.warn(sendLogMessageUtil.sendUpdateMessage(DiscussBO.class, discussBO));
         return discussBO;
     }
 

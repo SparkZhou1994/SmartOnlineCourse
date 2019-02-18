@@ -18,18 +18,18 @@ import java.util.List;
 @CrossOrigin(allowCredentials = "true", allowedHeaders = "*")
 public interface IDiscussApi {
     @GetMapping(value = "/chooseCourseId/{chooseCourseId}",consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
-    String selectByChooseCourseId(@PathVariable("chooseCourseId") Integer chooseCourseId);
+    String selectByChooseCourseId(@PathVariable("chooseCourseId") Integer chooseCourseId) throws BusinessException;
 
     @GetMapping(value = "/{discussId}",
             consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
-    String selectByDiscussId(@PathVariable("discussId") Integer discussId);
+    String selectByDiscussId(@PathVariable("discussId") Integer discussId) throws BusinessException;
 
     @PostMapping(consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
     String insert(@RequestBody DiscussBO discussBO) throws BusinessException;
 
     @DeleteMapping(value = "/{discussId",
             consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
-    void delete(@PathVariable("discussId") Integer discussId);
+    void delete(@PathVariable("discussId") Integer discussId) throws BusinessException;
 
     @PutMapping(consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
     String update(@RequestBody DiscussBO discussBO) throws BusinessException;

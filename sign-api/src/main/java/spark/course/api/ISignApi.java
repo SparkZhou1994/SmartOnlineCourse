@@ -15,19 +15,19 @@ import spark.course.error.BusinessException;
 @RequestMapping("/signServer")
 public interface ISignApi {
     @GetMapping(value = "/{signId}", consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
-    String selectBySignId(@PathVariable(value = "signId") Integer signId);
+    String selectBySignId(@PathVariable(value = "signId") Integer signId) throws BusinessException;
 
     @GetMapping(value = "/{chooseCourseId}/{start}/{size}",
             consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
     String selectByChooseCoureId(@PathVariable("chooseCourseId") Integer chooseCourseId,
                                  @PathVariable("start") Integer start,
-                                 @PathVariable("size") Integer size);
+                                 @PathVariable("size") Integer size) throws BusinessException;
 
     @PostMapping(consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
     String insert(@RequestBody SignBO signBO) throws BusinessException;
 
     @DeleteMapping(value = "/{signId}")
-    void delete(@PathVariable(value = "signId") Integer signId);
+    void delete(@PathVariable(value = "signId") Integer signId) throws BusinessException;
 
     @PutMapping(consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
     String update(@RequestBody SignBO signBO) throws BusinessException;

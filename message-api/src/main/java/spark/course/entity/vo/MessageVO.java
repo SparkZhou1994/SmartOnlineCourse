@@ -13,6 +13,8 @@ public class MessageVO {
     private Integer chooseCourseId;
     private String content;
     private String publishData;
+    private Integer start;
+    private Integer size;
 
     public Integer getMessageId() {
         return messageId;
@@ -52,5 +54,21 @@ public class MessageVO {
 
     public void setPublishData(String publishData) {
         this.publishData = publishData;
+    }
+
+    public Integer getStart() {
+        return start;
+    }
+
+    public void setStart(Integer start) {
+        this.start = start;
+    }
+
+    public Integer getSize() {
+        return size;
+    }
+
+    public void setSize(Integer size) {
+        this.size = size;
     }
 }

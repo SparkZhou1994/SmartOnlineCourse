@@ -54,7 +54,7 @@ public class MessageServiceImpl implements MessageService {
         messageBO.setVersion(Long.parseLong(Integer.toString(0)));
         messageBO.setPublishData(LocalDate.now());
         messageDTOMapper.insertSelective(convertToDataObject(messageBO));
-        sendLogMessageUtil.sendInsertMessage(MessageBO.class, messageBO);
+        LOGGER.warn(sendLogMessageUtil.sendInsertMessage(MessageBO.class, messageBO));
         return messageBO;
     }
 
@@ -62,7 +62,7 @@ public class MessageServiceImpl implements MessageService {
     public void delete(Integer messageId) {
         MessageDTO messageDTO = messageDTOMapper.selectByPrimaryKey(messageId);
         messageDTOMapper.deleteByPrimaryKey(messageId);
-        sendLogMessageUtil.sendDeleteMessage(MessageBO.class, convertFromDataObject(messageDTO));
+        LOGGER.warn(sendLogMessageUtil.sendDeleteMessage(MessageBO.class, convertFromDataObject(messageDTO)));
     }
 
     @Override
@@ -70,11 +70,11 @@ public class MessageServiceImpl implements MessageService {
         messageBO.setPublishData(LocalDate.now());
         Integer result = messageDTOMapper.updateByPrimaryKeyAndVersionSelective(convertToDataObject(messageBO));
         if (result != 1 ) {
-            sendLogMessageUtil.sendErrorMessage(MessageBO.class, messageBO);
+            LOGGER.error(sendLogMessageUtil.sendErrorMessage(MessageBO.class, messageBO));
             throw new BusinessException(EmBusinessError.SERVER_BUSY);
         }
         messageBO.setVersion(messageBO.getVersion() + 1);
-        sendLogMessageUtil.sendUpdateMessage(MessageBO.class, messageBO);
+        LOGGER.warn(sendLogMessageUtil.sendUpdateMessage(MessageBO.class, messageBO));
         return messageBO;
     }
 

@@ -68,7 +68,7 @@ public class CourseServiceImpl implements CourseService {
         courseBO.setCourseId(courseId);
         courseBO.setVersion(Long.parseLong(Integer.toString(0)));
         courseDTOMapper.insertSelective(convertToDataObject(courseBO));
-        sendLogMessageUtil.sendInsertMessage(CourseBO.class, courseBO);
+        LOGGER.warn(sendLogMessageUtil.sendInsertMessage(CourseBO.class, courseBO));
         return courseBO;
     }
 
@@ -76,7 +76,7 @@ public class CourseServiceImpl implements CourseService {
     public void deleteByCourseId(Integer courseId) {
         CourseDTO courseDTO = courseDTOMapper.selectByPrimaryKey(courseId);
         courseDTOMapper.deleteByPrimaryKey(courseId);
-        sendLogMessageUtil.sendDeleteMessage(CourseBO.class, convertFromDataObject(courseDTO));
+        LOGGER.warn(sendLogMessageUtil.sendDeleteMessage(CourseBO.class, convertFromDataObject(courseDTO)));
     }
 
     @Override
@@ -84,11 +84,11 @@ public class CourseServiceImpl implements CourseService {
         Integer result = courseDTOMapper.updateByPrimaryKeyAndVersionSelective(
                 convertToDataObject(courseBO));
         if (result !=1) {
-            sendLogMessageUtil.sendErrorMessage(CourseBO.class,courseBO);
+            LOGGER.error(sendLogMessageUtil.sendErrorMessage(CourseBO.class,courseBO));
             throw new BusinessException(EmBusinessError.SERVER_BUSY);
         }
         courseBO.setVersion(courseBO.getVersion() + 1);
-        sendLogMessageUtil.sendUpdateMessage(CourseBO.class,courseBO);
+        LOGGER.warn(sendLogMessageUtil.sendUpdateMessage(CourseBO.class,courseBO));
         return courseBO;
     }
 

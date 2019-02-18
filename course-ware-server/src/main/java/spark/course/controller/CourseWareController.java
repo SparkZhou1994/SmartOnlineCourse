@@ -26,14 +26,14 @@ public class CourseWareController extends ValidationExceptionHandler implements 
     CourseWareService courseWareService;
 
     @Override
-    public String selectByCourseWareId(@PathVariable("courseWareId") Integer courseWareId) {
+    public String selectByCourseWareId(@PathVariable("courseWareId") Integer courseWareId) throws BusinessException {
         return JsonUtil.convertToJson(courseWareService.selectByCourseWareId(courseWareId));
     }
 
     @Override
     public String selectByCourseId(@PathVariable("courseId") Integer courseId,
                                    @PathVariable("start") Integer start,
-                                   @PathVariable("size") Integer size) {
+                                   @PathVariable("size") Integer size) throws BusinessException {
         return JsonUtil.convertToJson(courseWareService.selectByCourseId(courseId, start, size));
     }
 
@@ -43,7 +43,7 @@ public class CourseWareController extends ValidationExceptionHandler implements 
     }
 
     @Override
-    public void delete(@PathVariable("courseWareId") Integer courseWareId) {
+    public void delete(@PathVariable("courseWareId") Integer courseWareId)throws BusinessException {
         courseWareService.delete(courseWareId);
     }
 

@@ -19,20 +19,20 @@ import java.util.List;
 public interface IHomeworkApi {
     @GetMapping(value = "/{homeworkId}",
             consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
-    String selectByHomeworkId(@PathVariable("homeworkId") Integer homeworkId);
+    String selectByHomeworkId(@PathVariable("homeworkId") Integer homeworkId) throws BusinessException;
 
     @GetMapping(value = "/{chooseCourseId}/{start}/{size}",
             consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
     String selectByChooseCourseId(@PathVariable("chooseCourseId") Integer chooseCourseId,
                                   @PathVariable("start") Integer start,
-                                  @PathVariable("size") Integer size);
+                                  @PathVariable("size") Integer size) throws BusinessException;
 
     @PostMapping(consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
     String insert(@RequestBody HomeworkBO homeworkBO) throws BusinessException;
 
     @DeleteMapping(value = "/{homeworkId}",
             consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
-    void delete(@PathVariable("homeworkId") Integer homeworkId);
+    void delete(@PathVariable("homeworkId") Integer homeworkId) throws BusinessException;
 
     @PutMapping(consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
     String update(@RequestBody HomeworkBO homeworkBO) throws BusinessException;

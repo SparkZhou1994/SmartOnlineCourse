@@ -54,7 +54,7 @@ public class DiscussContentServiceImpl implements DiscussContentService {
         discussContentBO.setVersion(Long.parseLong(Integer.toString(0)));
         discussContentBO.setPublishTime(LocalDateTime.now());
         discussContentDTOMapper.insertSelective(convertToDataObject(discussContentBO));
-        sendLogMessageUtil.sendInsertMessage(DiscussContentBO.class, discussContentBO);
+        LOGGER.warn(sendLogMessageUtil.sendInsertMessage(DiscussContentBO.class, discussContentBO));
         return discussContentBO;
     }
 
@@ -62,8 +62,8 @@ public class DiscussContentServiceImpl implements DiscussContentService {
     public void delete(Integer discussContentId) {
         DiscussContentDTO discussContentDTO = discussContentDTOMapper.selectByPrimaryKey(discussContentId);
         discussContentDTOMapper.deleteByPrimaryKey(discussContentId);
-        sendLogMessageUtil.sendDeleteMessage(DiscussContentBO.class,
-                convertFromDataObject(discussContentDTO));
+        LOGGER.warn(sendLogMessageUtil.sendDeleteMessage(DiscussContentBO.class,
+                convertFromDataObject(discussContentDTO)));
     }
 
     @Override
@@ -72,11 +72,11 @@ public class DiscussContentServiceImpl implements DiscussContentService {
         Integer result = discussContentDTOMapper.updateByPrimaryKeyAndVersionSelective(
                 convertToDataObject(discussContentBO));
         if (result != 1) {
-            sendLogMessageUtil.sendErrorMessage(DiscussContentBO.class, discussContentBO);
+            LOGGER.error(sendLogMessageUtil.sendErrorMessage(DiscussContentBO.class, discussContentBO));
             throw new BusinessException(EmBusinessError.SERVER_BUSY);
         }
         discussContentBO.setVersion(discussContentBO.getVersion() + 1);
-        sendLogMessageUtil.sendUpdateMessage(DiscussContentBO.class, discussContentBO);
+        LOGGER.warn(sendLogMessageUtil.sendUpdateMessage(DiscussContentBO.class, discussContentBO));
         return discussContentBO;
     }
 

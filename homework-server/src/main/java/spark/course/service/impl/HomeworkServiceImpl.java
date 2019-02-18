@@ -60,7 +60,7 @@ public class HomeworkServiceImpl implements HomeworkService {
         homeworkBO.setBatch(batch);
         homeworkBO.setVersion(Long.parseLong(Integer.toString(0)));
         homeworkDTOMapper.insertSelective(convertToDataObject(homeworkBO));
-        sendLogMessageUtil.sendInsertMessage(HomeworkBO.class, homeworkBO);
+        LOGGER.warn(sendLogMessageUtil.sendInsertMessage(HomeworkBO.class, homeworkBO));
         return homeworkBO;
     }
 
@@ -68,7 +68,7 @@ public class HomeworkServiceImpl implements HomeworkService {
     public void delete(Integer homeworkId) {
         HomeworkDTO homeworkDTO = homeworkDTOMapper.selectByPrimaryKey(homeworkId);
         homeworkDTOMapper.deleteByPrimaryKey(homeworkId);
-        sendLogMessageUtil.sendDeleteMessage(HomeworkBO.class, convertFromDataObject(homeworkDTO));
+        LOGGER.warn(sendLogMessageUtil.sendDeleteMessage(HomeworkBO.class, convertFromDataObject(homeworkDTO)));
     }
 
     @Override
@@ -82,11 +82,11 @@ public class HomeworkServiceImpl implements HomeworkService {
         }
         Integer result = homeworkDTOMapper.updateByPrimaryKeyAndVersionSelective(convertToDataObject(homeworkBO));
         if (result != 1 ) {
-            sendLogMessageUtil.sendErrorMessage(HomeworkBO.class, homeworkBO);
+            LOGGER.error(sendLogMessageUtil.sendErrorMessage(HomeworkBO.class, homeworkBO));
             throw new BusinessException(EmBusinessError.SERVER_BUSY);
         }
         homeworkBO.setVersion(homeworkBO.getVersion() + 1);
-        sendLogMessageUtil.sendUpdateMessage(HomeworkBO.class, homeworkBO);
+        LOGGER.warn(sendLogMessageUtil.sendUpdateMessage(HomeworkBO.class, homeworkBO));
         return homeworkBO;
     }
 

@@ -7,5 +7,4 @@ management:
   security:
     enabled: false
 logging:
-  level:
-    com.netflix: debug
+  config: classpath:logback-spring.xml

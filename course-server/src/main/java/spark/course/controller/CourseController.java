@@ -26,14 +26,14 @@ public class CourseController extends ValidationExceptionHandler implements ICou
     CourseService courseService;
 
     @Override
-    public String selectByCourseId(@PathVariable(value = "courseId") Integer courseId) {
+    public String selectByCourseId(@PathVariable(value = "courseId") Integer courseId) throws BusinessException {
         return JsonUtil.convertToJson(courseService.selectByCourseId(courseId));
     }
 
     @Override
     public String selectByCourseName(@PathVariable(value = "courseName") String courseName,
                                      @PathVariable(value = "start") Integer start,
-                                     @PathVariable(value = "size") Integer size) {
+                                     @PathVariable(value = "size") Integer size) throws BusinessException {
         CourseBO courseBO = new CourseBO();
         courseBO.setCourseName(courseName);
         courseBO.setStart(start);
@@ -43,7 +43,7 @@ public class CourseController extends ValidationExceptionHandler implements ICou
 
     @Override
     public String selectSortByScore(@PathVariable(value = "start") Integer start,
-                                    @PathVariable(value = "size") Integer size) {
+                                    @PathVariable(value = "size") Integer size) throws BusinessException {
         CourseBO courseBO = new CourseBO();
         courseBO.setStart(start);
         courseBO.setSize(size);
@@ -51,12 +51,12 @@ public class CourseController extends ValidationExceptionHandler implements ICou
     }
 
     @Override
-    public String insert(@RequestBody @Valid  CourseBO courseBO) throws BusinessException{
+    public String insert(@RequestBody @Valid  CourseBO courseBO) throws BusinessException {
         return JsonUtil.convertToJson(courseService.insert(courseBO));
     }
 
     @Override
-    public void deleteCourse(@PathVariable(value = "courseId") Integer courseId) {
+    public void deleteCourse(@PathVariable(value = "courseId") Integer courseId) throws BusinessException {
         courseService.deleteByCourseId(courseId);
     }
 

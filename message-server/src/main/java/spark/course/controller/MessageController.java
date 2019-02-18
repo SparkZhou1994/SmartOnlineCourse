@@ -26,25 +26,25 @@ public class MessageController extends ValidationExceptionHandler implements IMe
     MessageService messageService;
 
     @Override
-    public String selectByMessageId(@PathVariable("messageId") Integer messageId) {
+    public String selectByMessageId(@PathVariable("messageId") Integer messageId) throws BusinessException {
         return JsonUtil.convertToJson(messageService.selectByMessageId(messageId));
     }
 
     @Override
     public String selectByChooseCourseId(@PathVariable("chooseCourseId") Integer chooseCourseId,
                                          @PathVariable("start") Integer start,
-                                         @PathVariable("size") Integer size) {
+                                         @PathVariable("size") Integer size) throws BusinessException {
         return JsonUtil.convertToJson(messageService.
                 selectByChooseCourseId(chooseCourseId, start, size));
     }
 
     @Override
-    public String insert(@RequestBody @Valid MessageBO messageBO) throws BusinessException{
+    public String insert(@RequestBody @Valid MessageBO messageBO) throws BusinessException {
         return JsonUtil.convertToJson(messageService.insert(messageBO));
     }
 
     @Override
-    public void delete(@PathVariable("messageId") Integer messageId) {
+    public void delete(@PathVariable("messageId") Integer messageId) throws BusinessException {
         messageService.delete(messageId);
     }
 

@@ -33,4 +33,9 @@ public class SendLogMessageUtil {
         LogMessage logMessage = new LogMessage("error", dataType, data);
         return JsonUtil.convertToJson(logMessage);
     }
+
+    public static String sendFallbackErrorMessage(Object dataType, Object data) {
+        LogMessage logMessage = new LogMessage("fallback_error", dataType, data);
+        return JsonUtil.convertToJson(logMessage);
+    }
 }

@@ -25,12 +25,12 @@ public class DiscussController extends ValidationExceptionHandler implements IDi
     @Autowired
     DiscussService discussService;
     @Override
-    public String selectByChooseCourseId(@PathVariable("chooseCourseId") Integer chooseCourseId) {
+    public String selectByChooseCourseId(@PathVariable("chooseCourseId") Integer chooseCourseId) throws BusinessException {
         return JsonUtil.convertToJson(discussService.selectByChooseCourseId(chooseCourseId));
     }
 
     @Override
-    public String selectByDiscussId(@PathVariable("discussId") Integer discussId) {
+    public String selectByDiscussId(@PathVariable("discussId") Integer discussId) throws BusinessException {
         return JsonUtil.convertToJson(discussService.selectByDiscussId(discussId));
     }
 
@@ -40,7 +40,7 @@ public class DiscussController extends ValidationExceptionHandler implements IDi
     }
 
     @Override
-    public void delete(@PathVariable("discussId") Integer discussId) {
+    public void delete(@PathVariable("discussId") Integer discussId)throws BusinessException {
         discussService.delete(discussId);
     }
 

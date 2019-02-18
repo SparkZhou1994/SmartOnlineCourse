@@ -23,6 +23,15 @@ eureka:
     registry-fetch-interval-seconds: 30
   instance:
     hostname: localhost
+hystrix:
+  command:
+    default:
+      circuitBreaker:
+        requestVolumeThreshold: 10
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 2000
 spark:
   security:
     browser:

@@ -59,7 +59,7 @@ public class CourseWareServiceImpl implements CourseWareService {
         courseWareBO.setBatch(batch);
         courseWareBO.setVersion(Long.parseLong(Integer.toString(0)));
         courseWareDTOMapper.insertSelective(convertToDataObject(courseWareBO));
-        sendLogMessageUtil.sendInsertMessage(CourseWareBO.class, courseWareBO);
+        LOGGER.warn(sendLogMessageUtil.sendInsertMessage(CourseWareBO.class, courseWareBO));
         return courseWareBO;
     }
 
@@ -67,18 +67,18 @@ public class CourseWareServiceImpl implements CourseWareService {
     public void delete(Integer courseWareId) {
         CourseWareDTO courseWareDTO = courseWareDTOMapper.selectByPrimaryKey(courseWareId);
         courseWareDTOMapper.deleteByPrimaryKey(courseWareId);
-        sendLogMessageUtil.sendDeleteMessage(CourseWareBO.class, convertFromDataObject(courseWareDTO));
+        LOGGER.warn(sendLogMessageUtil.sendDeleteMessage(CourseWareBO.class, convertFromDataObject(courseWareDTO)));
     }
 
     @Override
     public CourseWareBO update(CourseWareBO courseWareBO) throws BusinessException {
         Integer result = courseWareDTOMapper.updateByPrimaryKeyAndVersionSelective(convertToDataObject(courseWareBO));
         if (result != 1 ) {
-            sendLogMessageUtil.sendErrorMessage(CourseWareBO.class, courseWareBO);
+            LOGGER.error(sendLogMessageUtil.sendErrorMessage(CourseWareBO.class, courseWareBO));
             throw new BusinessException(EmBusinessError.SERVER_BUSY);
         }
         courseWareBO.setVersion(courseWareBO.getVersion() + 1);
-        sendLogMessageUtil.sendUpdateMessage(CourseWareBO.class, courseWareBO);
+        LOGGER.warn(sendLogMessageUtil.sendUpdateMessage(CourseWareBO.class, courseWareBO));
         return courseWareBO;
     }
 

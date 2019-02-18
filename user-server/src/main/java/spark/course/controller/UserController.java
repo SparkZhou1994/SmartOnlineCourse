@@ -29,7 +29,7 @@ public class UserController extends ValidationExceptionHandler implements IUserA
     private UserService userService;
 
     @Override
-    public String selectByUserId(@PathVariable("userId") Integer userId) {
+    public String selectByUserId(@PathVariable("userId") Integer userId) throws BusinessException {
         return JsonUtil.convertToJson(userService.selectByUserId(userId));
     }
 
@@ -54,7 +54,7 @@ public class UserController extends ValidationExceptionHandler implements IUserA
     }
 
     @Override
-    public String selectByEmail(@PathVariable("email") String email) {
+    public String selectByEmail(@PathVariable("email") String email) throws BusinessException {
         return JsonUtil.convertToJson(userService.selectByEmail(email));
     }
 }

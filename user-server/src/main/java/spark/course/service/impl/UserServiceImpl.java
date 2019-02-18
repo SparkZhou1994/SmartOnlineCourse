@@ -54,7 +54,7 @@ public class UserServiceImpl implements UserService {
         userBO.setVersionPassword(Long.parseLong(Integer.toString(0)));
         userDTOMapper.insertSelective(convertToUserDTO(userBO));
         userPasswordDTOMapper.insertSelective(convertToUserPasswordDTO(userBO));
-        sendLogMessageUtil.sendInsertMessage(UserBO.class, userBO);
+        LOGGER.warn(sendLogMessageUtil.sendInsertMessage(UserBO.class, userBO));
         return userBO;
     }
 
@@ -66,7 +66,7 @@ public class UserServiceImpl implements UserService {
         UserDTO userDTO = userDTOMapper.selectByPrimaryKey(userId);
         userDTOMapper.deleteByPrimaryKey(userId);
         UserBO userBO = convertFromDataObject(userDTO, userPasswordDTO);
-        sendLogMessageUtil.sendDeleteMessage(UserBO.class, userBO);
+        LOGGER.warn(sendLogMessageUtil.sendDeleteMessage(UserBO.class, userBO));
     }
 
     @Override
@@ -74,11 +74,11 @@ public class UserServiceImpl implements UserService {
         Integer result = userDTOMapper.
                 updateByPrimaryKeyAndVersionSelective(convertToUserDTO(userBO));
         if (result != 1 ) {
-            sendLogMessageUtil.sendErrorMessage(UserBO.class, userBO);
+            LOGGER.error(sendLogMessageUtil.sendErrorMessage(UserBO.class, userBO));
             throw new BusinessException(EmBusinessError.SERVER_BUSY);
         }
         userBO.setVersion(userBO.getVersion() + 1);
-        sendLogMessageUtil.sendUpdateMessage(UserBO.class, userBO);
+        LOGGER.warn(sendLogMessageUtil.sendUpdateMessage(UserBO.class, userBO));
         return userBO;
     }
 
@@ -87,11 +87,11 @@ public class UserServiceImpl implements UserService {
         Integer result = userPasswordDTOMapper.
                 updateByPrimaryKeyAndVersionSelective(convertToUserPasswordDTO(userBO));
         if (result != 1 ) {
-            sendLogMessageUtil.sendErrorMessage(UserBO.class, userBO);
+            LOGGER.error(sendLogMessageUtil.sendErrorMessage(UserBO.class, userBO));
             throw new BusinessException(EmBusinessError.SERVER_BUSY);
         }
         userBO.setVersionPassword(userBO.getVersionPassword() + 1);
-        sendLogMessageUtil.sendUpdateMessage(UserBO.class, userBO);
+        LOGGER.warn(sendLogMessageUtil.sendUpdateMessage(UserBO.class, userBO));
         return userBO;
     }
 

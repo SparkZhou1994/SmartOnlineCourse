@@ -17,20 +17,20 @@ import spark.course.error.BusinessException;
 public interface ICourseWareApi {
     @GetMapping(value = "/{courseWareId}",
             consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
-    String selectByCourseWareId(@PathVariable("courseWareId") Integer courseWareId);
+    String selectByCourseWareId(@PathVariable("courseWareId") Integer courseWareId) throws BusinessException;
 
     @GetMapping(value = "/{courseId}/{start}/{size}",
             consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
     String selectByCourseId(@PathVariable("courseId") Integer courseId,
                                   @PathVariable("start") Integer start,
-                                  @PathVariable("size") Integer size);
+                                  @PathVariable("size") Integer size) throws BusinessException;
 
     @PostMapping(consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
     String insert(@RequestBody CourseWareBO courseWareBO) throws BusinessException;
 
     @DeleteMapping(value = "/{courseWareId}",
             consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
-    void delete(@PathVariable("courseWareId") Integer courseWareId);
+    void delete(@PathVariable("courseWareId") Integer courseWareId) throws BusinessException;
 
     @PutMapping(consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
     String update(@RequestBody CourseWareBO courseWareBO) throws BusinessException;

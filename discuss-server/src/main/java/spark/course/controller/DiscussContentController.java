@@ -24,22 +24,22 @@ public class DiscussContentController implements IDiscussContentApi {
     @Override
     public String selectByDiscussId(@PathVariable("discussId") Integer discussId,
                                     @PathVariable("start") Integer start,
-                                    @PathVariable("size") Integer size) {
+                                    @PathVariable("size") Integer size) throws BusinessException {
         return JsonUtil.convertToJson(discussContentService.selectByDiscussId(discussId, start, size));
     }
 
     @Override
-    public String selectByPrimaryKey(@PathVariable("discussContentId") Integer discussContentId) {
+    public String selectByPrimaryKey(@PathVariable("discussContentId") Integer discussContentId) throws BusinessException {
         return JsonUtil.convertToJson(discussContentService.selectByPrimaryKey(discussContentId));
     }
 
     @Override
-    public String insert(@RequestBody DiscussContentBO discussContentBO) {
+    public String insert(@RequestBody DiscussContentBO discussContentBO) throws BusinessException {
         return JsonUtil.convertToJson(discussContentService.insert(discussContentBO));
     }
 
     @Override
-    public void delete(@PathVariable("discussContentId") Integer discussContentId) {
+    public void delete(@PathVariable("discussContentId") Integer discussContentId) throws BusinessException {
         discussContentService.delete(discussContentId);
     }
 

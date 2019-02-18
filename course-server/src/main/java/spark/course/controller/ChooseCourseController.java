@@ -25,13 +25,13 @@ public class ChooseCourseController implements IChooseCourseApi {
     @Autowired
     ChooseCourseService chooseCourseService;
     @Override
-    public String selectByChooseCourseId(@PathVariable(value = "chooseCourseId") Integer chooseCourseId) {
+    public String selectByChooseCourseId(@PathVariable(value = "chooseCourseId") Integer chooseCourseId) throws BusinessException {
         return JsonUtil.convertToJson(chooseCourseService.selectByChooseCourseId(chooseCourseId));
     }
 
     @Override
     public String selectChooseCourseByUserIdAndCourseId(@PathVariable(value = "userId") Integer userId,
-                                                          @PathVariable(value = "courseId") Integer courseId) {
+                                                          @PathVariable(value = "courseId") Integer courseId) throws BusinessException {
         CourseBO courseBO = new CourseBO();
         courseBO.setUserId(userId);
         courseBO.setCourseId(courseId);
@@ -39,12 +39,12 @@ public class ChooseCourseController implements IChooseCourseApi {
     }
 
     @Override
-    public String insert(@RequestBody CourseBO courseBO) {
+    public String insert(@RequestBody CourseBO courseBO) throws BusinessException {
         return JsonUtil.convertToJson(chooseCourseService.insert(courseBO));
     }
 
     @Override
-    public void deleteChooseCourse(@PathVariable(value = "chooseCourseId") Integer chooseCourseId) {
+    public void deleteChooseCourse(@PathVariable(value = "chooseCourseId") Integer chooseCourseId) throws BusinessException {
         chooseCourseService.deleteByChooseCourseId(chooseCourseId);
     }
 
@@ -54,7 +54,7 @@ public class ChooseCourseController implements IChooseCourseApi {
     }
 
     @Override
-    public String selectByCourseId(@PathVariable(value = "courseId") Integer courseId) {
+    public String selectByCourseId(@PathVariable(value = "courseId") Integer courseId) throws BusinessException {
         return JsonUtil.convertToJson(chooseCourseService.selectChooseCourseByCourseId(courseId));
     }
 }
