@@ -9,6 +9,7 @@ spring:
         git:
           uri: https://github.com/SparkZhou1994/SmartOnlineCourse
           search-paths: config-repo
+          force-pull: true
 management:
   security:
     enabled: false
