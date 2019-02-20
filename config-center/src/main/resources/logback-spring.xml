@@ -25,9 +25,7 @@ log:
 
         <!--Layout（纯文本）而不是格式化的JSON -->
         <layout>
-            <pattern>
-                <![CDATA[%d{yyyy-MM-dd HH:mm:ss} [%thread] [%class:%line] %-5level %logger - %msg%n ]]>
-            </pattern>
+            <pattern>%msg%n</pattern>
         </layout>
         <host>${rabbitmqHost}</host>
         <port>${rabbitmqPort}</port>
@@ -40,8 +38,9 @@ log:
         <routingKeyPattern>logDirectQueue</routingKeyPattern>
         <generateId>true</generateId>
         <charset>UTF-8</charset>
-        <durable>false</durable>
+        <durable>ture</durable>
         <deliveryMode>NON_PERSISTENT</deliveryMode>
+        <autoDelete>false</autoDelete>
     </appender>
 
     <!-- 文件记录只记录指定包的日志 -->

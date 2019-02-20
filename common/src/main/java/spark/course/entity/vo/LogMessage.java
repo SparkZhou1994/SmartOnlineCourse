@@ -18,6 +18,7 @@ public class LogMessage {
     private Object dataType;
     // UserData CourseData
     private Object data;
+    private String operationTime;
 
     public LogMessage() {
     }
@@ -26,6 +27,7 @@ public class LogMessage {
         this.type = type;
         this.dataType = dataType;
         this.data = data;
+        this.operationTime = DateUtil.convertFromLocalDateTime(LocalDateTime.now());
     }
 
     public String getType() {
@@ -50,5 +52,13 @@ public class LogMessage {
 
     public void setData(Object data) {
         this.data = data;
+    }
+
+    public String getOperationTime() {
+        return operationTime;
+    }
+
+    public void setOperationTime(String operationTime) {
+        this.operationTime = operationTime;
     }
 }

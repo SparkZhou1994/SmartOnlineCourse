@@ -68,5 +68,5 @@ public interface IUserApi {
     void deleteUser(@PathVariable(value = "userId") Integer userId) throws BusinessException;
 
     @GetMapping(value = "/password/{email}", consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
-    String selectByEmail(@PathVariable(value = "email") String email) throws BusinessException;
+    String selectByEmail(@PathVariable(value = "email") String email);
 }

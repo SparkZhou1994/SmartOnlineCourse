@@ -9,8 +9,11 @@ import spark.course.controller.BaseController;
 import spark.course.entity.bo.CourseWareBO;
 import spark.course.entity.bo.MessageBO;
 import spark.course.entity.vo.MessageVO;
+import spark.course.error.BusinessException;
 import spark.course.util.DateUtil;
 import spark.course.util.JsonUtil;
+
+import java.nio.Buffer;
 
 /**
  * @ClassName MessageController
@@ -26,7 +29,7 @@ public class MessageController extends BaseController {
 
     @GetMapping(value = "/{messageId}",
             consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
-    String selectByMessageId(@PathVariable("messageId") Integer messageId) {
+    String selectByMessageId(@PathVariable("messageId") Integer messageId) throws BusinessException {
         return JsonUtil.convertToJson(convertFromBO(JsonUtil.json2Bean(messageService.
                 selectByMessageId(messageId), MessageBO.class)));
     }
@@ -35,14 +38,14 @@ public class MessageController extends BaseController {
             consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
     String selectByChooseCourseId(@PathVariable("chooseCourseId") Integer chooseCourseId,
                                   @PathVariable("start") Integer start,
-                                  @PathVariable("size") Integer size) {
+                                  @PathVariable("size") Integer size) throws BusinessException {
         return JsonUtil.convertToJson(convertFromBO(JsonUtil.json2Bean(messageService.
                 selectByChooseCourseId(chooseCourseId, start, size), MessageBO.class)));
     }
 
     @DeleteMapping(value = "/{messageId}",
             consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
-    void delete(@PathVariable("messageId") Integer messageId) {
+    void delete(@PathVariable("messageId") Integer messageId) throws BusinessException {
         messageService.delete(messageId);
     }
 

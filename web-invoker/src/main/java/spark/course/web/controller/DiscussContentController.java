@@ -39,25 +39,25 @@ public class DiscussContentController extends BaseController {
             consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
     public String selectByDiscussId(@PathVariable("discussId") Integer discussId,
                                     @PathVariable("start") Integer start,
-                                    @PathVariable("size") Integer size) {
+                                    @PathVariable("size") Integer size) throws BusinessException {
         return JsonUtil.convertToJson(convertFromBOListJson(discussContentService.selectByDiscussId(discussId, start, size)));
     }
 
     @GetMapping(value = "/{discussContentId:\\d+}")
-    public String selectByPrimaryKey(@PathVariable(value = "discussContentId") Integer discussContentId) {
+    public String selectByPrimaryKey(@PathVariable(value = "discussContentId") Integer discussContentId) throws BusinessException {
         return JsonUtil.convertToJson(convertFromBO(JsonUtil.json2Bean(discussContentService.
                 selectByPrimaryKey(discussContentId), DiscussContentBO.class)));
     }
 
     @PostMapping(consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
-    public String insert(@RequestBody DiscussContentVO discussContentVO) {
+    public String insert(@RequestBody DiscussContentVO discussContentVO) throws BusinessException {
         return JsonUtil.convertToJson(convertFromBO(JsonUtil.json2Bean(discussContentService.
                 insert(convertToBo(discussContentVO)), DiscussContentBO.class)));
     }
 
     @DeleteMapping(value = "/{discussContentId:\\d+}",
             consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
-    public void delete(@PathVariable(value = "discussContentId") Integer discussContentId) {
+    public void delete(@PathVariable(value = "discussContentId") Integer discussContentId) throws BusinessException {
         discussContentService.delete(discussContentId);
     }
 
@@ -67,7 +67,7 @@ public class DiscussContentController extends BaseController {
                 update(convertToBo(discussContentVO)), DiscussContentBO.class)));
     }
 
-    private DiscussContentVO convertFromBO(DiscussContentBO discussContentBO) {
+    private DiscussContentVO convertFromBO(DiscussContentBO discussContentBO) throws BusinessException {
         if (discussContentBO == null) {
             return null;
         }
@@ -91,7 +91,7 @@ public class DiscussContentController extends BaseController {
         return discussContentBO;
     }
 
-    private List<DiscussContentVO> convertFromBOListJson(String discussContentBOlistJson) {
+    private List<DiscussContentVO> convertFromBOListJson(String discussContentBOlistJson) throws BusinessException {
         List<DiscussContentVO> discussContentVOList = new ArrayList<DiscussContentVO>();
         List<DiscussContentBO> discussContentBOList = JsonUtil.
                 json2List(discussContentBOlistJson, DiscussContentBO.class);

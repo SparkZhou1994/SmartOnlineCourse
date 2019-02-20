@@ -13,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import spark.course.api.FeignUserApi;
 import spark.course.entity.bo.UserBO;
+import spark.course.error.BusinessException;
 import spark.course.util.JsonUtil;
 
 import java.util.ArrayList;

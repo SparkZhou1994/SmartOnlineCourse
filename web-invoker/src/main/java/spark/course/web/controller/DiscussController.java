@@ -40,7 +40,7 @@ public class DiscussController extends BaseController {
             consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
     public String selectByChooseCourseId(@PathVariable("chooseCourseId") Integer chooseCourseId,
                                          @PathVariable("start") Integer start,
-                                         @PathVariable("size") Integer size) {
+                                         @PathVariable("size") Integer size) throws BusinessException {
         List<DiscussVO> discussVOList = new ArrayList<DiscussVO>();
         //get the courseId
         CourseBO courseBO = JsonUtil.json2Bean(chooseCourseService.
@@ -61,7 +61,7 @@ public class DiscussController extends BaseController {
 
     @GetMapping(value = "/{discussId:\\d+}",
             consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
-    public String selectByDiscussId(@PathVariable("discussId") Integer discussId) {
+    public String selectByDiscussId(@PathVariable("discussId") Integer discussId) throws BusinessException {
         return JsonUtil.convertToJson(convertFromBO(JsonUtil.json2Bean(discussService.
                 selectByDiscussId(discussId),DiscussBO.class)));
     }
@@ -77,7 +77,7 @@ public class DiscussController extends BaseController {
 
     @DeleteMapping(value = "/{discussId:\\d+",
             consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
-    public void delete(@PathVariable("discussId") Integer discussId) {
+    public void delete(@PathVariable("discussId") Integer discussId)throws BusinessException {
         discussService.delete(discussId);
     }
 
@@ -87,7 +87,7 @@ public class DiscussController extends BaseController {
                 update(convertToBO(discussVO)),DiscussBO.class)));
     }
 
-    private DiscussVO convertFromBO(DiscussBO discussBO) {
+    private DiscussVO convertFromBO(DiscussBO discussBO) throws BusinessException {
         if (discussBO == null) {
             return null;
         }
@@ -115,7 +115,7 @@ public class DiscussController extends BaseController {
         return discussVO;
     }
 
-    private DiscussBO convertToBO(DiscussVO discussVO) {
+    private DiscussBO convertToBO(DiscussVO discussVO) throws BusinessException {
         if (discussVO == null) {
             return null;
         }
@@ -132,7 +132,7 @@ public class DiscussController extends BaseController {
         return discussBO;
     }
 
-    private List<DiscussVO> convertFromBOListJson(String discussBOListJson) {
+    private List<DiscussVO> convertFromBOListJson(String discussBOListJson) throws BusinessException {
         List<DiscussVO> discussVOList = new ArrayList<DiscussVO>();
         List<DiscussBO> discussBOList = JsonUtil.json2List(discussBOListJson, DiscussBO.class);
         for (DiscussBO discussBO:discussBOList) {

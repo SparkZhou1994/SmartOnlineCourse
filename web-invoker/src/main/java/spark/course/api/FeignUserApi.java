@@ -1,7 +1,6 @@
 package spark.course.api;
 
 import org.springframework.cloud.netflix.feign.FeignClient;
-import spark.course.service.hystrix.UserFallback;
 
 /**
  * @ClassName FeignUserApi
@@ -10,6 +9,6 @@ import spark.course.service.hystrix.UserFallback;
  * @Date 1/24/2019 10:48 AM
  * @Version 1.0
  **/
-@FeignClient(name = "user-server", fallback = UserFallback.class)
+@FeignClient(name = "user-server")
 public interface FeignUserApi extends IUserApi{
 }

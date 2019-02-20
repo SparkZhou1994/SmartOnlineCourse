@@ -3,13 +3,13 @@ server:
 spring:
   application:
     name: zipkin-server
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
+    username: Spark
+    password: Spark
+    listener:
+      acknowledge-mode: manual
 management:
   security:
     enabled: false
-eureka:
-  client:
-    service-url:
-      defaultZone: http://eureka1:8761/eureka/,http://eureka2:8762/eureka/
-    registry-fetch-interval-seconds: 30
-  instance:
-    hostname: localhost

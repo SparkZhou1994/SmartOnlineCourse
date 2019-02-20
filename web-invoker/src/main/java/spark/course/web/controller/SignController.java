@@ -39,7 +39,7 @@ public class SignController extends BaseController {
 
     @GetMapping(value = "/{signId:\\d+}",
             consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
-    String selectBySignId(@PathVariable(value = "signId") Integer signId) {
+    String selectBySignId(@PathVariable(value = "signId") Integer signId) throws BusinessException {
         return JsonUtil.convertToJson(convertFromBO(JsonUtil.json2Bean(signService.
                 selectBySignId(signId), SignBO.class)));
     }
@@ -48,7 +48,7 @@ public class SignController extends BaseController {
             consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
     String selectByChooseCoureId(@PathVariable("chooseCourseId") Integer chooseCourseId,
                                  @PathVariable("start") Integer start,
-                                 @PathVariable("size") Integer size) {
+                                 @PathVariable("size") Integer size) throws BusinessException {
         return JsonUtil.convertToJson(convertFromBOListJson(signService.
         selectByChooseCoureId(chooseCourseId, start, size)));
     }
@@ -73,7 +73,7 @@ public class SignController extends BaseController {
     }
 
     @DeleteMapping(value = "/{signId:\\d+}")
-    void delete(@PathVariable(value = "signId") Integer signId) {
+    void delete(@PathVariable(value = "signId") Integer signId) throws BusinessException {
         signService.delete(signId);
     }
 
@@ -83,7 +83,7 @@ public class SignController extends BaseController {
                 update(convertToBO(signVO)), SignBO.class)));
     }
 
-    private SignVO convertFromBO(SignBO signBO) {
+    private SignVO convertFromBO(SignBO signBO) throws BusinessException {
         if (signBO == null) {
             return null;
         }
@@ -127,7 +127,7 @@ public class SignController extends BaseController {
         return signBO;
     }
 
-    private List<SignVO> convertFromBOListJson(String signBOListJson) {
+    private List<SignVO> convertFromBOListJson(String signBOListJson) throws BusinessException {
         List<SignVO> signVOList = new ArrayList<SignVO>();
         List<SignBO> signBOList = JsonUtil.json2List(signBOListJson, SignBO.class);
         for (SignBO signBO:signBOList) {

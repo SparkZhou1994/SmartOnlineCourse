@@ -46,7 +46,7 @@ public class HomeworkController extends BaseController {
     @ResponseBody
     @GetMapping(value = "/{homeworkId:\\d+}",
             consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
-    String selectByHomeworkId(@PathVariable("homeworkId") Integer homeworkId) {
+    String selectByHomeworkId(@PathVariable("homeworkId") Integer homeworkId) throws BusinessException {
         return JsonUtil.convertToJson(convertFromBO(JsonUtil.json2Bean(homeworkService.
                 selectByHomeworkId(homeworkId),HomeworkBO.class)));
     }
@@ -56,7 +56,7 @@ public class HomeworkController extends BaseController {
             consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
     String selectByChooseCourseId(@PathVariable("chooseCourseId") Integer chooseCourseId,
                                   @PathVariable("start") Integer start,
-                                  @PathVariable("size") Integer size) {
+                                  @PathVariable("size") Integer size) throws BusinessException {
         return JsonUtil.convertToJson(convertFromBOListJson(homeworkService.
                 selectByChooseCourseId(chooseCourseId, start, size)));
     }
@@ -84,7 +84,7 @@ public class HomeworkController extends BaseController {
     @PostMapping(value = "/homeworkUpload")
     String homeworkUpload(Integer chooseCourseId, String describe, String title,
                           MultipartFile attachmentFile,String endTime,
-                          Integer batch) throws Exception{
+                          Integer batch) throws Exception {
         String fileName = FileUtil.fileNameConvert(attachmentFile);
         try {
             FileUtil.uploadFile(attachmentFile, CommonConstants.Homework.FILE_PATH, fileName);
@@ -103,7 +103,7 @@ public class HomeworkController extends BaseController {
 
     @GetMapping(value = "/homeworkDownload/{homeworkId}")
     ResponseEntity<byte[]> homeworkDownload(@PathVariable("homeworkId") Integer homeworkId,
-                                            HttpServletRequest request){
+                                            HttpServletRequest request) throws BusinessException {
         HomeworkBO homeworkBO = JsonUtil.json2Bean(homeworkService.
                 selectByHomeworkId(homeworkId),HomeworkBO.class);
         return FileUtil.downloadFile(homeworkBO.getAttachment(),
@@ -113,7 +113,7 @@ public class HomeworkController extends BaseController {
     @ResponseBody
     @DeleteMapping(value = "/{homeworkId:\\d+}",
             consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
-    void delete(@PathVariable("homeworkId") Integer homeworkId){
+    void delete(@PathVariable("homeworkId") Integer homeworkId) throws BusinessException {
         homeworkService.delete(homeworkId);
     }
 
@@ -124,7 +124,7 @@ public class HomeworkController extends BaseController {
                 update(convertToBO(homeworkVO)), HomeworkBO.class)));
     }
 
-    private HomeworkVO convertFromBO(HomeworkBO homeworkBO) {
+    private HomeworkVO convertFromBO(HomeworkBO homeworkBO) throws BusinessException {
         if (homeworkBO == null) {
             return null;
         }
@@ -188,7 +188,7 @@ public class HomeworkController extends BaseController {
         return homeworkBO;
     }
 
-    private List<HomeworkVO> convertFromBOListJson(String homeworkBOListJson) {
+    private List<HomeworkVO> convertFromBOListJson(String homeworkBOListJson) throws BusinessException {
         List<HomeworkVO> homeworkVOList = new ArrayList<HomeworkVO>();
         List<HomeworkBO> homeworkBOList = JsonUtil.json2List(homeworkBOListJson, HomeworkBO.class);
         for (HomeworkBO homeworkBO:homeworkBOList) {

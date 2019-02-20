@@ -54,7 +54,7 @@ public class UserController extends ValidationExceptionHandler implements IUserA
     }
 
     @Override
-    public String selectByEmail(@PathVariable("email") String email) throws BusinessException {
+    public String selectByEmail(@PathVariable("email") String email){
         return JsonUtil.convertToJson(userService.selectByEmail(email));
     }
 }

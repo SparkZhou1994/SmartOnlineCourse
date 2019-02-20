@@ -26,7 +26,7 @@ public class UserController extends BaseController {
     FeignUserApi userService;
 
     @GetMapping(value = "/{userId:\\d+}", consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
-    public String selectByUserId(@PathVariable("userId") Integer userId) {
+    public String selectByUserId(@PathVariable("userId") Integer userId) throws BusinessException {
         return JsonUtil.convertToJson(convertFromBO(
                 JsonUtil.json2Bean(userService.selectByUserId(userId), UserBO.class)));
     }

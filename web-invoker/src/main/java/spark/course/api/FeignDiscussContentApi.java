@@ -1,8 +1,6 @@
 package spark.course.api;
 
 import org.springframework.cloud.netflix.feign.FeignClient;
-import spark.course.service.hystrix.DiscussContentFallback;
-
 /**
  * @ClassName FeignDiscussContentApi
  * @Description TODO
@@ -10,6 +8,6 @@ import spark.course.service.hystrix.DiscussContentFallback;
  * @Date 1/31/2019 4:05 PM
  * @Version 1.0
  **/
-@FeignClient(name = "discuss-server", fallback = DiscussContentFallback.class)
+@FeignClient(name = "discuss-server")
 public interface FeignDiscussContentApi extends IDiscussContentApi{
 }

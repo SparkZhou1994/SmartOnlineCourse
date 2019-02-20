@@ -35,7 +35,7 @@ public class CourseController extends BaseController {
 
     @GetMapping(value = "/{courseId:\\d+}",
             consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
-    public String selectByCourseId(@PathVariable(value = "courseId") Integer courseId) {
+    public String selectByCourseId(@PathVariable(value = "courseId") Integer courseId) throws BusinessException {
         CourseVO courseVO = convertFromBO(JsonUtil.json2Bean(
                 courseService.selectByCourseId(courseId), CourseBO.class));
         UserBO userBO = JsonUtil.json2Bean(userService.
@@ -48,20 +48,20 @@ public class CourseController extends BaseController {
             consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
     public String selectByCourseName(@PathVariable(value = "courseName") String courseName,
                               @PathVariable(value = "start") Integer start,
-                              @PathVariable(value = "size") Integer size) {
+                              @PathVariable(value = "size") Integer size) throws BusinessException {
         return convertFromCourseBOListJsonToCourseVOListJson(courseService.
                 selectByCourseName(courseName, start, size));
     }
 
     @GetMapping(value = "/{start:\\d+}/{size:\\d+}")
     public String selectSortByScore(@PathVariable(value = "start") Integer start,
-                             @PathVariable(value = "size") Integer size) {
+                             @PathVariable(value = "size") Integer size) throws BusinessException {
         return convertFromCourseBOListJsonToCourseVOListJson(courseService.
                 selectSortByScore(start, size));
     }
 
     @PostMapping(consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
-    public String insert(@RequestBody CourseVO courseVO) throws BusinessException{
+    public String insert(@RequestBody CourseVO courseVO) throws BusinessException {
         String result = courseService.insert(convertToBO(courseVO));
         if (result.contains("true")) {
             throw new BusinessException(new ClassBusinessError(result));
@@ -73,7 +73,7 @@ public class CourseController extends BaseController {
     }
 
     @DeleteMapping(value = "/{courseId:\\d+}")
-    public void deleteCourse(@PathVariable(value = "courseId") Integer courseId) {
+    public void deleteCourse(@PathVariable(value = "courseId") Integer courseId) throws BusinessException {
         courseService.deleteCourse(courseId);
     }
 
@@ -111,7 +111,7 @@ public class CourseController extends BaseController {
         return courseBO;
     }
 
-    private String convertFromCourseBOListJsonToCourseVOListJson(String courseBOListJson) {
+    private String convertFromCourseBOListJsonToCourseVOListJson(String courseBOListJson) throws BusinessException {
         List<CourseVO> courseVOList = new ArrayList<CourseVO>();
         List<CourseBO> courseBOList = JsonUtil.json2List(courseBOListJson, CourseBO.class);
         for (CourseBO courseBO : courseBOList) {

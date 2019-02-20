@@ -39,7 +39,7 @@ public class CourseWareController extends BaseController {
     @ResponseBody
     @GetMapping(value = "/{courseWareId:\\d+}",
             consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
-    String selectByCourseWareId(@PathVariable("courseWareId") Integer courseWareId) {
+    String selectByCourseWareId(@PathVariable("courseWareId") Integer courseWareId) throws BusinessException {
         return JsonUtil.convertToJson(convertFromBO(JsonUtil.json2Bean(courseWareService.
                 selectByCourseWareId(courseWareId), CourseWareBO.class)));
     }
@@ -49,7 +49,7 @@ public class CourseWareController extends BaseController {
             consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
     String selectByCourseId(@PathVariable("courseId") Integer courseId,
                             @PathVariable("start") Integer start,
-                            @PathVariable("size") Integer size) {
+                            @PathVariable("size") Integer size) throws BusinessException {
         return JsonUtil.convertToJson(convertFromBOListJson(courseWareService.
                 selectByCourseId(courseId, start, size)));
     }
@@ -66,7 +66,7 @@ public class CourseWareController extends BaseController {
 
     @PostMapping(value = "/courseWareUpload")
     String courseWareUpload(Integer courseId, String title, MultipartFile attachmentFile,
-                            Integer batch) throws Exception{
+                            Integer batch) throws Exception {
         String fileName = FileUtil.fileNameConvert(attachmentFile);
         try {
             FileUtil.uploadFile(attachmentFile, CommonConstants.CourseWare.FILE_PATH, fileName);
@@ -83,7 +83,7 @@ public class CourseWareController extends BaseController {
 
     @GetMapping(value = "/courseWareDownload/{courseWareId}")
     ResponseEntity<byte[]> homeworkDownload(@PathVariable("courseWareId") Integer courseWareId,
-                                            HttpServletRequest request){
+                                            HttpServletRequest request) throws BusinessException {
         CourseWareBO courseWareBO = JsonUtil.json2Bean(courseWareService.
                 selectByCourseWareId(courseWareId), CourseWareBO.class);
         return FileUtil.downloadFile(courseWareBO.getAttachment(),
@@ -93,7 +93,7 @@ public class CourseWareController extends BaseController {
     @ResponseBody
     @DeleteMapping(value = "/{courseWareId:\\d+}",
             consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
-    void delete(@PathVariable("courseWareId") Integer courseWareId){
+    void delete(@PathVariable("courseWareId") Integer courseWareId)throws BusinessException {
         courseWareService.delete(courseWareId);
     }
 
