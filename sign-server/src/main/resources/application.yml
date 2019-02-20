@@ -14,7 +14,7 @@ spring:
   profiles:
     active: leader
   rabbitmq:
-    host: localhost
+    host: rabbitmq
     port: 5672
     username: Spark
     password: Spark
@@ -26,7 +26,7 @@ spring:
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka/,http://localhost:8762/eureka/
+      defaultZone: http://eureka1:8761/eureka/,http://eureka2:8762/eureka/
   instance:
     hostname: localhost
     leaseRenewalIntervalInSeconds: 5
