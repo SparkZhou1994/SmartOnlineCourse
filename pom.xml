@@ -144,7 +144,6 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <modules>
-        <module>single-application</module>
         <module>common</module>
         <module>config-center</module>
         <module>gateway</module>

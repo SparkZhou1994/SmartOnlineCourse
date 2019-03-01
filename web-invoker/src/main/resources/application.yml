@@ -36,7 +36,7 @@ spark:
   security:
     browser:
       loginPage: /LoginAndRegister.html
-      loginType: REDIRECT
+      loginType: JSON
     code:
       image:
         length: 6
@@ -44,3 +44,5 @@ spark:
         url: /applepear
 logging:
   config: classpath:logback-spring.xml
+server:
+  port: 8090

@@ -1,6 +1,5 @@
 package spark.course.api;
 
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import spark.course.constants.CommonConstants;
 import spark.course.entity.bo.UserBO;
