@@ -1,8 +1,6 @@
 spring:
   application:
     name: web-invoker
-  profiles:
-    active: leader
   rabbitmq:
     host: rabbitmq
     port: 5672
