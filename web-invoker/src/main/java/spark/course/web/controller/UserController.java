@@ -21,6 +21,7 @@ import spark.course.util.JsonUtil;
  **/
 @RestController
 @RequestMapping("/user")
+@CrossOrigin(allowCredentials = "true", allowedHeaders = "*")
 public class UserController extends BaseController {
     @Autowired
     FeignUserApi userService;

@@ -29,6 +29,7 @@ import java.util.List;
  **/
 @RestController
 @RequestMapping("/sign")
+@CrossOrigin(allowCredentials = "true", allowedHeaders = "*")
 public class SignController extends BaseController {
     @Autowired
     FeignChooseCourseApi chooseCourseService;

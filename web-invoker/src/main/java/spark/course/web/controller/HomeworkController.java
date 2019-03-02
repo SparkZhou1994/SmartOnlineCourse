@@ -35,6 +35,7 @@ import java.util.List;
  **/
 @Controller
 @RequestMapping("/homework")
+@CrossOrigin(allowCredentials = "true", allowedHeaders = "*")
 public class HomeworkController extends BaseController {
     @Autowired
     FeignChooseCourseApi chooseCourseService;

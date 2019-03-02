@@ -26,6 +26,7 @@ import java.util.List;
  **/
 @RestController
 @RequestMapping("/chooseCourse")
+@CrossOrigin(allowCredentials = "true", allowedHeaders = "*")
 public class ChooseCourseController extends BaseController {
     @Autowired
     FeignChooseCourseApi chooseCourseService;

@@ -32,6 +32,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/courseWare")
+@CrossOrigin(allowCredentials = "true", allowedHeaders = "*")
 public class CourseWareController extends BaseController {
     @Autowired
     FeignCourseWareApi courseWareService;

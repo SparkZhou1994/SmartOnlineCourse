@@ -23,6 +23,7 @@ import java.nio.Buffer;
  * @Version 1.0
  **/
 @RequestMapping("/message")
+@CrossOrigin(allowCredentials = "true", allowedHeaders = "*")
 public class MessageController extends BaseController {
     @Autowired
     FeignMessageApi messageService;

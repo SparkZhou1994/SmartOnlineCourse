@@ -29,6 +29,7 @@ import java.util.List;
  **/
 @RestController
 @RequestMapping("/discuss")
+@CrossOrigin(allowCredentials = "true", allowedHeaders = "*")
 public class DiscussController extends BaseController {
     @Autowired
     FeignUserApi userService;
