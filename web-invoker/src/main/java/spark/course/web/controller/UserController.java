@@ -10,6 +10,7 @@ import spark.course.entity.bo.UserBO;
 import spark.course.entity.vo.UserVO;
 import spark.course.error.BusinessException;
 import spark.course.error.ClassBusinessError;
+import spark.course.service.security.PasswordEncord;
 import spark.course.util.JsonUtil;
 
 /**
@@ -34,6 +35,7 @@ public class UserController extends BaseController {
 
     @PostMapping(consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
     public String insertUser(@RequestBody UserBO user) throws BusinessException {
+        user.setEncryptPassword(PasswordEncord.passwordEncord(user.getEncryptPassword()));
         String result = userService.insertUser(user);
         if (result.contains("true")) {
             throw new BusinessException(new ClassBusinessError(result));
@@ -50,6 +52,7 @@ public class UserController extends BaseController {
 
     @PutMapping(value = "/password", consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
     public String updataUserPassword(@RequestBody UserBO user) throws BusinessException {
+        user.setEncryptPassword(PasswordEncord.passwordEncord(user.getEncryptPassword()));
         return JsonUtil.convertToJson(convertFromBO(
                 JsonUtil.json2Bean(userService.updataUserPassword(user), UserBO.class)));
     }
