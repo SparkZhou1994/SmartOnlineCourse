@@ -21,25 +21,6 @@ eureka:
     registry-fetch-interval-seconds: 30
   instance:
     hostname: localhost
-hystrix:
-  command:
-    default:
-      circuitBreaker:
-        requestVolumeThreshold: 10
-      execution:
-        isolation:
-          thread:
-            timeoutInMilliseconds: 2000
-spark:
-  security:
-    browser:
-      loginPage: /LoginAndRegister.html
-      loginType: JSON
-    code:
-      image:
-        length: 6
-        width: 100
-        url: /applepear
 logging:
   config: classpath:logback-spring.xml
 server:
