@@ -12,8 +12,10 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
@@ -35,11 +37,21 @@ import java.util.HashSet;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+    @Bean
+    UserDetailsService myUserDetailsService() {
+        return new MyUserDetailsService();
+    }
+    @Bean
+    public static PasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
+    }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception{
-        http.authorizeRequests().anyRequest().authenticated()
+        http.authorizeRequests()
+                .antMatchers("/my_index").access("hasRole('ROLE_USER')")
                 .and()
-                .formLogin().loginPage("/login_p")
+                .formLogin().loginPage("/login_and_register")
                 .loginProcessingUrl("/login")
                 .usernameParameter("username")
                 .passwordParameter("password")
@@ -70,16 +82,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public void globalConfigure(AuthenticationManagerBuilder auth) throws Exception{
         auth.userDetailsService(myUserDetailsService())
                 .passwordEncoder(passwordEncoder());
-    }
-
-    @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-
-    }
-
-    @Bean
-    public MyUserDetailsService myUserDetailsService(){
-        return new MyUserDetailsService();
     }
 }
