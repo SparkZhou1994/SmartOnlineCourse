@@ -16,6 +16,7 @@ public class UserVO {
     private String telphone;
     private String email;
     private String avatar;
+    private String loginSuccessful;
     /*private List<ChooseCourse> chooseCourseList;*/
 
     public Long getVersion() {
@@ -80,5 +81,13 @@ public class UserVO {
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
+    }
+
+    public String getLoginSuccessful() {
+        return loginSuccessful;
+    }
+
+    public void setLoginSuccessful(String loginSuccessful) {
+        this.loginSuccessful = loginSuccessful;
     }
 }

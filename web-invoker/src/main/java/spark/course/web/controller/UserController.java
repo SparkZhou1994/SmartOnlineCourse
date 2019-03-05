@@ -10,7 +10,7 @@ import spark.course.entity.bo.UserBO;
 import spark.course.entity.vo.UserVO;
 import spark.course.error.BusinessException;
 import spark.course.error.ClassBusinessError;
-import spark.course.service.security.PasswordEncord;
+import spark.course.util.EncryptUtil;
 import spark.course.util.JsonUtil;
 
 /**
@@ -33,9 +33,21 @@ public class UserController extends BaseController {
                 JsonUtil.json2Bean(userService.selectByUserId(userId), UserBO.class)));
     }
 
+    @PostMapping(value = "/password", consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
+    public String selectByEmail(@RequestBody UserBO userBO) throws BusinessException {
+        UserBO userBOTemp = JsonUtil.json2Bean(userService.selectByEmail(userBO.getEmail()), UserBO.class);
+        UserVO userVO = convertFromBO(userBOTemp);
+        if (EncryptUtil.match(userBO.getEncryptPassword(), userBOTemp.getEncryptPassword())) {
+            userVO.setLoginSuccessful("Success");
+        } else {
+            userVO.setLoginSuccessful("Fail");
+        }
+        return JsonUtil.convertToJson(userVO);
+    }
+
     @PostMapping(consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
     public String insertUser(@RequestBody UserBO user) throws BusinessException {
-        user.setEncryptPassword(PasswordEncord.passwordEncord(user.getEncryptPassword()));
+        user.setEncryptPassword(EncryptUtil.encrypt(user.getEncryptPassword()));
         String result = userService.insertUser(user);
         if (result.contains("true")) {
             throw new BusinessException(new ClassBusinessError(result));
@@ -52,7 +64,7 @@ public class UserController extends BaseController {
 
     @PutMapping(value = "/password", consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
     public String updataUserPassword(@RequestBody UserBO user) throws BusinessException {
-        user.setEncryptPassword(PasswordEncord.passwordEncord(user.getEncryptPassword()));
+        user.setEncryptPassword(EncryptUtil.encrypt(user.getEncryptPassword()));
         return JsonUtil.convertToJson(convertFromBO(
                 JsonUtil.json2Bean(userService.updataUserPassword(user), UserBO.class)));
     }

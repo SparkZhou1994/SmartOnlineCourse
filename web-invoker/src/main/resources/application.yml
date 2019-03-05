@@ -21,6 +21,21 @@ eureka:
     registry-fetch-interval-seconds: 30
   instance:
     hostname: localhost
+feign:
+  hystrix:
+    enabled: false
+hystrix:
+  command:
+    default:
+      circuitBreaker:
+        requestVolumeThreshold: 1000
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 200000
+ribbon:
+  ReadTimeout: 120000
+  ConnectTimeout: 30000
 logging:
   config: classpath:logback-spring.xml
 server:
