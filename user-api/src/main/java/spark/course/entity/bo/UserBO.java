@@ -23,7 +23,6 @@ public class UserBO {
     @Min(value = 0, message = "年龄必须大于0岁")
     @Max(value = 150, message = "年龄必须小于150岁")
     private Integer age;
-    @NotBlank(message = "手机号不能为空")
     private String telphone;
     @NotBlank(message = "邮箱不能为空")
     @Email(message = "邮箱格式不正确")
