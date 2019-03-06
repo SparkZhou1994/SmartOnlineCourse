@@ -160,8 +160,7 @@
     select
     <include refid="Base_Column_List" />
     from t_user
-    where email = #{email,jdbcType=VARCHAR}
-/*    where email LIKE CONCAT('%',#{email,jdbcType=VARCHAR},'%')*/
+    where email LIKE CONCAT('%',#{email,jdbcType=VARCHAR},'%')
   </select>
   <update id="updateAge">
     <!--
