@@ -79,4 +79,13 @@ public interface ChooseCourseDTOMapper {
     * @return java.util.List<spark.course.entity.dto.ChooseCourseDTO>
     **/
     List<ChooseCourseDTO> selectChooseCourseByCourseId(Integer courseId);
+
+    /**
+    * @author Spark
+    * @Description get the chooseCourseId by userId
+    * @Date 5:12 PM 3/6/2019
+    * @Param [userId]
+    * @return java.util.List<spark.course.entity.dto.ChooseCourseDTO>
+    **/
+    List<ChooseCourseDTO> selectChooseCourseByUserId(Integer userId);
 }

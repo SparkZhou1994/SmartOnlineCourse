@@ -57,4 +57,9 @@ public class ChooseCourseController implements IChooseCourseApi {
     public String selectByCourseId(@PathVariable(value = "courseId") Integer courseId) throws BusinessException {
         return JsonUtil.convertToJson(chooseCourseService.selectChooseCourseByCourseId(courseId));
     }
+
+    @Override
+    public String selectByUserId(@PathVariable(value = "userId") Integer userId) throws BusinessException {
+        return JsonUtil.convertToJson(chooseCourseService.selectChooseCourseByUserId(userId));
+    }
 }

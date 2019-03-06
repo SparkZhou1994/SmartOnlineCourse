@@ -55,6 +55,11 @@ public class ChooseCourseController extends BaseController {
         return convertFromChooseCouseBOJsonList(chooseCourseService.selectByCourseId(courseId));
     }
 
+    @GetMapping(value = "/userId/{userId}", consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
+    public String selectByUserId(@PathVariable(value = "userId") Integer userId) throws BusinessException {
+        return convertFromChooseCouseBOJsonList(chooseCourseService.selectByUserId(userId));
+    }
+
     @PostMapping(consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
     public String insert(@RequestBody CourseVO courseVO) throws BusinessException {
         return convertFromChooseCourseBOJson(chooseCourseService.insert(convertToBO(courseVO)));

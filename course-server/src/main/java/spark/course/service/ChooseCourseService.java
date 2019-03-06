@@ -19,4 +19,5 @@ public interface ChooseCourseService {
     void deleteByChooseCourseId(Integer chooseCourseId);
     CourseBO updateByChooseCourseId(CourseBO courseBO) throws BusinessException;
     List<CourseBO> selectChooseCourseByCourseId(Integer courseId);
+    List<CourseBO> selectChooseCourseByUserId(Integer userId);
 }

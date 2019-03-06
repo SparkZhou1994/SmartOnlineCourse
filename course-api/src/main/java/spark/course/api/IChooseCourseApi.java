@@ -27,6 +27,9 @@ public interface IChooseCourseApi {
     @GetMapping(value = "/courseId/{courseId}", consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
     String selectByCourseId(@PathVariable(value = "courseId") Integer courseId) throws BusinessException;
 
+    @GetMapping(value = "/userId/{userId}", consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
+    String selectByUserId(@PathVariable(value = "userId") Integer userId) throws BusinessException;
+
     @PostMapping(consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
     String insert(@RequestBody CourseBO courseBO) throws BusinessException;
 

@@ -79,6 +79,11 @@ public class ChooseCourseServiceImpl implements ChooseCourseService {
         return convertFromDataObjectList(chooseCourseDTOMapper.selectChooseCourseByCourseId(courseId));
     }
 
+    @Override
+    public List<CourseBO> selectChooseCourseByUserId(Integer userId) {
+        return convertFromDataObjectList(chooseCourseDTOMapper.selectChooseCourseByUserId(userId));
+    }
+
     private CourseBO convertFromDataObject(ChooseCourseDTO chooseCourseDTO) {
         if (chooseCourseDTO == null) {
             return null;
