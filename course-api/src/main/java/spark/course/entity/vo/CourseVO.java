@@ -14,8 +14,8 @@ public class CourseVO {
     private Integer courseId;
     private String courseName;
     private Integer userId;
-    private Integer OwnerUserId;
-    private String OwnerUsername;
+    private Integer ownerUserId;
+    private String ownerUsername;
     private String catalog;
     private String avatar;
     private Integer avgScore;
@@ -72,19 +72,19 @@ public class CourseVO {
     }
 
     public Integer getOwnerUserId() {
-        return OwnerUserId;
+        return ownerUserId;
     }
 
     public void setOwnerUserId(Integer ownerUserId) {
-        OwnerUserId = ownerUserId;
+        ownerUserId = ownerUserId;
     }
 
     public String getOwnerUsername() {
-        return OwnerUsername;
+        return ownerUsername;
     }
 
     public void setOwnerUsername(String ownerUsername) {
-        OwnerUsername = ownerUsername;
+        ownerUsername = ownerUsername;
     }
 
     public String getCatalog() {
