@@ -172,6 +172,7 @@
     <include refid="Base_Column_List" />
     from t_sign
     where choose_course_id = #{chooseCourseId,jdbcType=INTEGER}
+    order by end_time desc
     limit #{start,jdbcType=INTEGER},#{size,jdbcType=INTEGER}
   </select>
   <select id="selectMaxBatchByChooseCourseId" parameterType="java.lang.Integer" resultType="java.lang.Integer">

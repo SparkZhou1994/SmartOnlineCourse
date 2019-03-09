@@ -27,7 +27,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/chooseCourse")
 @CrossOrigin(allowCredentials = "true", allowedHeaders = "*")
-public class ChooseCourseController extends BaseController {
+public class ChooseCourseController {
     @Autowired
     FeignChooseCourseApi chooseCourseService;
     @Autowired
@@ -98,14 +98,12 @@ public class ChooseCourseController extends BaseController {
         CourseVO courseVOTemp = convertFromBO(JsonUtil.json2Bean(chooseCourseBOJson,CourseBO.class));
         CourseVO courseVO = convertFromBO(JsonUtil.json2Bean(courseService.
                 selectByCourseId(courseVOTemp.getCourseId()),CourseBO.class));
-        courseVO.setOwnerUserId(courseVO.getUserId());
-        courseVO.setUserId(courseVOTemp.getUserId());
-        courseVO.setScore(courseVOTemp.getScore());
-        courseVO.setVersionChooseCourse(courseVOTemp.getVersionChooseCourse());
+        courseVOTemp.setOwnerUserId(courseVO.getUserId());
+        courseVOTemp.setVersion(courseVO.getVersion());
         UserBO userBO = JsonUtil.json2Bean(userService.
-                selectByUserId(courseVO.getOwnerUserId()),UserBO.class);
-        courseVO.setOwnerUsername(userBO.getUsername());
-        return JsonUtil.convertToJson(courseVO);
+                selectByUserId(courseVOTemp.getOwnerUserId()),UserBO.class);
+        courseVOTemp.setOwnerUsername(userBO.getUsername());
+        return JsonUtil.convertToJson(courseVOTemp);
     }
 
     private String convertFromChooseCouseBOJsonList(String chooseCourseBOJsonList) throws BusinessException {

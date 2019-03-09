@@ -34,6 +34,8 @@ hystrix:
           thread:
             timeoutInMilliseconds: 200000
 ribbon:
+  eureka:
+    enabled: true
   ReadTimeout: 120000
   ConnectTimeout: 30000
 logging:

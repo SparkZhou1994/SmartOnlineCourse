@@ -76,7 +76,7 @@ public class CourseVO {
     }
 
     public void setOwnerUserId(Integer ownerUserId) {
-        ownerUserId = ownerUserId;
+        this.ownerUserId = ownerUserId;
     }
 
     public String getOwnerUsername() {
@@ -84,7 +84,7 @@ public class CourseVO {
     }
 
     public void setOwnerUsername(String ownerUsername) {
-        ownerUsername = ownerUsername;
+        this.ownerUsername = ownerUsername;
     }
 
     public String getCatalog() {

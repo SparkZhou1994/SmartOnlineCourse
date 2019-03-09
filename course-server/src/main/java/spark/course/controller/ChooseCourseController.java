@@ -9,9 +9,6 @@ import spark.course.entity.bo.CourseBO;
 import spark.course.error.BusinessException;
 import spark.course.service.ChooseCourseService;
 import spark.course.util.JsonUtil;
-import spark.course.validator.ValidationExceptionHandler;
-
-import javax.validation.Valid;
 
 /**
  * @ClassName ChooseCourseController

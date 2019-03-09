@@ -3,6 +3,7 @@ package spark.course.web.controller;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import spark.course.api.FeignUserApi;
 import spark.course.constants.CommonConstants;
 import spark.course.controller.BaseController;
@@ -10,7 +11,9 @@ import spark.course.entity.bo.UserBO;
 import spark.course.entity.vo.UserVO;
 import spark.course.error.BusinessException;
 import spark.course.error.ClassBusinessError;
+import spark.course.error.EmBusinessError;
 import spark.course.util.EncryptUtil;
+import spark.course.util.FileUtil;
 import spark.course.util.JsonUtil;
 
 /**
@@ -54,6 +57,28 @@ public class UserController extends BaseController {
         }
         return JsonUtil.convertToJson(convertFromBO(
                 JsonUtil.json2Bean(result, UserBO.class)));
+    }
+
+    @PostMapping(value = "/updata")
+    public String updataUserWithAvatar(String version, String username, String telphone, String email, MultipartFile avatar) throws BusinessException {
+        String fileName = FileUtil.fileNameConvert(avatar);
+        try {
+            FileUtil.uploadFile(avatar, CommonConstants.User.FILE_PATH, fileName);
+        } catch (Exception e) {
+            throw new BusinessException(EmBusinessError.COURSE_WARE_UPLOAD_ERROR);
+        }
+        UserVO userVO = new UserVO();
+        userVO.setVersion(Long.parseLong(version));
+        userVO.setUsername(username);
+        userVO.setTelphone(telphone);
+        userVO.setEmail(email);
+        userVO.setAvatar(fileName);
+        String result = userService.updataUser(convertToBO(userVO));
+        if (result.contains("true")) {
+            throw new BusinessException(new ClassBusinessError(result));
+        }
+        userVO.setVersion(Long.parseLong(version) + 1);
+        return JsonUtil.convertToJson(userVO);
     }
 
     @PutMapping(consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
