@@ -210,5 +210,6 @@
     <include refid="Base_Column_List" />
     from t_discuss
     where choose_course_id = #{chooseCourseId,jdbcType=INTEGER}
+
   </select>
 </mapper>

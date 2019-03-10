@@ -43,6 +43,7 @@ public class DiscussController extends BaseController {
                                          @PathVariable("start") Integer start,
                                          @PathVariable("size") Integer size) throws BusinessException {
         List<DiscussVO> discussVOList = new ArrayList<DiscussVO>();
+        List<DiscussVO> discussVOListTemp = new ArrayList<DiscussVO>();
         //get the courseId
         CourseBO courseBO = JsonUtil.json2Bean(chooseCourseService.
                 selectByChooseCourseId(chooseCourseId),CourseBO.class);
@@ -57,7 +58,14 @@ public class DiscussController extends BaseController {
                     selectByChooseCourseId(discussBO.getChooseCourseId())));
         }
         //get the subList
-        return JsonUtil.convertToJson(discussVOList.subList(start, size+start));
+        if (discussVOList.size() != 0) {
+            if (discussVOList.size() < start+size) {
+                discussVOListTemp = discussVOList.subList(start, discussVOList.size());
+            } else {
+                discussVOListTemp = discussVOList.subList(start, size+start);
+            }
+        }
+        return JsonUtil.convertToJson(discussVOListTemp);
     }
 
     @GetMapping(value = "/{discussId:\\d+}",

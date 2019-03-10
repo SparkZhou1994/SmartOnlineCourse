@@ -6,7 +6,7 @@ spring:
       retry: false
   datasource:
     name: smart_online_course
-    url: jdbc:mysql://mysql:3306/smart_online_course
+    url: jdbc:mysql://mysql:3306/smart_online_course?useUnicode=true&characterEncoding=utf8&rewriteBatchedStatements=true
     username: root
     password: root
     type: com.alibaba.druid.pool.DruidDataSource
