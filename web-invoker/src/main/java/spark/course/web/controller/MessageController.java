@@ -22,6 +22,7 @@ import java.nio.Buffer;
  * @Date 2/4/2019 11:55 AM
  * @Version 1.0
  **/
+@RestController
 @RequestMapping("/message")
 @CrossOrigin(allowCredentials = "true", allowedHeaders = "*")
 public class MessageController extends BaseController {

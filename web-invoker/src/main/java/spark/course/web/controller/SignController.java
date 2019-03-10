@@ -74,12 +74,7 @@ public class SignController extends BaseController {
             }
             signVOList.add(convertFromBO(JsonUtil.json2Bean(result, SignBO.class)));
         }
-        if (signVOList.size() == 1) {
-            return JsonUtil.convertToJson(signVOList.get(0));
-        } else {
-            return JsonUtil.convertToJson(signVOList);
-        }
-
+        return JsonUtil.convertToJson(signVOList);
     }
 
     @DeleteMapping(value = "/{signId:\\d+}")
