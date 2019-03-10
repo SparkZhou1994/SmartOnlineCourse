@@ -20,6 +20,11 @@ public class DiscussContentVO {
     private String choose;
     private Integer start;
     private Integer size;
+    private Integer choose1;
+    private Integer choose2;
+    private Integer choose3;
+    private Integer choose4;
+    private Integer total;
 
     public Integer getDiscussContentId() {
         return discussContentId;
@@ -99,5 +104,45 @@ public class DiscussContentVO {
 
     public void setSize(Integer size) {
         this.size = size;
+    }
+
+    public Integer getChoose1() {
+        return choose1;
+    }
+
+    public void setChoose1(Integer choose1) {
+        this.choose1 = choose1;
+    }
+
+    public Integer getChoose2() {
+        return choose2;
+    }
+
+    public void setChoose2(Integer choose2) {
+        this.choose2 = choose2;
+    }
+
+    public Integer getChoose3() {
+        return choose3;
+    }
+
+    public void setChoose3(Integer choose3) {
+        this.choose3 = choose3;
+    }
+
+    public Integer getChoose4() {
+        return choose4;
+    }
+
+    public void setChoose4(Integer choose4) {
+        this.choose4 = choose4;
+    }
+
+    public Integer getTotal() {
+        return total;
+    }
+
+    public void setTotal(Integer total) {
+        this.total = total;
     }
 }

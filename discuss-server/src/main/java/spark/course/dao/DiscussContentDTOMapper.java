@@ -1,6 +1,7 @@
 package spark.course.dao;
 
 import org.apache.ibatis.annotations.Param;
+import spark.course.entity.bo.DiscussContentBO;
 import spark.course.entity.dto.DiscussContentDTO;
 
 import java.util.List;
@@ -66,4 +67,6 @@ public interface DiscussContentDTOMapper {
     List<DiscussContentDTO> selectByDiscussId(@Param("discussId") Integer discussId,
                                               @Param("start") Integer start,
                                               @Param("size") Integer size);
+
+    List<DiscussContentBO> selectVoteResultByDiscussId(Integer discussId);
 }

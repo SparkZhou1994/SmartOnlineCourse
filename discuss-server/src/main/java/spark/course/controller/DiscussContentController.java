@@ -29,6 +29,11 @@ public class DiscussContentController implements IDiscussContentApi {
     }
 
     @Override
+    public String selectVoteResultByDiscussId(@PathVariable("discussId") Integer discussId) throws BusinessException {
+        return JsonUtil.convertToJson(discussContentService.selectVoteResultByDiscussId(discussId));
+    }
+
+    @Override
     public String selectByPrimaryKey(@PathVariable("discussContentId") Integer discussContentId) throws BusinessException {
         return JsonUtil.convertToJson(discussContentService.selectByPrimaryKey(discussContentId));
     }

@@ -18,4 +18,5 @@ public interface DiscussContentService {
     DiscussContentBO insert(DiscussContentBO discussContentBO);
     void delete(Integer discussContentId);
     DiscussContentBO update(DiscussContentBO discussContentBO) throws BusinessException;
+    DiscussContentBO selectVoteResultByDiscussId(Integer discussId);
 }

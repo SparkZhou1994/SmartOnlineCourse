@@ -23,6 +23,9 @@ public interface IDiscussContentApi {
                              @PathVariable("start") Integer start,
                              @PathVariable("size") Integer size) throws BusinessException;
 
+    @GetMapping(value = "/discussId/{discussId}")
+    String selectVoteResultByDiscussId(@PathVariable("discussId") Integer discussId) throws BusinessException;
+
     @GetMapping(value = "/{discussContentId}")
     String selectByPrimaryKey(@PathVariable(value = "discussContentId") Integer discussContentId) throws BusinessException;
 

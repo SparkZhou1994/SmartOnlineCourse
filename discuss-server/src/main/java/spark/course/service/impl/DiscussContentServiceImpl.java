@@ -6,6 +6,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import spark.course.dao.DiscussContentDTOMapper;
+import spark.course.entity.bo.DiscussBO;
 import spark.course.entity.bo.DiscussContentBO;
 import spark.course.entity.dto.DiscussContentDTO;
 import spark.course.error.BusinessException;
@@ -77,6 +78,36 @@ public class DiscussContentServiceImpl implements DiscussContentService {
         }
         discussContentBO.setVersion(discussContentBO.getVersion() + 1);
         LOGGER.warn(sendLogMessageUtil.sendUpdateMessage(DiscussContentBO.class, discussContentBO));
+        return discussContentBO;
+    }
+
+    @Override
+    public DiscussContentBO selectVoteResultByDiscussId(Integer discussId) {
+        List<DiscussContentBO> discussContentBOList = discussContentDTOMapper.selectVoteResultByDiscussId(discussId);
+        DiscussContentBO discussContentBO = new DiscussContentBO();
+        discussContentBO.setTotal(0);
+        discussContentBO.setChoose1(0);
+        discussContentBO.setChoose2(0);
+        discussContentBO.setChoose3(0);
+        discussContentBO.setChoose4(0);
+        for (DiscussContentBO discussContentBOTemp : discussContentBOList) {
+            if (discussContentBOTemp.getChooses() != null) {
+                switch (discussContentBOTemp.getChooses()) {
+                    case 1: discussContentBO.setChoose1(discussContentBO.getChoose1() + 1);
+                            discussContentBO.setTotal(discussContentBO.getTotal() + 1);
+                            break;
+                    case 2: discussContentBO.setChoose2(discussContentBO.getChoose2() + 1);
+                        discussContentBO.setTotal(discussContentBO.getTotal() + 1);
+                        break;
+                    case 3: discussContentBO.setChoose3(discussContentBO.getChoose3() + 1);
+                        discussContentBO.setTotal(discussContentBO.getTotal() + 1);
+                        break;
+                    case 4: discussContentBO.setChoose4(discussContentBO.getChoose4() + 1);
+                        discussContentBO.setTotal(discussContentBO.getTotal() + 1);
+                        break;
+                }
+            }
+        }
         return discussContentBO;
     }
 

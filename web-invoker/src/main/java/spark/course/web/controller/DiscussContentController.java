@@ -50,6 +50,11 @@ public class DiscussContentController extends BaseController {
                 selectByPrimaryKey(discussContentId), DiscussContentBO.class)));
     }
 
+    @GetMapping(value = "/discussId/{discussId:\\d+}")
+    public String selectVoteResultByDiscussId(@PathVariable("discussId") Integer discussId) throws BusinessException {
+        return discussContentService.selectVoteResultByDiscussId(discussId);
+    }
+
     @PostMapping(consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
     public String insert(@RequestBody DiscussContentVO discussContentVO) throws BusinessException {
         return JsonUtil.convertToJson(convertFromBO(JsonUtil.json2Bean(discussContentService.
@@ -74,8 +79,10 @@ public class DiscussContentController extends BaseController {
         }
         DiscussContentVO discussContentVO = new DiscussContentVO();
         BeanUtils.copyProperties(discussContentBO, discussContentVO);
-        discussContentVO.setPublishTime(DateUtil.
-                convertFromLocalDateTime(discussContentBO.getPublishTime()));
+        if (discussContentBO.getPublishTime() != null) {
+            discussContentVO.setPublishTime(DateUtil.
+                    convertFromLocalDateTime(discussContentBO.getPublishTime()));
+        }
         discussContentVO.setUsername(JsonUtil.json2Bean(userService.
                 selectByUserId(discussContentBO.getUserId()),UserBO.class).getUsername());
         return discussContentVO;
@@ -87,8 +94,9 @@ public class DiscussContentController extends BaseController {
         }
         DiscussContentBO discussContentBO = new DiscussContentBO();
         BeanUtils.copyProperties(discussContentVO, discussContentBO);
-        discussContentBO.setPublishTime(DateUtil.convertFromString(discussContentVO.
-                getPublishTime()));
+        if (discussContentVO.getPublishTime() != null) {
+            discussContentBO.setPublishTime(DateUtil.convertFromString(discussContentVO.getPublishTime()));
+        }
         return discussContentBO;
     }
 
