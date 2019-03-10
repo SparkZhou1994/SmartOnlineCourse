@@ -12,6 +12,7 @@ import spark.course.util.JsonUtil;
 import spark.course.validator.ValidationExceptionHandler;
 
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * @ClassName MessageController
@@ -34,8 +35,9 @@ public class MessageController extends ValidationExceptionHandler implements IMe
     public String selectByChooseCourseId(@PathVariable("chooseCourseId") Integer chooseCourseId,
                                          @PathVariable("start") Integer start,
                                          @PathVariable("size") Integer size) throws BusinessException {
-        return JsonUtil.convertToJson(messageService.
-                selectByChooseCourseId(chooseCourseId, start, size));
+        List<MessageBO> messageBOList = messageService.
+                selectByChooseCourseId(chooseCourseId, start, size);
+        return JsonUtil.convertToJson(messageBOList);
     }
 
     @Override

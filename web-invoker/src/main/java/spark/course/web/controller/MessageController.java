@@ -14,6 +14,8 @@ import spark.course.util.DateUtil;
 import spark.course.util.JsonUtil;
 
 import java.nio.Buffer;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @ClassName MessageController
@@ -41,8 +43,10 @@ public class MessageController extends BaseController {
     String selectByChooseCourseId(@PathVariable("chooseCourseId") Integer chooseCourseId,
                                   @PathVariable("start") Integer start,
                                   @PathVariable("size") Integer size) throws BusinessException {
-        return JsonUtil.convertToJson(convertFromBO(JsonUtil.json2Bean(messageService.
-                selectByChooseCourseId(chooseCourseId, start, size), MessageBO.class)));
+        String messageString = messageService.
+                selectByChooseCourseId(chooseCourseId, start, size);
+        List<MessageVO> messageVOList = convertFromBOList(messageString);
+        return JsonUtil.convertToJson(messageVOList);
     }
 
     @DeleteMapping(value = "/{messageId}",
@@ -63,5 +67,14 @@ public class MessageController extends BaseController {
         BeanUtils.copyProperties(messageVO, messageBO);
         messageBO.setPublishData(DateUtil.convertFromDateString(messageVO.getPublishData()));
         return messageBO;
+    }
+
+    private List<MessageVO> convertFromBOList(String messageBOJsonList) {
+        List<MessageBO> messageBOList = JsonUtil.json2List(messageBOJsonList, MessageBO.class);
+        List<MessageVO> messageVOList = new ArrayList<MessageVO>();
+        for (MessageBO messageBO:messageBOList) {
+            messageVOList.add(convertFromBO(messageBO));
+        }
+        return messageVOList;
     }
 }
