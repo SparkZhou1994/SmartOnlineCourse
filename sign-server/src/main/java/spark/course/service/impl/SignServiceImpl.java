@@ -75,24 +75,25 @@ public class SignServiceImpl implements SignService {
 
     @Override
     public SignBO update(SignBO signBO) throws BusinessException {
-        SignDTO signDTO = signDTOMapper.selectByPrimaryKey(signBO.getSignId());
-        signBO.setEndTime(signDTO.getEndTime());
+        List<SignDTO> signDTOList = signDTOMapper.selectByChooseCourseId(signBO.getChooseCourseId(),0,1);
+        SignDTO signDTO = signDTOList.get(0);
+        signDTO.setEndTime(signDTO.getEndTime());
         if (signDTO.getCode().equals(signBO.getCode())) {
-            signBO.setSignTime(LocalDateTime.now());
-            if (signBO.getSignTime().isAfter(signBO.getEndTime())) {
-                signBO.setRange("0");
+            signDTO.setSignTime(LocalDateTime.now());
+            if (signDTO.getSignTime().isAfter(signDTO.getEndTime())) {
+                signDTO.setRange("0");
             } else {
-                signBO.setRange("1");
+                signDTO.setRange("1");
             }
             Integer result = signDTOMapper.
-                    updateByPrimaryKeyAndVersionSelective(convertToDataObject(signBO));
+                    updateByPrimaryKeyAndVersionSelective(signDTO);
             if (result != 1 ) {
-                LOGGER.error(sendLogMessageUtil.sendErrorMessage(SignBO.class, signBO));
+                LOGGER.error(sendLogMessageUtil.sendErrorMessage(SignDTO.class, signDTO));
                 throw new BusinessException(EmBusinessError.SERVER_BUSY);
             }
-            signBO.setVersion(signBO.getVersion() + 1);
-            LOGGER.warn(sendLogMessageUtil.sendUpdateMessage(SignBO.class, signBO));
-            return signBO;
+            signDTO.setVersion(signDTO.getVersion() + 1);
+            LOGGER.warn(sendLogMessageUtil.sendUpdateMessage(SignDTO.class, signDTO));
+            return convertFromDataObject(signDTO);
         } else {
             sendLogMessageUtil.sendErrorMessage(SignBO.class, signBO);
             throw new BusinessException(EmBusinessError.SIGN_CODE_ERROR);

@@ -98,6 +98,9 @@ public class ChooseCourseController {
         CourseVO courseVOTemp = convertFromBO(JsonUtil.json2Bean(chooseCourseBOJson,CourseBO.class));
         CourseVO courseVO = convertFromBO(JsonUtil.json2Bean(courseService.
                 selectByCourseId(courseVOTemp.getCourseId()),CourseBO.class));
+        courseVOTemp.setCourseName(courseVO.getCourseName());
+        courseVOTemp.setAvatar(courseVO.getAvatar());
+        courseVOTemp.setAvgScore(courseVO.getAvgScore());
         courseVOTemp.setOwnerUserId(courseVO.getUserId());
         courseVOTemp.setVersion(courseVO.getVersion());
         UserBO userBO = JsonUtil.json2Bean(userService.

@@ -16,7 +16,6 @@ public class SignBO {
     private Integer signId;
     private Long version;
     private Integer chooseCourseId;
-    @NotEmpty(message = "签到批次不能为空")
     private Integer batch;
     @NotBlank(message = "签到码不能为空")
     private String code;

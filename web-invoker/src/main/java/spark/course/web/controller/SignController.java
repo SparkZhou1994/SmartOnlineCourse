@@ -64,13 +64,22 @@ public class SignController extends BaseController {
                 selectByCourseId(courseBO.getCourseId()), CourseBO.class);
         List<SignVO> signVOList = new ArrayList<SignVO>();
         for (CourseBO courseBOTemp:courseBOList) {
+            if (courseBOTemp.getChooseCourseId() == courseBO.getChooseCourseId()) {
+                continue;
+            }
+            signVO.setChooseCourseId(courseBOTemp.getChooseCourseId());
             String result = signService.insert(convertToBO(signVO));
             if (result.contains("true")) {
                 throw new BusinessException(new ClassBusinessError(result));
             }
             signVOList.add(convertFromBO(JsonUtil.json2Bean(result, SignBO.class)));
         }
-        return JsonUtil.convertToJson(signVOList);
+        if (signVOList.size() == 1) {
+            return JsonUtil.convertToJson(signVOList.get(0));
+        } else {
+            return JsonUtil.convertToJson(signVOList);
+        }
+
     }
 
     @DeleteMapping(value = "/{signId:\\d+}")
@@ -91,7 +100,9 @@ public class SignController extends BaseController {
         SignVO signVO = new SignVO();
         BeanUtils.copyProperties(signBO, signVO);
         signVO.setEndTime(DateUtil.convertFromLocalDateTime(signBO.getEndTime()));
-        signVO.setSignTime(DateUtil.convertFromLocalDateTime(signBO.getSignTime()));
+        if (signBO.getSignTime() != null) {
+            signVO.setSignTime(DateUtil.convertFromLocalDateTime(signBO.getSignTime()));
+        }
         //get the CourseBO
         CourseBO courseBO = JsonUtil.json2Bean(chooseCourseService.selectByChooseCourseId(signBO
                 .getChooseCourseId()), CourseBO.class);
@@ -100,10 +111,20 @@ public class SignController extends BaseController {
         UserBO userBO = JsonUtil.json2Bean(userService.
                 selectByUserId(courseBO.getUserId()), UserBO.class);
         signVO.setUsername(userBO.getUsername());
-        switch (signBO.getRange()) {
-            case "0" : signVO.setRange(CommonConstants.Sign.RANGE_0); break;
-            case "1" : signVO.setRange(CommonConstants.Sign.RANGE_1); break;
-            default : signVO.setRange(CommonConstants.Sign.RANGE_NULL); break;
+        if (signBO.getRange() != null) {
+            switch (signBO.getRange()) {
+                case "0":
+                    signVO.setRange(CommonConstants.Sign.RANGE_0);
+                    break;
+                case "1":
+                    signVO.setRange(CommonConstants.Sign.RANGE_1);
+                    break;
+                default:
+                    signVO.setRange(CommonConstants.Sign.RANGE_NULL);
+                    break;
+            }
+        } else {
+            signVO.setRange(CommonConstants.Sign.RANGE_NULL);
         }
         return signVO;
     }
@@ -120,10 +141,12 @@ public class SignController extends BaseController {
         if (signVO.getSignTime() != null) {
             signBO.setSignTime(DateUtil.convertFromString(signVO.getSignTime()));
         }
-        switch (signVO.getRange()) {
-            case CommonConstants.Sign.RANGE_0 : signBO.setRange("0"); break;
-            case CommonConstants.Sign.RANGE_1 : signBO.setRange("1"); break;
-            default : signBO.setRange(null); break;
+        if (signVO.getRange() != null) {
+            switch (signVO.getRange()) {
+                case CommonConstants.Sign.RANGE_0 : signBO.setRange("0"); break;
+                case CommonConstants.Sign.RANGE_1 : signBO.setRange("1"); break;
+                default : signBO.setRange(null); break;
+            }
         }
         return signBO;
     }
