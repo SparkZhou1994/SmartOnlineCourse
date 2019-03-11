@@ -40,6 +40,9 @@ public final class CommonConstants {
     public final class User {
         public static final String FILE_PATH = "E://SmartOnlineCourse//user";
     }
+    public final class Course {
+        public static final String FILE_PATH = "E://SmartOnlineCourse//course";
+    }
     public final class ImageCode {
         public static final String SESSION_KEY = "SESSION_KEY_IMAGE_CODE";
     }

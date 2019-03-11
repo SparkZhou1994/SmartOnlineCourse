@@ -60,10 +60,10 @@ public class UserController extends BaseController {
     }
 
     @PostMapping(value = "/updata")
-    public String updataUserWithAvatar(String version, String username, String telphone, String email, MultipartFile avatar) throws BusinessException {
-        String fileName = FileUtil.fileNameConvert(avatar);
+    public String updataUserWithAvatar(String version, String username, String telphone, String email, MultipartFile file) throws BusinessException {
+        String fileName = FileUtil.fileNameConvert(file);
         try {
-            FileUtil.uploadFile(avatar, CommonConstants.User.FILE_PATH, fileName);
+            FileUtil.uploadFile(file, CommonConstants.User.FILE_PATH, fileName);
         } catch (Exception e) {
             throw new BusinessException(EmBusinessError.COURSE_WARE_UPLOAD_ERROR);
         }
