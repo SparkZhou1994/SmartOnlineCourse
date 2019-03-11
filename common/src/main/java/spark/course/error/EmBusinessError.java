@@ -24,6 +24,7 @@ public enum EmBusinessError implements CommonError{
     **/
     USER_NOT_EXIST(20001,"用户不存在"),
     USER_PASSWORD_ERROR(20002,"用户名不存在或密码错误"),
+    USER_AVATAR_UPLOAD_ERROR(20003,"用户头像上传失败"),
     /**
      * @author Spark
      * @Description 30000开头为签到信息相关错误定义
@@ -48,7 +49,13 @@ public enum EmBusinessError implements CommonError{
      * @Date 2:12 PM 1/14/2019
      **/
     UNAUTHORIZED(60001,"需要身份验证"),
-    AUTHORIZED_REDIRECT(60002,"验证跳转错误")
+    AUTHORIZED_REDIRECT(60002,"验证跳转错误"),
+    /**
+     * @author Spark
+     * @Description 70000开头为课程信息相关错误定义
+     * @Date 2:12 PM 1/14/2019
+     **/
+    COURSE_AVATAR_UPLOAD_ERROR(70001,"课程图像上传失败")
     ;
 
     private EmBusinessError(Integer errCode, String errMsg) {
