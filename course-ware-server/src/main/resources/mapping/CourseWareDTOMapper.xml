@@ -154,6 +154,7 @@
     <include refid="Base_Column_List" />
     from t_course_ware
     where course_id = #{courseId,jdbcType=INTEGER}
+    order by batch desc
     limit #{start,jdbcType=INTEGER},#{size,jdbcType=INTEGER}
   </select>
 </mapper>

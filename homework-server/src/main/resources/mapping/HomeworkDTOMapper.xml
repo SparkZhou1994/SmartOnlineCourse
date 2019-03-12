@@ -214,6 +214,7 @@
     <include refid="Base_Column_List" />
     from t_homework
     where choose_course_id = #{chooseCourseId,jdbcType=INTEGER}
+    order by batch desc
     limit #{start,jdbcType=INTEGER},#{size,jdbcType=INTEGER}
   </select>
 </mapper>
