@@ -66,12 +66,12 @@ public class FileController {
         return fileName;
     }
 
-    @GetMapping("/download/homework/{fileName}")
+    @GetMapping("/download/homework/{fileName:.+}")
     public ResponseEntity<byte[]> homeworkDownload(@PathVariable("fileName") String fileName, HttpServletRequest request) {
         return FileUtil.downloadFile(fileName, CommonConstants.Homework.FILE_PATH, request);
     }
 
-    @GetMapping("/download/courseWare/{fileName}")
+    @GetMapping("/download/courseWare/{fileName:.+}")
     public ResponseEntity<byte[]> courseWareDownload(@PathVariable("fileName") String fileName, HttpServletRequest request) {
         return FileUtil.downloadFile(fileName, CommonConstants.CourseWare.FILE_PATH, request);
     }

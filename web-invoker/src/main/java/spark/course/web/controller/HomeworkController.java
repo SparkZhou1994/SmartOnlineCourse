@@ -137,14 +137,16 @@ public class HomeworkController extends BaseController {
         if (homeworkBO.getSubmitTime() != null) {
             homeworkVO.setEndTime(DateUtil.convertFromLocalDateTime(homeworkBO.getSubmitTime()));
         }
-        //get the CourseBO
-        CourseBO courseBO = JsonUtil.json2Bean(chooseCourseService.selectByChooseCourseId(homeworkBO
-                .getChooseCourseId()), CourseBO.class);
-        homeworkVO.setUserId(courseBO.getUserId());
-        homeworkVO.setCourseId(courseBO.getCourseId());
-        UserBO userBO = JsonUtil.json2Bean(userService.
-                selectByUserId(courseBO.getUserId()), UserBO.class);
-        homeworkVO.setUsername(userBO.getUsername());
+        if (homeworkBO.getChooseCourseId() != null) {
+            //get the CourseBO
+            CourseBO courseBO = JsonUtil.json2Bean(chooseCourseService.selectByChooseCourseId(homeworkBO
+                    .getChooseCourseId()), CourseBO.class);
+            homeworkVO.setUserId(courseBO.getUserId());
+            homeworkVO.setCourseId(courseBO.getCourseId());
+            UserBO userBO = JsonUtil.json2Bean(userService.
+                    selectByUserId(courseBO.getUserId()), UserBO.class);
+            homeworkVO.setUsername(userBO.getUsername());
+        }
         if (homeworkBO.getRange() != null) {
             switch (homeworkBO.getRange()) {
                 case "0":

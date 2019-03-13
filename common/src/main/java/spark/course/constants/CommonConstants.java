@@ -32,16 +32,16 @@ public final class CommonConstants {
         public static final String RANGE_0 = "超时提交";
         public static  final String RANGE_1 = "按时提交";
         public static  final String RANGE_NULL = "未提交";
-        public static final String FILE_PATH = "E://SmartOnlineCourse//homework";
+        public static final String FILE_PATH = "//smart-online-course//SmartOnlineCourse//homework//";
     }
     public final class CourseWare {
-        public static final String FILE_PATH = "E://SmartOnlineCourse//courseWare";
+        public static final String FILE_PATH = "//smart-online-course//SmartOnlineCourse//courseWare//";
     }
     public final class User {
-        public static final String FILE_PATH = "E://SmartOnlineCourse//user";
+        public static final String FILE_PATH = "//smart-online-course//SmartOnlineCourse//user//";
     }
     public final class Course {
-        public static final String FILE_PATH = "E://SmartOnlineCourse//course";
+        public static final String FILE_PATH = "//smart-online-course//SmartOnlineCourse//course//";
     }
     public final class ImageCode {
         public static final String SESSION_KEY = "SESSION_KEY_IMAGE_CODE";
