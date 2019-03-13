@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
  * @Version 1.0
  **/
 @RestController
-@CrossOrigin
+@CrossOrigin(allowCredentials = "true", allowedHeaders = "*")
 public class FileController {
 
     @PostMapping("/upload/user")
