@@ -74,13 +74,16 @@ public class HomeworkServiceImpl implements HomeworkService {
     @Override
     public HomeworkBO update(HomeworkBO homeworkBO)throws BusinessException {
         HomeworkDTO homeworkDTO = homeworkDTOMapper.selectByPrimaryKey(homeworkBO.getHomeworkId());
-        homeworkBO.setSubmitTime(LocalDateTime.now());
-        if (homeworkBO.getSubmitTime().isAfter(homeworkDTO.getEndTime())) {
-            homeworkBO.setRange("0");
-        } else {
-            homeworkBO.setRange("1");
+        if (homeworkDTO.getSubmitTime() == null) {
+            homeworkBO.setSubmitTime(LocalDateTime.now());
+            if (homeworkBO.getSubmitTime().isAfter(homeworkDTO.getEndTime())) {
+                homeworkBO.setRange("0");
+            } else {
+                homeworkBO.setRange("1");
+            }
         }
         Integer result = homeworkDTOMapper.updateByPrimaryKeyAndVersionSelective(convertToDataObject(homeworkBO));
+        homeworkBO.setSubmitTime(null);
         if (result != 1 ) {
             LOGGER.error(sendLogMessageUtil.sendErrorMessage(HomeworkBO.class, homeworkBO));
             throw new BusinessException(EmBusinessError.SERVER_BUSY);

@@ -22,7 +22,6 @@ public class HomeworkBO {
     private String title;
     @NotBlank(message = "作业附件不能为空")
     private String attachment;
-    @NotEmpty(message = "作业批次不能为空")
     private Integer batch;
     private LocalDateTime endTime;
     private LocalDateTime submitTime;
