@@ -11,6 +11,10 @@ spring:
   sleuth:
     sampler:
       percentage: 1.0
+  mvc:
+    static-path-pattern: /**
+  resources:
+    static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/,file:${web.upload-user-path},file:${web.upload-course-path}
 management:
   security:
     enabled: false
@@ -42,3 +46,6 @@ logging:
   config: classpath:logback-spring.xml
 server:
   port: 8090
+web:
+  upload-user-path: /smart-online-course/SmartOnlineCourse/user
+  upload-course-path: /smart-online-course/SmartOnlineCourse/course
