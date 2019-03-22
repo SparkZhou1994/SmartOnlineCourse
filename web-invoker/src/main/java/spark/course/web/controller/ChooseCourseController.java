@@ -50,7 +50,7 @@ public class ChooseCourseController {
                 selectChooseCourseByUserIdAndCourseId(userId,courseId));
     }
 
-    @GetMapping(value = "/courseId/{courseId}", consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
+    @GetMapping(value = "/courseId/{courseId:\\d+}", consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
     public String selectByCourseId(@PathVariable(value = "courseId") Integer courseId) throws BusinessException {
         return convertFromChooseCouseBOJsonList(chooseCourseService.selectByCourseId(courseId));
     }

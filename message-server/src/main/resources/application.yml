@@ -26,9 +26,10 @@ eureka:
     service-url:
       defaultZone: http://eureka1:8761/eureka/,http://eureka2:8762/eureka/
   instance:
-    hostname: localhost
+    preferIpAddress: true
     leaseRenewalIntervalInSeconds: 5
     lease-expiration-duration-in-seconds: 10
+    ip-address: 172.19.190.83
 mybatis:
   mapperLocations: classpath:mapping/*.xml
 logging:

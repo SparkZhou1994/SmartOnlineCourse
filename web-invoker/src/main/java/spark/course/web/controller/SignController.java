@@ -55,12 +55,14 @@ public class SignController extends BaseController {
     }
 
     @GetMapping(value = "/courseId/{courseId:\\d+}", consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
-    public String selectByCourseId(Integer courseId) throws BusinessException {
+    public String selectByCourseId(@PathVariable("courseId") Integer courseId) throws BusinessException {
         List<CourseBO> courseBOList = JsonUtil.json2List(chooseCourseService.selectByCourseId(courseId), CourseBO.class);
         List<SignBO> signBOList = new ArrayList<SignBO>();
         for (CourseBO courseBO : courseBOList) {
-            signBOList.addAll(JsonUtil.json2List(signService.
-                    selectByChooseCoureId(courseBO.getChooseCourseId(), 0, 1), SignBO.class));
+            String jsonList = signService.selectByChooseCoureId(courseBO.getChooseCourseId(), 0, 1);
+            if (jsonList != null) {
+                signBOList.addAll(JsonUtil.json2List(jsonList, SignBO.class));
+            }
         }
         return JsonUtil.convertToJson(convertFromBOListJson(JsonUtil.convertToJson(signBOList)));
     }

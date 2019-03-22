@@ -20,7 +20,8 @@ eureka:
       defaultZone: http://eureka1:8761/eureka/,http://eureka2:8762/eureka/
     registry-fetch-interval-seconds: 30
   instance:
-    hostname: localhost
+    preferIpAddress: true
+    ip-address: 172.19.190.83
 zuul:
   routes:
     portal:
