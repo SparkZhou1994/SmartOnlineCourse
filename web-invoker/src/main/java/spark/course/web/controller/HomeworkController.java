@@ -63,6 +63,18 @@ public class HomeworkController extends BaseController {
     }
 
     @ResponseBody
+    @GetMapping(value = "/courseId/{courseId:\\d+}", consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
+    public String selectByCourseId(Integer courseId) throws BusinessException {
+        List<CourseBO> courseBOList = JsonUtil.json2List(chooseCourseService.selectByCourseId(courseId), CourseBO.class);
+        List<HomeworkBO> homeworkBOList = new ArrayList<HomeworkBO>();
+        for (CourseBO courseBO : courseBOList) {
+            homeworkBOList.addAll(JsonUtil.json2List(homeworkService.
+                    selectByChooseCourseId(courseBO.getChooseCourseId(), 0, 1), HomeworkBO.class));
+        }
+        return JsonUtil.convertToJson(convertFromBOListJson(JsonUtil.convertToJson(homeworkBOList)));
+    }
+
+    @ResponseBody
     @PostMapping(consumes = CommonConstants.BaseController.CONTENT_TYPE_JSON)
     String insert(@RequestBody HomeworkVO homeworkVO) throws BusinessException {
         //get the courseId
