@@ -1,0 +1,247 @@
+﻿yum install -y lrzsz
+rz
+sz
+-----------------------------------------
+elk0:Logstash
+elk1:Elasticsearch  kibana
+
+创建用户组
+groupadd elk0
+useradd –g elk0
+passwd elk0
+
+
+
+JDK安装与配置
+--------------------------------------
+指定用户使用指定的JDK 环境变量
+vim ~/.bash_profile
+
+JAVA_HOME=/home/elk0/jdk8u172-b11
+PATH=$JAVA_HOME/bin:$PATH
+CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar
+export JAVA_HOME
+export PATH
+export CLASSPATH
+
+source ~/.bash_profile
+
+检查jdk是否启动 java -version
+--------------------------------------
+
+
+
+
+ELK环境准备
+--------------------------------------
+由于Elasticsearch、Logstash、Kibana均不能以root账号运行。
+但是Linux对非root账号可并发操作的文件、线程都有限制。
+所以，部署ELK相关的机器都要调整：
+
+修改文件限制
+# 修改系统文件
+vi /etc/security/limits.conf
+#增加的内容
+* soft nofile 65536
+* hard nofile 65536
+* soft nproc 2048
+* hard nproc 4096
+
+调整进程数
+#修改系统文件
+vi /etc/security/limits.d/20-nproc.conf
+#调整成以下配置
+*          soft    nproc     4096
+root       soft    nproc     unlimited
+
+调整虚拟内存&最大并发连接
+#修改系统文件
+vi /etc/sysctl.conf
+#增加的内容
+vm.max_map_count=655360
+fs.file-max=655360
+
+以上操作重启系统后生效
+reboot
+
+
+需要为ELK开放相应的9200 9300 5601端口，或者直接关闭防火墙
+#开放端口（不一定有效）
+ROOT用户  vi /etc/sysconfig/iptables
+-A INPUT -m state --state NEW -m tcp -p tcp --dport 9200 -j ACCEPT
+-A INPUT -m state --state NEW -m tcp -p tcp --dport 9300 -j ACCEPT
+service iptables restart
+
+#关闭Selinux防火墙
+1. 永久有效
+修改 /etc/selinux/config 文件中的 SELINUX="" 为 disabled ，然后重启。
+2. 即时生效
+setenforce 0
+
+#关闭防火墙
+1. 永久性生效
+开启：chkconfig iptables on
+关闭：chkconfig iptables off
+2. 即时生效，重启后失效
+开启：service iptables start
+关闭：service iptables stop
+--------------------------------------
+
+
+
+
+
+
+
+
+
+Elasticsearch 配置与启动
+--------------------------------------
+创建Elasticsearch主目录
+mkdir /elk/es
+#创建Elasticsearch数据目录
+mkdir /elk/es/data
+#创建Elasticsearch日志目录
+mkdir /elk/es/logs
+
+
+#打开目录
+cd /home/elk/elasticsearch-6.0.0
+
+#修改配置
+vi config/elasticsearch.yml
+
+参数说明：
+cluster.name	集群名
+node.name	节点名
+path.data	数据保存目录
+path.logs	日志保存目录
+network.host	节点host/ip
+http.port	HTTP访问端口
+transport.tcp.port	TCP传输端口
+node.master	是否允许作为主节点
+node.data	是否保存数据
+discovery.zen.ping.unicast.hosts	集群中的主节点的初始列表,当节点(主节点或者数据节点)启动时使用这个列表进行探测
+discovery.zen.minimum_master_nodes	主节点个数
+
+配置参考：
+cluster.name: es 
+node.name: es1
+path.data: /elk/es/data
+path.logs: /elk/es/logs
+network.host: 130.252.104.249
+http.port: 9200
+//transport.tcp.port: 9300
+//node.master: true
+//node.data: true
+//discovery.zen.ping.unicast.hosts: ["130.252.104.249:9300"]
+//discovery.zen.minimum_master_nodes: 1
+
+注意（若不设置会出现内存报错）：
+#此项需改为false
+bootstrap.memory_lock: false
+#此项需要添加
+bootstrap.system_call_filter: false
+
+
+
+启动
+#进入elasticsearch根目录
+cd /home/elk/elasticsearch-6.0.0
+#启动
+./bin/elasticsearch
+--------------------------------------
+
+
+
+ 
+logstash配置与启动
+--------------------------------------
+配置数据与日志目录
+#创建Logstash主目录
+mkdir /elk/logstash
+#创建Logstash数据目录
+mkdir /elk/logstash/data
+#创建Logstash日志目录
+mkdir /elk/logstash/logs
+#打开目录
+cd /usr/elk/logstash-6.0.0
+#修改配置
+vi config/logstash.yml
+#增加以下内容
+path.data: /elk/logstash/data
+path.logs: /elk/logstash/logs
+
+
+配置数据源以及写入指定的elasticsearch
+#编辑config/logstash-sample.conf
+input {
+   stdin { }
+}
+
+output {
+  elasticsearch {
+    hosts => ["http://130.252.104.249:9200"]
+    index => "%{[@metadata][beat]}-%{[@metadata][version]}-%{+YYYY.MM.dd}"
+    #user => "elastic"
+    #password => "changeme"
+  }
+stdout { codec => rubydebug }
+
+
+安装熵数发生器：如果不安装熵数发生器，则logstash启动会很慢，./bin/logstash没有反应
+检查一下系统的熵数池 cat /proc/sys/kernel/random/entropy_avail，正常情况这个数字推荐大于1000
+解决：使用伪随机，编辑/usr/local/logstash/logstash-5.4.1/config/jvm.options，在最后增加一行：-Djava.security.egd=file:/dev/urandom
+如果这一行已经存在，则需要安装熵数发生器：
+yum install epel-release -y
+
+修改 /etc/yum.repos.d/epel.repo
+[epel]
+name=Extra Packages for Enterprise Linux 6 - $basearch
+baseurl=http://download.fedoraproject.org/pub/epel/6/$basearch
+#mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=epel-6&arch=$basearch
+failovermethod=priority
+enabled=0
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-6
+yum install ca-certificates
+修改 /etc/yum.repos.d/epel.repo
+enabled=1
+
+yum install haveged -y
+[root@cdh-03 ~]# service haveged start                    #启动
+[root@cdh-03 ~]# service haveged enable                   #开机启动
+[root@cdh-03 ~]# service haveged status                   #查看启动状态
+Created symlink from /etc/systemd/system/multi-user.target.wants/haveged.service to /usr/lib/systemd/system/haveged.service.
+[root@cdh-03 ~]# service list-unit-files | grep haveged    #查看开机启动状态
+
+
+启动logstash
+./bin/logstash -f config/logstash-sample.conf 
+启动成功后，在“Logstash API endpoint”下输入任意内容可进行测试
+--------------------------------------
+
+
+
+Kibana配置与访问测试
+--------------------------------------
+修改配置
+#进入kibana-6.0.0根目录
+cd /usr/elk/kibana-6.0.0
+#修改配置
+vi config/kibana.yml
+#增加以下内容
+server.port: 5601
+server.host: "0000"
+elasticsearch.url: "http://130.252.104.249:9200"
+
+启动
+#进入kibana-6.0.0根目录
+cd /usr/elk/kibana-6.0.0
+#启动
+./bin/kibana
+
+浏览器访问：130.252.104.249:5601
+--------------------------------------
+
+
